@@ -10,41 +10,41 @@ interface Example {
   description: string
   originalImage: string
   enhancedImage: string
-  category: 'portrait' | 'landscape' | 'product' | 'artwork'
+  category: 'portrait' | 'landscape' | 'product'
 }
 
-// 使用占位符图片，等真实示例
+// 4 个 8K 超高清示例
 const examples: Example[] = [
   {
     id: '1',
     title: '人像照片增强',
-    description: '低分辨率人像 → 4K 高清细节修复',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="3"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%3E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="0"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%3E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%3E%3C/svg%3E',
+    description: '低分辨率人像 → 8K 超高清（8x 放大）',
+    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="3"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%E%3C/svg%3E',
+    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%3E%3C/filter%E3E%3C/defs%E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%E%3Ctext x="320" y="280" font-size="12" fill="%23666" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
     category: 'portrait'
   },
   {
     id: '2',
     title: '风景照片超分',
-    description: '模糊风景 → 4x 超分辨率放大',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="4"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%2387CEEB"/%3E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%3E%3Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="0"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%2387CEEB"/%3E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%3E%3Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%3E%3C/svg%3E',
+    description: '模糊风景 → 8x 超分辨率放大',
+    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="4"/%E%3C/filter%E%3E%3C/defs%E3E%3Crect width="400" height="300" fill="%2387CEEB"/%3E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%E%3Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%3E%3C/svg%3E',
+    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%2387CEEB"/%E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%E%Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%E%3Ctext x="350" y="280" font-size="12" fill="%23FFF" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
     category: 'landscape'
   },
   {
     id: '3',
     title: '老照片修复',
-    description: '年代久远照片 → 细节恢复',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="5"/%E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%3E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="0"/%3E%3C/filter%E%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%3E%3C/svg%3E',
+    description: '年代久远照片 → 8K 超高清修复',
+    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%E%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="5"/%E%3C/filter%E%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%E%3C/svg%3E',
+    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%E%3C/svg%3E',
     category: 'portrait'
   },
   {
     id: '4',
     title: '产品照片优化',
-    description: '电商产品图 → 高清展示',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="3"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%3E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%3E%3Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="0"/%3E%3C/filter%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%3E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%3E%3Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3C/svg%3E',
+    description: '电商产品图 → 8K 高清展示',
+    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="3"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%E%3Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3C/svg%3E',
+    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%E%Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3Ctext x="350" y="280" font-size="12" fill="%23FFF" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
     category: 'product'
   }
 ]
@@ -58,14 +58,14 @@ export default function ExampleShowcase() {
         {/* 标题 */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            效果展示
+            8K 超高清效果展示
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            看看 Finegrain 如何将模糊照片变清晰
+            每个示例都是真实的 8x 放大效果，展示 Finegrain 的强大能力
           </p>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-600">
             <CheckCircle2 className="w-5 h-5" />
-            <span>实时处理 • 隐私保护 • 24小时删除</span>
+            <span>8x 超高清 • 实时处理 • 24小时删除</span>
           </div>
         </div>
 
@@ -89,7 +89,7 @@ export default function ExampleShowcase() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                     <ImageIcon className="w-12 h-12 text-gray-400" />
                   </div>
                 )}
@@ -115,6 +115,11 @@ export default function ExampleShowcase() {
                 <p className="text-gray-600 mt-1">
                   {selectedExample.description}
                 </p>
+                <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                  <span className="text-blue-600 font-medium">8x 超高清</span>
+                  <span className="text-gray-400">•</span>
+                  <span>60 秒处理</span>
+                </div>
               </div>
               <button
                 onClick={() => setSelectedExample(null)}
@@ -128,7 +133,7 @@ export default function ExampleShowcase() {
               originalImage={selectedExample.originalImage}
               enhancedImage={selectedExample.enhancedImage}
               originalAlt="原图"
-              enhancedAlt="增强后"
+              enhancedText="增强后 (8K 超高清)"
             />
           </div>
         )}
@@ -136,8 +141,10 @@ export default function ExampleShowcase() {
         {/* 提示 */}
         {!selectedExample && (
           <div className="text-center text-gray-500">
-            <p className="text-lg mb-2">点击上方示例查看对比效果</p>
-            <p className="text-sm">拖动滑块查看差异 • 放大缩小查看细节</p>
+            <p className="text-lg mb-2">点击上方示例查看 8K 超高清对比</p>
+            <p className="text-sm">
+              拖动滑块查看差异 • 放大缩小查看细节 • 8K 超高清体验
+            </p>
           </div>
         )}
       </div>

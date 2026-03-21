@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
     // 调用增强 API
     const result = await enhanceImageAsync({
-      image: imageUrl,
+      image: imageUrl, // 可以是 data URL 或 HTTP URL
       model,
       scale,
     })
@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
       model: result.model,
       scale: result.scale,
       estimatedTime: model === 'hat' ? 60 : 10, // HAT 需要更长时间
+      message: 'Image enhancement started. Please poll for status.',
     })
   } catch (error) {
     console.error('Enhance API error:', error)

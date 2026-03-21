@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { uploadImage } from '@/lib/r2'
 
 /**
  * POST /api/upload
- * 上传图片到 R2
+ * 上传图片（使用 base64 编码，直接存储到 Replicate）
  */
 export async function POST(request: NextRequest) {
   try {
@@ -35,23 +34,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 上传到 R2
-    const result = await uploadImage(file, file.name, file.type)
+    // 转换为 base64（直接传给 Replicate）
+    const arrayBuffer = await file.arrayBuffer()
+    const base64 = Buffer.from(arrayBuffer).toString('base64')
+    const dataUrl = `data:${file.type};base64,${base64}`
 
-    if (!result.success) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 500 }
-      )
-    }
+    // 生成图片 ID
+    const imageId = `${Date.now()}-${Math.random().toString(36).substring(7)}`
 
-    // 返回图片信息
+    // 返回图片信息（使用 base64 data URL）
     return NextResponse.json({
       success: true,
-      imageUrl: result.url,
-      imageId: result.key,
+      imageUrl: dataUrl,
+      imageId,
       size: file.size,
       type: file.type,
+      note: 'Image is converted to base64 for Replicate processing',
     })
   } catch (error) {
     console.error('Upload API error:', error)

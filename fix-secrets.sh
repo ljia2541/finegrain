@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo "🔒 GitHub Secrets Removal Script"
+echo "================================"
+echo ""
+
+echo "检测到的敏感信息需要从 Git 历史中移除"
+echo ""
+echo "请按以下步骤操作："
+echo ""
+echo "方法 1：使用 GitHub 提供的链接"
+echo "1. 访问：https://github.com/ljia2541/finegrain/security/secret-scanning/unblock-secret/3BFZhrnKWyVCwGe8uPh4BxSmf7E"
+echo "2. 选择「Allow this secret in this repository」"
+echo "3. 推送将自动通过"
+echo ""
+echo "方法 2：移除敏感信息并重新提交"
+echo "1. 修改 docs/CLOUDFLARE_PAGES.md，移除真实的 API Token"
+echo "2. 修改 .env.example，使用占位符"
+echo "3. 创建新的提交"
+echo "4. 使用 git push --force"
+echo ""
+echo "推荐使用方法 1，因为它更安全且不会丢失历史"
+echo ""

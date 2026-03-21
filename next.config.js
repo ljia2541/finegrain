@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   images: {
+    unoptimized: true,
     domains: ['replicate.delivery', 'r2.flux-network.dev'],
     remotePatterns: [
       {
@@ -21,6 +23,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // 尾部斜杠
+  trailingSlash: true,
 }
 
 module.exports = nextConfig

@@ -22,12 +22,14 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <button className="text-gray-700 hover:text-blue-600 transition-colors">
-              登录
-            </button>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-              注册
-            </button>
+            <a 
+              href="https://github.com/ljia2541/finegrain" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </div>

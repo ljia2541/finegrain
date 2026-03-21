@@ -1,5 +1,6 @@
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
+import ExampleShowcase from '@/components/ExampleShowcase'
 import Pricing from '@/components/Pricing'
 import PrivacyNotice from '@/components/PrivacyNotice'
 
@@ -45,6 +46,13 @@ export default function Home() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <Features />
+        </div>
+      </section>
+
+      {/* Example Showcase Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <ExampleShowcase />
         </div>
       </section>
 

@@ -184,8 +184,6 @@ export default function Pricing() {
                   <th className="text-left py-3 px-4 font-semibold">积分包</th>
                   <th className="text-center py-3 px-4 font-semibold">总价</th>
                   <th className="text-center py-3 px-4 font-semibold">每积分</th>
-                  <th className="text-center py-3 px-4 font-semibold">普通图(1积分)</th>
-                  <th className="text-center py-3 px-4 font-semibold">4K/8K大图(2-3积分)</th>
                   <th className="text-center py-3 px-4 font-semibold">节省</th>
                 </tr>
               </thead>
@@ -198,10 +196,6 @@ export default function Pricing() {
                       <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-semibold">
                         {pkg.perCredit}
                       </span>
-                    </td>
-                    <td className="py-3 px-4 text-center">{pkg.perImage}</td>
-                    <td className="py-3 px-4 text-center text-gray-600">
-                      {Math.floor(pkg.credits / 2)}-{Math.floor(pkg.credits / 1.5)} 张
                     </td>
                     <td className="py-3 px-4 text-center">
                       {pkg.savings ? (

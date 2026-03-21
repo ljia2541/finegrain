@@ -117,8 +117,6 @@ export default function ExampleShowcase() {
                 </p>
                 <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
                   <span className="text-blue-600 font-medium">8x 超高清</span>
-                  <span className="text-gray-400">•</span>
-                  <span>60 秒处理</span>
                 </div>
               </div>
               <button

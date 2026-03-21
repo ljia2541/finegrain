@@ -48,36 +48,32 @@ const plans = [
 ]
 
 const creditPackages = [
-  { 
-    credits: 100, 
-    price: '$4.99', 
+  {
+    credits: 100,
+    price: '$4.99',
     perCredit: '$0.05',
-    perImage: '1-3 张',
     savings: '',
     description: '适合偶尔使用'
   },
-  { 
-    credits: 200, 
-    price: '$7.99', 
+  {
+    credits: 200,
+    price: '$7.99',
     perCredit: '$0.035',
-    perImage: '2-6 张',
     savings: '省 30%',
     description: '超高性价比',
     highlighted: true
   },
-  { 
-    credits: 500, 
-    price: '$12.99', 
+  {
+    credits: 500,
+    price: '$12.99',
     perCredit: '$0.026',
-    perImage: '5-15 张',
     savings: '省 48%',
     description: '大量使用首选'
   },
-  { 
-    credits: 1000, 
-    price: '$19.99', 
+  {
+    credits: 1000,
+    price: '$19.99',
     perCredit: '$0.02',
-    perImage: '10-30 张',
     savings: '省 60%',
     description: '极致优惠'
   },
@@ -159,22 +155,18 @@ export default function Pricing() {
               <div className="text-center mb-4">
                 <div className="text-3xl font-bold text-gray-900">{pkg.price}</div>
               </div>
-              
+
               <div className="bg-blue-50 rounded-lg p-4 mb-4">
                 <div className="text-center">
                   <div className="text-sm text-gray-600 mb-1">每积分单价</div>
                   <div className="text-2xl font-bold text-blue-700">{pkg.perCredit}</div>
                 </div>
               </div>
-              
-              <div className="text-center text-sm text-gray-600 mb-2">
-                <div className="font-semibold">约可处理：{pkg.perImage}</div>
-              </div>
-              
+
               <div className="text-center text-sm text-gray-500 mb-4">
                 {pkg.description}
               </div>
-              
+
               <div className="text-center text-sm text-gray-600">
                 有效期：{pkg.credits >= 500 ? '12 个月' : '6 个月'}
               </div>

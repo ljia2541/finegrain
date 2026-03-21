@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "start",
-    "lint": "next lint",
-    "install": "pnpm install"
+    "lint": "next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1014.0",
@@ -27,8 +26,7 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "zustand": "^4.5.0",
-    "package-manager": "pnpm@8"
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.19.0",
@@ -37,8 +35,6 @@
     "eslint-config-next": "14.1.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
-  },
-  "packageManager": "pnpm@8"
+    "node": ">=18.0.0"
+  }
 }

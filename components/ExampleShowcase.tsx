@@ -13,38 +13,38 @@ interface Example {
   category: 'portrait' | 'landscape' | 'product'
 }
 
-// 4 个 8K 超高清示例
+// 4 个 8K 超高清示例（使用真实的 AI 增强前后对比）
 const examples: Example[] = [
   {
     id: '1',
     title: '人像照片增强',
     description: '低分辨率人像 → 8K 超高清（8x 放大）',
-    originalImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
-    enhancedImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
+    originalImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg',
+    enhancedImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg',
     category: 'portrait'
   },
   {
     id: '2',
     title: '风景照片超分',
     description: '模糊风景 → 8x 超分辨率放大',
-    originalImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80',
-    enhancedImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80',
+    originalImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000016.png',
+    enhancedImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000017.png',
     category: 'landscape'
   },
   {
     id: '3',
     title: '老照片修复',
     description: '年代久远照片 → 8K 超高清修复',
-    originalImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=600&fit=crop&grayscale&q=80',
-    enhancedImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=600&fit=crop&grayscale&q=80',
+    originalImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/old_damaged.jpg',
+    enhancedImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/restored.jpg',
     category: 'portrait'
   },
   {
     id: '4',
     title: '产品照片优化',
     description: '电商产品图 → 8K 高清展示',
-    originalImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop&q=80',
-    enhancedImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop&q=80',
+    originalImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/input.jpg',
+    enhancedImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/output.jpg',
     category: 'product'
   }
 ]

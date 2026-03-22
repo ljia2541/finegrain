@@ -293,26 +293,26 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden p-8 mb-8">
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden p-6 mb-8">
+            <div className="flex flex-col lg:flex-row gap-6 items-center">
               {/* 左侧图片对比 */}
-              <div className="flex-1 flex gap-4">
-                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
+              <div className="flex-1 flex gap-3">
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow">
                   <img 
                     src="/examples/print_original.jpg" 
                     alt="原图" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.9)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">普通质量</span>
+                  <span className="absolute bottom-1 left-1 text-xs text-white bg-black/60 px-1.5 py-0.5 rounded">普通</span>
                 </div>
-                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg ring-2 ring-blue-200">
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow ring-2 ring-blue-200">
                   <img 
                     src="/examples/print_enhanced.jpg" 
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">300 DPI ✨</span>
+                  <span className="absolute bottom-1 right-1 text-xs text-white bg-blue-600/80 px-1.5 py-0.5 rounded">300 DPI</span>
                 </div>
               </div>
               
@@ -329,45 +329,45 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* 4×6 英寸 */}
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
-              <div className="aspect-[4/3] bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-3xl">📷</span>
+            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
+              <div className="aspect-square bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
+                📷
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">4" × 6"</h3>
-              <p className="text-xs text-gray-500 mb-2">1200×1800 px</p>
-              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-0.5">4" × 6"</h3>
+              <p className="text-xs text-gray-500 mb-1">1200×1800 px</p>
+              <span className="bg-blue-100 text-blue-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
             
             {/* A4 */}
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
-              <div className="aspect-[4/3] bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-3xl">📄</span>
+            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
+              <div className="aspect-square bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
+                📄
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">A4 纸张</h3>
-              <p className="text-xs text-gray-500 mb-2">2480×3508 px</p>
-              <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-0.5">A4 纸张</h3>
+              <p className="text-xs text-gray-500 mb-1">2480×3508 px</p>
+              <span className="bg-purple-100 text-purple-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
             
             {/* 海报 */}
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
-              <div className="aspect-[4/3] bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-3xl">🖼️</span>
+            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
+              <div className="aspect-square bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
+                🖼️
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">海报印刷</h3>
-              <p className="text-xs text-gray-500 mb-2">4K 分辨率</p>
-              <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">150+ DPI</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-0.5">海报印刷</h3>
+              <p className="text-xs text-gray-500 mb-1">4K 分辨率</p>
+              <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">150+ DPI</span>
             </div>
             
             {/* 8K 大幅 */}
-            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
-              <div className="aspect-[4/3] bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg mb-3 flex items-center justify-center">
-                <span className="text-3xl">🎨</span>
+            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
+              <div className="aspect-square bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
+                🎨
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">8K 超大幅</h3>
-              <p className="text-xs text-gray-500 mb-2">7680×4320 px</p>
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-0.5">8K 超大幅</h3>
+              <p className="text-xs text-gray-500 mb-1">7680×4320 px</p>
+              <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
           </div>
           

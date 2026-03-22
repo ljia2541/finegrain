@@ -101,23 +101,29 @@ export default function Home() {
                 className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative select-none cursor-ew-resize"
                 onMouseMove={handleSliderMove}
               >
-                {/* 原图（左侧，模糊） */}
-                <img
-                  src="/examples/original.jpg"
-                  alt="原图"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                  style={{ filter: 'blur(4px) brightness(0.9)' }}
-                />
-                {/* 增强图（右侧，清晰） */}
+                {/* 增强图（底层，清晰） */}
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute top-0 h-full object-cover pointer-events-none"
-                  style={{ 
-                    left: `${sliderPosition}%`,
-                    width: `${100 - sliderPosition}%`
-                  }}
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
+                
+                {/* 模糊遮罩（左侧，动态宽度） */}
+                <div 
+                  className="absolute top-0 bottom-0 left-0 bg-gray-900/50 backdrop-blur-sm pointer-events-none"
+                  style={{ 
+                    width: `${sliderPosition}%`,
+                    filter: 'blur(4px) brightness(0.9)'
+                  }}
+                >
+                  <img
+                    src="/examples/enhanced.jpg"
+                    alt="原图"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ filter: 'blur(4px) brightness(0.9)' }}
+                  />
+                </div>
+                
                 {/* 滑块指示器 */}
                 <div 
                   className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10 pointer-events-none"
@@ -130,6 +136,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+                
                 {/* 标签 */}
                 <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10 pointer-events-none">
                   原图

@@ -239,7 +239,7 @@ export default function Home() {
                   老照片修复
                 </span>
               </div>
-              <p className="text-gray-600 mt-2 text-lg">
+              <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-2">
                 珍贵记忆，清晰重现
               </p>
             </div>

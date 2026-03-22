@@ -228,30 +228,11 @@ export default function Home() {
       </section>
 
       {/* 老照片修复示例 */}
-      <section className="py-20 px-4 bg-gray-50">
+      <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
             <div className="p-8 flex flex-col lg:flex-row gap-8 items-center">
-              {/* 左侧文字 */}
-              <div className="flex-1 lg:text-left text-center">
-                <div className="flex items-center gap-2 justify-center lg:justify-start">
-                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
-                    老照片修复
-                  </span>
-                </div>
-                <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-4">
-                  珍贵记忆，清晰重现
-                </p>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  恢复模糊、泛黄的老照片，让珍贵的记忆永远清晰。
-                </p>
-                <p className="text-gray-500 mt-4 text-sm">
-                  AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
-                </p>
-              </div>
-              
-              {/* 右侧图片（并排） */}
+              {/* 左侧图片（并排） */}
               <div className="flex-1 flex gap-2">
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
                   <img 
@@ -275,6 +256,25 @@ export default function Home() {
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">修复后 ✨</span>
                 </div>
+              </div>
+
+              {/* 右侧文字 */}
+              <div className="flex-1 lg:text-left text-center">
+                <div className="flex items-center gap-2 justify-center lg:justify-start">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
+                    老照片修复
+                  </span>
+                </div>
+                <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-4">
+                  珍贵记忆，清晰重现
+                </p>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  恢复模糊、泛黄的老照片，让珍贵的记忆永远清晰。
+                </p>
+                <p className="text-gray-500 mt-4 text-sm">
+                  AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
+                </p>
               </div>
             </div>
           </div>

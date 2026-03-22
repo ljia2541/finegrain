@@ -126,7 +126,7 @@ export default function Home() {
                   style={{ 
                     clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
                     WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-                    filter: 'blur(6px) brightness(0.85)'
+                    filter: 'blur(2px) brightness(0.95)'
                   }}
                 />
                 

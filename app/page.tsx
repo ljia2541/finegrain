@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -8,6 +8,19 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
+      }
+    }
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
 
   const updateSlider = (clientX: number, rect: DOMRect) => {
     const x = clientX - rect.left
@@ -108,6 +121,7 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
+                ref={containerRef}
                 className="relative w-full aspect-video rounded-lg bg-gray-100 overflow-hidden cursor-ew-resize"
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
@@ -122,8 +136,12 @@ export default function Home() {
                     <img
                       src="/examples/original.jpg"
                       alt="Original"
-                      className="h-full w-full object-cover"
-                      style={{ filter: 'blur(4px) brightness(0.9)' }}
+                      className="h-full pointer-events-none"
+                      style={{ 
+                        width: containerWidth || '100%',
+                        objectFit: 'cover',
+                        filter: 'blur(4px) brightness(0.9)'
+                      }}
                     />
                   </div>
                   
@@ -135,7 +153,11 @@ export default function Home() {
                     <img
                       src="/examples/enhanced.jpg"
                       alt="Enhanced"
-                      className="h-full w-full object-cover"
+                      className="h-full pointer-events-none"
+                      style={{ 
+                        width: containerWidth || '100%',
+                        objectFit: 'cover'
+                      }}
                     />
                   </div>
                 </div>

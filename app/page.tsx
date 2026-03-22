@@ -231,7 +231,7 @@ export default function Home() {
       <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div className="p-8 flex flex-col lg:flex-row gap-8 items-center">
+            <div className="p-8 flex flex-col lg:flex-row gap-12 items-center">
               {/* 左侧图片（并排） */}
               <div className="flex-1 flex gap-2">
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">

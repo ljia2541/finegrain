@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -9,35 +9,22 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
 
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const position = (x / rect.width) * 100
-    setSliderPosition(Math.max(0, Math.min(100, position)))
+  const updateSlider = (clientX: number, rect: DOMRect) => {
+    const x = clientX - rect.left
+    const percent = Math.max(0, Math.min((x / rect.width) * 100, 100))
+    setSliderPosition(percent)
   }
 
-  // 添加 useEffect 来实现原生 JS 交互
-  useEffect(() => {
-    const container = document.getElementById('comparison-container')
-    const wrapper = container?.querySelector('.img-top-wrapper')
-    const handle = document.getElementById('slider-handle')
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    updateSlider(e.clientX, rect)
+  }
 
-    if (!container || !wrapper || !handle) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect()
-      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width))
-      const percent = (x / rect.width) * 100
-      wrapper.style.width = `${percent}%`
-      handle.style.left = `${percent}%`
-    }
-
-    container.addEventListener('mousemove', handleMouseMove as any)
-
-    return () => {
-      container.removeEventListener('mousemove', handleMouseMove as any)
-    }
-  }, [])
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const touch = e.touches[0]
+    updateSlider(touch.clientX, rect)
+  }
 
   return (
     <div className="flex flex-col">
@@ -121,34 +108,38 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
-                className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative select-none cursor-ew-resize"
-                onMouseMove={handleSliderMove}
+                className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 cursor-ew-resize"
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleTouchMove}
               >
-                {/* 底层：清晰图（完整显示） */}
+                {/* 底层：清晰图（完整显示，固定不动） */}
                 <img
                   src="/examples/enhanced.jpg"
-                  alt="增强后"
-                  className="absolute inset-0 w-full h-full pointer-events-none object-cover"
+                  alt="Enhanced"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
                 
-                {/* 上层：模糊图（使用 background） */}
+                {/* 上层：模糊图（通过父容器 overflow:hidden 裁剪显示） */}
                 <div 
-                  className="absolute top-0 bottom-0 left-0 pointer-events-none overflow-hidden"
-                  style={{ 
-                    width: `${sliderPosition}%`,
-                    backgroundImage: 'url(/examples/original.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    filter: 'blur(4px) brightness(0.9)'
-                  }}
-                />
+                  className="absolute inset-0 overflow-hidden"
+                  style={{ width: `${sliderPosition}%` }}
+                >
+                  <img
+                    src="/examples/original.jpg"
+                    alt="Original"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    style={{ filter: 'blur(4px) brightness(0.9)' }}
+                  />
+                </div>
                 
-                {/* 滑块指示器 */}
+                {/* 滑块指示器（垂直居中） */}
                 <div 
                   className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10 pointer-events-none"
                   style={{ left: `${sliderPosition}%` }}
                 >
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center">
+                  <div 
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center"
+                  >
                     <div className="flex gap-1">
                       <div className="w-1 h-4 bg-gray-400 rounded-full" />
                       <div className="w-1 h-4 bg-gray-400 rounded-full" />

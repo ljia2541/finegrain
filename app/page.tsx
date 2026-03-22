@@ -225,6 +225,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 老照片修复示例 */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl shadow-xl overflow-hidden">
+            <div className="p-8 flex flex-col lg:flex-row gap-8 items-center">
+              {/* 左侧图片 */}
+              <div className="flex-1 flex gap-2">
+                <div className="flex-1 relative rounded-lg overflow-hidden">
+                  <img 
+                    src="/examples/oldphoto_original.jpg" 
+                    alt="老照片" 
+                    className="w-full aspect-square object-cover"
+                    style={{ filter: 'sepia(50%) blur(1px) brightness(0.9)' }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">修复前</span>
+                </div>
+                <div className="flex-1 relative rounded-lg overflow-hidden">
+                  <img 
+                    src="/examples/oldphoto_enhanced.jpg" 
+                    alt="修复后" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">修复后 ✨</span>
+                </div>
+              </div>
+              
+              {/* 右侧文字 */}
+              <div className="flex-1 lg:text-left text-center">
+                <div className="flex items-center gap-2 text-sm text-orange-600 font-medium justify-center lg:justify-start">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                  <span>老照片修复</span>
+                </div>
+                <h3 className="text-3xl lg:text-4xl font-bold mt-4 bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
+                  珍贵记忆，清晰重现
+                </h3>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  恢复模糊、泛黄的老照片，让珍贵的记忆永远清晰。
+                </p>
+                <p className="text-gray-500 mt-4 text-sm">
+                  AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Use Cases Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">

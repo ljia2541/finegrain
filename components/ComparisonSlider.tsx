@@ -116,7 +116,10 @@ export default function ComparisonSlider({
           src={originalImage}
           alt={originalAlt}
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ userSelect: 'none' }}
+          style={{ 
+            userSelect: 'none',
+            filter: 'blur(8px) brightness(0.9)'
+          }}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';

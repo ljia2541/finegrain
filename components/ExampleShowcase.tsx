@@ -19,32 +19,32 @@ const examples: Example[] = [
     id: '1',
     title: '人像照片增强',
     description: '低分辨率人像 → 8K 超高清（8x 放大）',
-    originalImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop&blur=10',
-    enhancedImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop',
+    originalImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
+    enhancedImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop&q=80',
     category: 'portrait'
   },
   {
     id: '2',
     title: '风景照片超分',
     description: '模糊风景 → 8x 超分辨率放大',
-    originalImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&blur=8',
-    enhancedImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
+    originalImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80',
+    enhancedImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80',
     category: 'landscape'
   },
   {
     id: '3',
     title: '老照片修复',
     description: '年代久远照片 → 8K 超高清修复',
-    originalImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop&grayscale&blur=5',
-    enhancedImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop&grayscale',
+    originalImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=600&fit=crop&grayscale&q=80',
+    enhancedImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=600&fit=crop&grayscale&q=80',
     category: 'portrait'
   },
   {
     id: '4',
     title: '产品照片优化',
     description: '电商产品图 → 8K 高清展示',
-    originalImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&blur=4',
-    enhancedImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
+    originalImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop&q=80',
+    enhancedImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop&q=80',
     category: 'product'
   }
 ]

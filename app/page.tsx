@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -15,6 +15,29 @@ export default function Home() {
     const position = (x / rect.width) * 100
     setSliderPosition(Math.max(0, Math.min(100, position)))
   }
+
+  // 添加 useEffect 来实现原生 JS 交互
+  useEffect(() => {
+    const container = document.getElementById('comparison-container')
+    const wrapper = container?.querySelector('.img-top-wrapper')
+    const handle = document.getElementById('slider-handle')
+
+    if (!container || !wrapper || !handle) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect()
+      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width))
+      const percent = (x / rect.width) * 100
+      wrapper.style.width = `${percent}%`
+      handle.style.left = `${percent}%`
+    }
+
+    container.addEventListener('mousemove', handleMouseMove as any)
+
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove as any)
+    }
+  }, [])
 
   return (
     <div className="flex flex-col">

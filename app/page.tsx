@@ -103,7 +103,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* 对比滑块 - 使用背景方式 */}
+            {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
                 className="relative w-full aspect-video rounded-lg overflow-hidden cursor-ew-resize"
@@ -118,7 +118,7 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full object-contain"
                 />
                 
-                {/* 上层：模糊原图 - 用clip-path裁剪左边 */}
+                {/* 上层：模糊原图 */}
                 <img
                   src="/examples/original.jpg"
                   alt="Original"
@@ -192,42 +192,75 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* 电商 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              <div 
+                className="relative aspect-video cursor-ew-resize"
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleTouchMove}
+              >
+                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
+                <img 
+                  src="/examples/original.jpg" alt="" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    filter: 'blur(2px) brightness(0.95)'
+                  }}
+                />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">适用于电商</h3>
-              <p className="text-gray-600 leading-relaxed">
-                为你的产品目录自动化图像增强。可批量提升质量并放大尺寸，让整个目录效果一致，无需重拍。
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">适用于电商</h3>
+                <p className="text-gray-600 text-sm">为你的产品目录自动化图像增强</p>
+              </div>
             </div>
             
             {/* 印刷 */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
-                </svg>
+            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              <div 
+                className="relative aspect-video cursor-ew-resize"
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleTouchMove}
+              >
+                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
+                <img 
+                  src="/examples/original.jpg" alt="" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    filter: 'blur(2px) brightness(0.95)'
+                  }}
+                />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">任意尺寸都可印刷</h3>
-              <p className="text-gray-600 leading-relaxed">
-                低分辨率图片一打印就会糊。Finegrain 可放大并锐化，让你的照片在海报、画布、T 恤和大屏展示上依然清晰。
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">任意尺寸都可印刷</h3>
+                <p className="text-gray-600 text-sm">低分辨率图片一打印就会糊</p>
+              </div>
             </div>
             
             {/* AI Art */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+            <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              <div 
+                className="relative aspect-video cursor-ew-resize"
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleTouchMove}
+              >
+                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
+                <img 
+                  src="/examples/original.jpg" alt="" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    filter: 'blur(2px) brightness(0.95)'
+                  }}
+                />
+                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">优化并放大 AI art</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Midjourney、Stable Diffusion 的输出常需要二次清理。增强发虚区域、去除伪影，并放大到 4K 或 8K。
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">优化并放大 AI art</h3>
+                <p className="text-gray-600 text-sm">Midjourney、Stable Diffusion 输出常需要二次清理</p>
+              </div>
             </div>
           </div>
         </div>

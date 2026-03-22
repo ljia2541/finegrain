@@ -102,28 +102,22 @@ export default function Home() {
                 onMouseMove={handleSliderMove}
               >
                 {/* 底层：清晰图（完整显示） */}
-                <img
-                  src="/examples/enhanced.jpg"
-                  alt="增强后"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                <div 
+                  className="absolute inset-0 bg-cover bg-center pointer-events-none"
+                  style={{ backgroundImage: 'url(/examples/enhanced.jpg)' }}
                 />
                 
                 {/* 上层：模糊图（裁剪显示，只显示滑块左侧） */}
                 <div 
                   className="absolute top-0 bottom-0 left-0 bg-gray-100 pointer-events-none overflow-hidden"
-                  style={{ width: `${sliderPosition}%` }}
-                >
-                  <img
-                    src="/examples/original.jpg"
-                    alt="原图"
-                    className="absolute top-0 left-0 w-full h-full object-cover"
-                    style={{ 
-                      width: `${100000 / sliderPosition}%`,
-                      maxWidth: 'none',
-                      filter: 'blur(4px) brightness(0.9)'
-                    }}
-                  />
-                </div>
+                  style={{ 
+                    width: `${sliderPosition}%`,
+                    backgroundImage: 'url(/examples/original.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(4px) brightness(0.9)'
+                  }}
+                />
                 
                 {/* 滑块指示器 */}
                 <div 

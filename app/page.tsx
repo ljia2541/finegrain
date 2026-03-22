@@ -86,7 +86,10 @@ export default function Home() {
             
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
-              <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative">
+              <div 
+                className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative cursor-ew-resize"
+                onMouseMove={handleSliderMove}
+              >
                 {/* 原图（左侧，模糊） */}
                 <img
                   src="/examples/original.jpg"
@@ -98,17 +101,24 @@ export default function Home() {
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute top-0 right-0 w-1/2 h-full object-cover"
+                  className="absolute top-0 right-0 h-full object-cover"
+                  style={{ 
+                    left: `${sliderPosition}%`,
+                    width: `${100 - sliderPosition}%`
+                  }}
                 />
                 {/* 滑块指示器 */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center z-10">
-                  <div className="flex gap-1">
-                    <div className="w-1 h-4 bg-gray-400 rounded-full" />
-                    <div className="w-1 h-4 bg-gray-400 rounded-full" />
+                <div 
+                  className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10"
+                  style={{ left: `${sliderPosition}%` }}
+                >
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center">
+                    <div className="flex gap-1">
+                      <div className="w-1 h-4 bg-gray-400 rounded-full" />
+                      <div className="w-1 h-4 bg-gray-400 rounded-full" />
+                    </div>
                   </div>
                 </div>
-                {/* 分割线 */}
-                <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-blue-500 z-10"></div>
                 {/* 标签 */}
                 <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10">
                   原图

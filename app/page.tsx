@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -8,20 +8,6 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
-
-  // 使用 useEffect 获取容器真实宽度
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
-      }
-    }
-    updateWidth()
-    window.addEventListener('resize', updateWidth)
-    return () => window.removeEventListener('resize', updateWidth)
-  }, [])
 
   const updateSlider = (clientX: number, rect: DOMRect) => {
     const x = clientX - rect.left
@@ -122,36 +108,30 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
-                ref={containerRef}
                 className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 cursor-ew-resize"
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
               >
-                {/* 底层：清晰图（完整显示，固定不动） */}
+                {/* 底层：清晰图（完整显示） */}
                 <img
                   src="/examples/enhanced.jpg"
                   alt="Enhanced"
                   className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
                 
-                {/* 上层：模糊图（通过父容器 overflow:hidden 裁剪显示） */}
+                {/* 上层：模糊图（absolute 定位，覆盖整个容器） */}
                 <div 
-                  className="absolute inset-0 overflow-hidden"
-                  style={{ width: `${sliderPosition}%` }}
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
+                  }}
                 >
                   <img
                     src="/examples/original.jpg"
                     alt="Original"
-                    className="pointer-events-none"
-                    style={{ 
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: containerWidth || '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      filter: 'blur(4px) brightness(0.9)'
-                    }}
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    style={{ filter: 'blur(4px) brightness(0.9)' }}
                   />
                 </div>
                 

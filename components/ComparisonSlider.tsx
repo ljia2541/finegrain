@@ -115,8 +115,12 @@ export default function ComparisonSlider({
         <img
           src={originalImage}
           alt={originalAlt}
-          className="absolute inset-0 w-full h-full object-contain"
+          className="absolute inset-0 w-full h-full object-cover"
           style={{ userSelect: 'none' }}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }}
         />
         
         {/* 增强图（顶层，通过裁剪显示） */}
@@ -127,11 +131,16 @@ export default function ComparisonSlider({
           <img
             src={enhancedImage}
             alt={enhancedAlt}
-            className="absolute inset-0 w-full h-full object-contain -translate-x-full"
+            className="absolute inset-0 w-full h-full object-cover"
             style={{ 
               left: `${sliderPosition}%`,
               transform: 'translateX(-100%)',
-              userSelect: 'none'
+              userSelect: 'none',
+              width: `${100 / (100 - sliderPosition) * 100}%`
+            }}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
             }}
           />
         </div>

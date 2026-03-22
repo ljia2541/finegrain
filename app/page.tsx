@@ -228,7 +228,7 @@ export default function Home() {
       </section>
 
       {/* 老照片修复示例 */}
-      <section className="py-12 px-4 bg-gray-50">
+      <section className="py-6 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
             <div className="p-8 flex flex-col lg:flex-row gap-12 items-center">

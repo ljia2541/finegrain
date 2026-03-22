@@ -239,7 +239,7 @@ export default function Home() {
               <div className="flex">
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/original.jpg" 
+                    src="/examples/product_original.jpg" 
                     alt="原图" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
@@ -248,7 +248,7 @@ export default function Home() {
                 </div>
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/enhanced.jpg" 
+                    src="/examples/product_enhanced.jpg" 
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />
@@ -266,7 +266,7 @@ export default function Home() {
               <div className="flex">
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/original.jpg" 
+                    src="/examples/landscape_original.jpg" 
                     alt="原图" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
@@ -275,7 +275,7 @@ export default function Home() {
                 </div>
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/enhanced.jpg" 
+                    src="/examples/landscape_enhanced.jpg" 
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />
@@ -293,7 +293,7 @@ export default function Home() {
               <div className="flex">
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/original.jpg" 
+                    src="/examples/aiart_original.jpg" 
                     alt="原图" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
@@ -302,7 +302,7 @@ export default function Home() {
                 </div>
                 <div className="w-1/2 relative">
                   <img 
-                    src="/examples/enhanced.jpg" 
+                    src="/examples/aiart_enhanced.jpg" 
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />

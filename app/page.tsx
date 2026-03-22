@@ -143,14 +143,6 @@ export default function Home() {
                 >
                   ↔
                 </div>
-                
-                {/* 标签 */}
-                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10 pointer-events-none">
-                  原图
-                </div>
-                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg z-10 pointer-events-none">
-                  增强后 ✨
-                </div>
               </div>
               <p className="text-center text-sm text-gray-500 mt-4">
                 拖动滑块查看差异

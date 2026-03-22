@@ -246,33 +246,39 @@ export default function Home() {
             
             {/* 图片展示 - 更突出的布局 */}
             <div className="flex flex-col lg:flex-row">
-              {/* 修复前 */}
+              {/* 修复前 - 老旧黑白照片效果 */}
               <div className="flex-1 p-4">
-                <div className="relative rounded-xl overflow-hidden shadow-lg">
+                <div className="relative rounded-xl overflow-hidden shadow-lg border-4 border-gray-300">
                   <img 
                     src="/examples/oldphoto_original.jpg" 
                     alt="修复前" 
                     className="w-full aspect-square object-cover"
-                    style={{ filter: 'sepia(40%) blur(1px) brightness(0.9)' }}
+                    style={{ 
+                      filter: 'grayscale(100%) sepia(60%) blur(0.5px) contrast(90%) brightness(85%)'
+                    }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                    <span className="text-white font-medium">修复前</span>
-                    <p className="text-white/70 text-sm">模糊、噪点、褪色</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <span className="text-white font-medium text-lg">修复前</span>
+                    <p className="text-white/70 text-sm">黑白、噪点、划痕、褪色</p>
                   </div>
                 </div>
               </div>
               
               {/* 修复后 */}
               <div className="flex-1 p-4">
-                <div className="relative rounded-xl overflow-hidden shadow-lg ring-2 ring-orange-200">
+                <div className="relative rounded-xl overflow-hidden shadow-lg ring-2 ring-orange-200 border-4 border-white">
                   <img 
                     src="/examples/oldphoto_enhanced.jpg" 
                     alt="修复后" 
                     className="w-full aspect-square object-cover"
+                    style={{ 
+                      filter: 'contrast(105%) saturate(110%)'
+                    }}
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-orange-600/70 to-transparent p-4">
-                    <span className="text-white font-medium">✨ 修复后</span>
-                    <p className="text-white/80 text-sm">清晰、干净、色彩还原</p>
+                    <span className="text-white font-medium text-lg">✨ 修复后</span>
+                    <p className="text-white/80 text-sm">清晰、色彩还原、细节丰富</p>
                   </div>
                 </div>
               </div>

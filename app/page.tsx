@@ -47,7 +47,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <span className="text-white/70 text-sm">最多 20 张</span>
                 </div>
@@ -59,7 +59,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4" />
                   </svg>
                   <span className="text-white/70 text-sm">8x 超高清</span>
                 </div>
@@ -105,33 +105,20 @@ export default function Home() {
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute inset-0 w-full h-full pointer-events-none"
-                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  className="absolute inset-0 w-full h-full pointer-events-none object-cover"
                 />
                 
-                {/* 上层：模糊图（裁剪显示，只显示滑块左侧） */}
+                {/* 上层：模糊图（使用 background） */}
                 <div 
-                  className="absolute top-0 bottom-0 left-0 overflow-hidden pointer-events-none bg-gray-100"
-                  style={{ width: `${sliderPosition}%` }}
-                >
-                  <img
-                    src="/examples/original.jpg"
-                    alt="原图"
-                    className="absolute inset-0 w-full h-full pointer-events-none"
-                    style={{ 
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                      filter: 'blur(4px) brightness(0.9)'
-                    }}
-                  />
-                </div>
+                  className="absolute top-0 bottom-0 left-0 pointer-events-none overflow-hidden"
+                  style={{ 
+                    width: `${sliderPosition}%`,
+                    backgroundImage: 'url(/examples/original.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    filter: 'blur(4px) brightness(0.9)'
+                  }}
+                />
                 
                 {/* 滑块指示器 */}
                 <div 
@@ -218,7 +205,7 @@ export default function Home() {
             <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">任意尺寸都可印刷</h3>

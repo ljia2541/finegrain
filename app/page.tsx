@@ -1,10 +1,21 @@
+'use client'
+
+import { useState } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
-import ComparisonSlider from '@/components/ComparisonSlider'
 import Pricing from '@/components/Pricing'
 import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
+  const [sliderPosition, setSliderPosition] = useState(50)
+
+  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const position = (x / rect.width) * 100
+    setSliderPosition(Math.max(0, Math.min(100, position)))
+  }
+
   return (
     <div className="flex flex-col">
       {/* Hero Section - 左右布局 */}
@@ -36,7 +47,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <span className="text-white/70 text-sm">最多 20 张</span>
                 </div>
@@ -87,21 +98,21 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
-                className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative cursor-ew-resize"
+                className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative select-none cursor-ew-resize"
                 onMouseMove={handleSliderMove}
               >
                 {/* 原图（左侧，模糊） */}
                 <img
                   src="/examples/original.jpg"
                   alt="原图"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                   style={{ filter: 'blur(4px) brightness(0.9)' }}
                 />
                 {/* 增强图（右侧，清晰） */}
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute top-0 right-0 h-full object-cover"
+                  className="absolute top-0 h-full object-cover pointer-events-none"
                   style={{ 
                     left: `${sliderPosition}%`,
                     width: `${100 - sliderPosition}%`
@@ -109,7 +120,7 @@ export default function Home() {
                 />
                 {/* 滑块指示器 */}
                 <div 
-                  className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10"
+                  className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10 pointer-events-none"
                   style={{ left: `${sliderPosition}%` }}
                 >
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center">
@@ -120,13 +131,16 @@ export default function Home() {
                   </div>
                 </div>
                 {/* 标签 */}
-                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10">
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10 pointer-events-none">
                   原图
                 </div>
-                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg z-10">
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg z-10 pointer-events-none">
                   增强后 ✨
                 </div>
               </div>
+              <p className="text-center text-sm text-gray-500 mt-4">
+                拖动滑块查看差异
+              </p>
             </div>
             
             {/* 描述 */}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -8,6 +8,20 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+
+  // 使用 useEffect 获取容器真实宽度
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth)
+      }
+    }
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
 
   const updateSlider = (clientX: number, rect: DOMRect) => {
     const x = clientX - rect.left
@@ -108,6 +122,7 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
+                ref={containerRef}
                 className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 cursor-ew-resize"
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
@@ -132,9 +147,7 @@ export default function Home() {
                       position: 'absolute',
                       top: 0,
                       left: 0,
-                      width: '100%',
-                      minWidth: '100%',
-                      maxWidth: 'none',
+                      width: containerWidth || '100%',
                       height: '100%',
                       objectFit: 'cover',
                       filter: 'blur(4px) brightness(0.9)'

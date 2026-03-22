@@ -189,7 +189,7 @@ export default function Home() {
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                   <span>真实细节恢复</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mt-2">
+                <h3 className="text-3xl lg:text-4xl font-bold mt-4 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
                   不是简单的滤镜或锐化
                 </h3>
                 <p className="text-gray-600 mt-4 leading-relaxed">
@@ -204,7 +204,7 @@ export default function Home() {
               <div className="flex-1 flex gap-2">
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
-                    src="/examples/portrait_original.jpg" 
+                    src="/examples/portrait_real_original.jpg" 
                     alt="原图" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
@@ -213,7 +213,7 @@ export default function Home() {
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
-                    src="/examples/portrait_enhanced.jpg" 
+                    src="/examples/portrait_real_enhanced.jpg" 
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />

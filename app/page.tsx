@@ -89,14 +89,14 @@ export default function Home() {
               <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative">
                 {/* 原图（左侧，模糊） */}
                 <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop&q=60"
+                  src="/examples/original.jpg"
                   alt="原图"
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ filter: 'blur(4px) brightness(0.9)' }}
                 />
                 {/* 增强图（右侧，清晰） */}
                 <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop&q=90"
+                  src="/examples/enhanced.jpg"
                   alt="增强后"
                   className="absolute top-0 right-0 w-1/2 h-full object-cover"
                 />

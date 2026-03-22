@@ -8,6 +8,20 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
+  const [containerWidth, setContainerWidth] = useState(0)
+
+  // 获取容器宽度，用于固定上层图片尺寸
+  useEffect(() => {
+    const updateWidth = () => {
+      const container = document.getElementById('comparison-container')
+      if (container) {
+        setContainerWidth(container.offsetWidth)
+      }
+    }
+    updateWidth()
+    window.addEventListener('resize', updateWidth)
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
 
   const updateSlider = (clientX: number, rect: DOMRect) => {
     const x = clientX - rect.left
@@ -127,8 +141,16 @@ export default function Home() {
                   <img
                     src="/examples/original.jpg"
                     alt="Original"
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                    style={{ filter: 'blur(4px) brightness(0.9)' }}
+                    className="pointer-events-none"
+                    style={{ 
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: containerWidth,  // 固定宽度 = 主容器宽度
+                      height: '100%',
+                      objectFit: 'cover',
+                      filter: 'blur(4px) brightness(0.9)'
+                    }}
                   />
                 </div>
                 

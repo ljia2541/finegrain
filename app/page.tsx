@@ -100,27 +100,26 @@ export default function Home() {
               <div 
                 className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative select-none cursor-ew-resize"
                 onMouseMove={handleSliderMove}
-                id="comparison-container"
               >
                 {/* 底层：清晰图（完整显示） */}
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
                 
                 {/* 上层：模糊图（裁剪显示，只显示滑块左侧） */}
                 <div 
-                  className="absolute top-0 bottom-0 left-0 bg-gray-100 pointer-events-none overflow-hidden"
+                  className="absolute top-0 bottom-0 left-0 overflow-hidden pointer-events-none"
                   style={{ width: `${sliderPosition}%` }}
                 >
                   <img
                     src="/examples/original.jpg"
                     alt="原图"
-                    className="h-full object-cover absolute"
+                    className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none"
                     style={{ 
-                      width: '100%',
-                      height: '100%',
+                      width: '100vw',
+                      maxWidth: 'none',
                       filter: 'blur(4px) brightness(0.9)'
                     }}
                   />

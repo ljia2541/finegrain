@@ -19,32 +19,32 @@ const examples: Example[] = [
     id: '1',
     title: '人像照片增强',
     description: '低分辨率人像 → 8K 超高清（8x 放大）',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic" stdDeviation="3"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%3E%3C/filter%E3E%3C/defs%E%3Crect width="400" height="300" fill="%23ddd"/%3E%3Crect x="50" y="80" width="300" height="140" fill="%23666" rx="10"/%E%3Ccircle cx="200" cy="120" r="40" fill="%23444"/%E%3Ctext x="320" y="280" font-size="12" fill="%23666" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
+    originalImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop&blur=10',
+    enhancedImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=300&fit=crop',
     category: 'portrait'
   },
   {
     id: '2',
     title: '风景照片超分',
     description: '模糊风景 → 8x 超分辨率放大',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="4"/%E%3C/filter%E%3E%3C/defs%E3E%3Crect width="400" height="300" fill="%2387CEEB"/%3E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%E%3Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%2387CEEB"/%E%3Ccircle cx="200" cy="150" r="80" fill="%23E0F2FE"/%E%Crect x="100" y="200" width="200" height="80" fill="%232196F3"/%E%3Ctext x="350" y="280" font-size="12" fill="%23FFF" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
+    originalImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&blur=8',
+    enhancedImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
     category: 'landscape'
   },
   {
     id: '3',
     title: '老照片修复',
     description: '年代久远照片 → 8K 超高清修复',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%E%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="5"/%E%3C/filter%E%3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23D3D3D3"/%3E%3Crect x="120" y="100" width="160" height="120" fill="%23A0A0A0"/%E%3Crect x="100" y="100" width="40" height="120" fill="%23808080"/%E%3C/svg%3E',
+    originalImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop&grayscale&blur=5',
+    enhancedImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=300&fit=crop&grayscale',
     category: 'portrait'
   },
   {
     id: '4',
     title: '产品照片优化',
     description: '电商产品图 → 8K 高清展示',
-    originalImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="3"/%3E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%E%3Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3C/svg%3E',
-    enhancedImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Cdefs%3E%3Cfilter id="blur"%3E%3CfeGaussianBlur in="SourceGraphic stdDeviation="0"/%E%3C/filter%E3E%3C/defs%3E%3Crect width="400" height="300" fill="%23F5F5F5"/%E%3Crect x="100" y="80" width="200" height="140" fill="%23E5E7EB"/%E%Ctext x="200" y="150" text-anchor="middle" fill="%23333" font-family="sans-serif" font-size="16"%3E产品图%3C/text%3E%3Ctext x="350" y="280" font-size="12" fill="%23FFF" text-anchor="end"%3E7680x4320 (8K)%3C/text%3E%3C/svg%3E',
+    originalImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&blur=4',
+    enhancedImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
     category: 'product'
   }
 ]
@@ -82,7 +82,7 @@ export default function ExampleShowcase() {
               }`}
             >
               <div className="aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
-                {example.originalImage.startsWith('data:') ? (
+                {example.originalImage.startsWith('http') ? (
                   <img
                     src={example.originalImage}
                     alt={example.title}
@@ -131,7 +131,7 @@ export default function ExampleShowcase() {
               originalImage={selectedExample.originalImage}
               enhancedImage={selectedExample.enhancedImage}
               originalAlt="原图"
-              enhancedText="增强后 (8K 超高清)"
+              enhancedAlt="增强后 (8K 超高清)"
             />
           </div>
         )}

@@ -116,12 +116,10 @@ export default function Home() {
                   <img
                     src="/examples/original.jpg"
                     alt="原图"
-                    className="h-full object-cover absolute"
+                    className="absolute top-0 left-0 w-full h-full object-cover"
                     style={{ 
-                      width: '100vw',
-                      maxWidth: 'none',
-                      top: 0,
-                      left: 0,
+                      transform: `scaleX(${100 / sliderPosition})`,
+                      transformOrigin: 'left',
                       filter: 'blur(4px) brightness(0.9)'
                     }}
                   />

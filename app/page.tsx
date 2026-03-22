@@ -178,6 +178,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 真实细节恢复示例 */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div className="p-8 pb-4">
+              <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span>真实细节恢复</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mt-2">
+                不是简单的滤镜或锐化
+              </h3>
+              <p className="text-gray-600 mt-2">
+                AI 真正恢复图像中的丢失细节，让照片看起来更自然、更真实。
+              </p>
+            </div>
+            
+            {/* 左右对比图片 */}
+            <div className="px-8 pb-8">
+              <div className="flex gap-4">
+                <div className="flex-1 relative">
+                  <img 
+                    src="/examples/original.jpg" 
+                    alt="原图" 
+                    className="w-full rounded-lg"
+                    style={{ filter: 'blur(2px) brightness(0.95)' }}
+                  />
+                  <span className="absolute bottom-3 left-3 text-sm text-white bg-black/60 px-3 py-1.5 rounded-lg">原图</span>
+                </div>
+                <div className="flex-1 relative">
+                  <img 
+                    src="/examples/enhanced.jpg" 
+                    alt="增强后" 
+                    className="w-full rounded-lg"
+                  />
+                  <span className="absolute bottom-3 right-3 text-sm text-white bg-blue-600/80 px-3 py-1.5 rounded-lg">增强后 ✨</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Use Cases Section */}
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">

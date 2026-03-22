@@ -329,44 +329,36 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-4 gap-3">
             {/* 4×6 英寸 */}
-            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
-              <div className="aspect-square bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
-                📷
-              </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-0.5">4" × 6"</h3>
-              <p className="text-xs text-gray-500 mb-1">1200×1800 px</p>
+            <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
+              <div className="text-xl mb-1">📷</div>
+              <h3 className="text-xs font-bold text-gray-900">4"×6"</h3>
+              <p className="text-xs text-gray-500">1200×1800</p>
               <span className="bg-blue-100 text-blue-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
             
             {/* A4 */}
-            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
-              <div className="aspect-square bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
-                📄
-              </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-0.5">A4 纸张</h3>
-              <p className="text-xs text-gray-500 mb-1">2480×3508 px</p>
+            <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
+              <div className="text-xl mb-1">📄</div>
+              <h3 className="text-xs font-bold text-gray-900">A4</h3>
+              <p className="text-xs text-gray-500">2480×3508</p>
               <span className="bg-purple-100 text-purple-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
             
             {/* 海报 */}
-            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
-              <div className="aspect-square bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
-                🖼️
-              </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-0.5">海报印刷</h3>
-              <p className="text-xs text-gray-500 mb-1">4K 分辨率</p>
+            <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
+              <div className="text-xl mb-1">🖼️</div>
+              <h3 className="text-xs font-bold text-gray-900">海报</h3>
+              <p className="text-xs text-gray-500">4K</p>
               <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">150+ DPI</span>
             </div>
             
             {/* 8K 大幅 */}
-            <div className="bg-white rounded-xl p-3 shadow border border-gray-100 text-center">
-              <div className="aspect-square bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg mb-2 flex items-center justify-center text-2xl">
-                🎨
-              </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-0.5">8K 超大幅</h3>
-              <p className="text-xs text-gray-500 mb-1">7680×4320 px</p>
+            <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
+              <div className="text-xl mb-1">🎨</div>
+              <h3 className="text-xs font-bold text-gray-900">8K</h3>
+              <p className="text-xs text-gray-500">7680×4320</p>
               <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
           </div>

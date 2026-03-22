@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -8,35 +8,20 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
-      }
-    }
-    updateWidth()
-    window.addEventListener('resize', updateWidth)
-    return () => window.removeEventListener('resize', updateWidth)
-  }, [])
-
-  const updateSlider = (clientX: number, rect: DOMRect) => {
-    const x = clientX - rect.left
-    const percent = Math.max(0, Math.min((x / rect.width) * 100, 100))
-    setSliderPosition(percent)
-  }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
-    updateSlider(e.clientX, rect)
+    const x = e.clientX - rect.left
+    const percent = (x / rect.width) * 100
+    setSliderPosition(Math.max(0, Math.min(percent, 100)))
   }
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const touch = e.touches[0]
-    updateSlider(touch.clientX, rect)
+    const x = touch.clientX - rect.left
+    const percent = (x / rect.width) * 100
+    setSliderPosition(Math.max(0, Math.min(percent, 100)))
   }
 
   return (
@@ -118,63 +103,45 @@ export default function Home() {
               </div>
             </div>
             
-            {/* 对比滑块 */}
+            {/* 对比滑块 - 使用背景方式 */}
             <div className="px-8 pb-8">
               <div 
-                ref={containerRef}
-                className="relative w-full aspect-video rounded-lg bg-gray-100 overflow-hidden cursor-ew-resize"
+                className="relative w-full aspect-video rounded-lg overflow-hidden cursor-ew-resize"
+                style={{ maxHeight: '70vh' }}
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
               >
-                {/* 使用 Grid 实现双栏对比 */}
-                <div className="absolute inset-0 flex">
-                  {/* 左侧：模糊原图 */}
-                  <div 
-                    className="h-full overflow-hidden"
-                    style={{ width: `${sliderPosition}%` }}
-                  >
-                    <img
-                      src="/examples/original.jpg"
-                      alt="Original"
-                      className="h-full pointer-events-none"
-                      style={{ 
-                        width: containerWidth || '100%',
-                        objectFit: 'cover',
-                        filter: 'blur(4px) brightness(0.9)'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* 右侧：清晰增强图 */}
-                  <div 
-                    className="h-full overflow-hidden"
-                    style={{ width: `${100 - sliderPosition}%` }}
-                  >
-                    <img
-                      src="/examples/enhanced.jpg"
-                      alt="Enhanced"
-                      className="h-full pointer-events-none"
-                      style={{ 
-                        width: containerWidth || '100%',
-                        objectFit: 'cover'
-                      }}
-                    />
-                  </div>
-                </div>
+                {/* 底层：清晰增强图 */}
+                <img
+                  src="/examples/enhanced.jpg"
+                  alt="Enhanced"
+                  className="absolute inset-0 w-full h-full object-contain"
+                />
                 
-                {/* 滑块指示器（绝对定位在两栏中间） */}
+                {/* 上层：模糊原图 - 用clip-path裁剪左边 */}
+                <img
+                  src="/examples/original.jpg"
+                  alt="Original"
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    filter: 'blur(6px) brightness(0.85)'
+                  }}
+                />
+                
+                {/* 滑块线 */}
                 <div 
-                  className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10 pointer-events-none"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                  className="absolute top-0 bottom-0 w-0.5 bg-white z-10 pointer-events-none"
+                  style={{ left: `${sliderPosition}%` }}
+                />
+                
+                {/* 圆形手柄 */}
+                <div 
+                  className="absolute top-1/2 w-8 h-8 -mt-4 bg-white rounded-full shadow-lg z-20 flex items-center justify-center text-gray-600 font-bold pointer-events-none"
+                  style={{ left: `calc(${sliderPosition}% - 16px)` }}
                 >
-                  <div 
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center"
-                  >
-                    <div className="flex gap-1">
-                      <div className="w-1 h-4 bg-gray-400 rounded-full" />
-                      <div className="w-1 h-4 bg-gray-400 rounded-full" />
-                    </div>
-                  </div>
+                  ↔
                 </div>
                 
                 {/* 标签 */}
@@ -249,7 +216,7 @@ export default function Home() {
             <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">任意尺寸都可印刷</h3>

@@ -16,7 +16,7 @@ export default function ComparisonSlider({
   originalAlt = '原图',
   enhancedAlt = '增强后'
 }: ComparisonSliderProps) {
-  const [sliderPosition, setSliderPosition] = useState(50) // 0-100
+  const [sliderPosition, setSliderPosition] = useState(50)
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(100)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -60,69 +60,25 @@ export default function ComparisonSlider({
   }
 
   return (
-    <div className="w-full">
-      {/* 工具栏 */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span className="font-medium">对比视图</span>
-          <span className="text-gray-400">|</span>
-          <span>{zoomLevel}%</span>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleZoomOut}
-            disabled={zoomLevel <= 100}
-            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            title="缩小"
-          >
-            <ZoomOut className="w-5 h-5" />
-          </button>
-          
-          <button
-            onClick={handleZoomIn}
-            disabled={zoomLevel >= 400}
-            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            title="放大"
-          >
-            <ZoomIn className="w-5 h-5" />
-          </button>
-          
-          {(zoomLevel !== 100 || isZoomed) && (
-            <button
-              onClick={handleResetZoom}
-              className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              重置
-            </button>
-          )}
-        </div>
-      </div>
-
+    <div className="w-full h-full flex flex-col">
       {/* 对比容器 */}
       <div 
         ref={containerRef}
-        className={`relative overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-50 select-none ${
+        className={`relative w-full flex-1 rounded-lg overflow-hidden select-none bg-gray-900 ${
           isZoomed ? 'cursor-zoom-in' : ''
         }`}
-        style={{ height: isZoomed ? `${400 * (zoomLevel / 100)}px` : '400px' }}
         onMouseMove={handleSliderMove}
         onTouchMove={handleTouchMove}
         onMouseUp={handleSliderMove}
-        onTouchEnd={handleTouchMove}
+        onTouchEnd={handleSliderMove}
+        onClick={handleResetZoom}
       >
         {/* 原图（底层） */}
         <img
           src={originalImage}
           alt={originalAlt}
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ 
-            userSelect: 'none'
-          }}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-          }}
+          style={{ userSelect: 'none' }}
         />
         
         {/* 增强图（顶层，通过裁剪显示） */}
@@ -133,16 +89,12 @@ export default function ComparisonSlider({
           <img
             src={enhancedImage}
             alt={enhancedAlt}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute top-0 h-full object-cover"
             style={{ 
               left: `${sliderPosition}%`,
               transform: 'translateX(-100%)',
               userSelect: 'none',
               width: `${100 / (100 - sliderPosition) * 100}%`
-            }}
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
             }}
           />
         </div>
@@ -168,11 +120,6 @@ export default function ComparisonSlider({
         <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg backdrop-blur-sm">
           {enhancedAlt} ✨
         </div>
-      </div>
-
-      {/* 提示信息 */}
-      <div className="mt-4 text-center text-sm text-gray-500">
-        拖动滑块查看差异 • 滚轮缩放 • 点击图片重置
       </div>
     </div>
   )

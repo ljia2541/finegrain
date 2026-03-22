@@ -87,27 +87,33 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative">
+                {/* 原图（左侧，模糊） */}
                 <img
-                  src="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop&q=60"
                   alt="原图"
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={{ filter: 'blur(3px)' }}
+                  style={{ filter: 'blur(4px) brightness(0.9)' }}
                 />
+                {/* 增强图（右侧，清晰） */}
                 <img
-                  src="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop&q=90"
                   alt="增强后"
-                  className="absolute inset-0 w-1/2 h-full object-cover left-1/2"
+                  className="absolute top-0 right-0 w-1/2 h-full object-cover"
                 />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center">
+                {/* 滑块指示器 */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center z-10">
                   <div className="flex gap-1">
                     <div className="w-1 h-4 bg-gray-400 rounded-full" />
                     <div className="w-1 h-4 bg-gray-400 rounded-full" />
                   </div>
                 </div>
-                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg">
+                {/* 分割线 */}
+                <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-blue-500 z-10"></div>
+                {/* 标签 */}
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg z-10">
                   原图
                 </div>
-                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg">
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg z-10">
                   增强后 ✨
                 </div>
               </div>

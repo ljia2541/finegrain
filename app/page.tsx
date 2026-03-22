@@ -228,27 +228,32 @@ export default function Home() {
       </section>
 
       {/* 老照片修复示例 */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-3xl shadow-2xl overflow-hidden border border-amber-100">
-            {/* 顶部标题 */}
-            <div className="p-6 pb-4 border-b border-amber-100">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-                <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
-                  老照片修复
-                </span>
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div className="p-8 flex flex-col lg:flex-row gap-8 items-center">
+              {/* 左侧文字 */}
+              <div className="flex-1 lg:text-left text-center">
+                <div className="flex items-center gap-2 justify-center lg:justify-start">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
+                    老照片修复
+                  </span>
+                </div>
+                <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-4">
+                  珍贵记忆，清晰重现
+                </p>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  恢复模糊、泛黄的老照片，让珍贵的记忆永远清晰。
+                </p>
+                <p className="text-gray-500 mt-4 text-sm">
+                  AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
+                </p>
               </div>
-              <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-2">
-                珍贵记忆，清晰重现
-              </p>
-            </div>
-            
-            {/* 图片展示 - 更突出的布局 */}
-            <div className="flex flex-col lg:flex-row">
-              {/* 修复前 - 老旧黑白照片效果 */}
-              <div className="flex-1 p-4">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border-4 border-gray-300">
+              
+              {/* 右侧图片（并排） */}
+              <div className="flex-1 flex gap-2">
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
                   <img 
                     src="/examples/oldphoto_original.jpg" 
                     alt="修复前" 
@@ -257,17 +262,9 @@ export default function Home() {
                       filter: 'grayscale(100%) sepia(60%) blur(0.5px) contrast(90%) brightness(85%)'
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    <span className="text-white font-medium text-lg">修复前</span>
-                    <p className="text-white/70 text-sm">黑白、噪点、划痕、褪色</p>
-                  </div>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">修复前</span>
                 </div>
-              </div>
-              
-              {/* 修复后 */}
-              <div className="flex-1 p-4">
-                <div className="relative rounded-xl overflow-hidden shadow-lg ring-2 ring-orange-200 border-4 border-white">
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg ring-2 ring-orange-200">
                   <img 
                     src="/examples/oldphoto_enhanced.jpg" 
                     alt="修复后" 
@@ -276,19 +273,9 @@ export default function Home() {
                       filter: 'contrast(105%) saturate(110%)'
                     }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-orange-600/70 to-transparent p-4">
-                    <span className="text-white font-medium text-lg">✨ 修复后</span>
-                    <p className="text-white/80 text-sm">清晰、色彩还原、细节丰富</p>
-                  </div>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">修复后 ✨</span>
                 </div>
               </div>
-            </div>
-            
-            {/* 底部描述 */}
-            <div className="px-6 pb-6">
-              <p className="text-gray-600">
-                AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
-              </p>
             </div>
           </div>
         </div>

@@ -108,37 +108,42 @@ export default function Home() {
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
               <div 
-                className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 cursor-ew-resize"
+                className="relative w-full aspect-video rounded-lg bg-gray-100 overflow-hidden cursor-ew-resize"
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
               >
-                {/* 底层：清晰图（完整显示） */}
-                <img
-                  src="/examples/enhanced.jpg"
-                  alt="Enhanced"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                />
-                
-                {/* 上层：模糊图（absolute 定位，覆盖整个容器） */}
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{ 
-                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-                    WebkitClipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
-                  }}
-                >
-                  <img
-                    src="/examples/original.jpg"
-                    alt="Original"
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                    style={{ filter: 'blur(4px) brightness(0.9)' }}
-                  />
+                {/* 使用 Grid 实现双栏对比 */}
+                <div className="absolute inset-0 flex">
+                  {/* 左侧：模糊原图 */}
+                  <div 
+                    className="h-full overflow-hidden"
+                    style={{ width: `${sliderPosition}%` }}
+                  >
+                    <img
+                      src="/examples/original.jpg"
+                      alt="Original"
+                      className="h-full w-full object-cover"
+                      style={{ filter: 'blur(4px) brightness(0.9)' }}
+                    />
+                  </div>
+                  
+                  {/* 右侧：清晰增强图 */}
+                  <div 
+                    className="h-full overflow-hidden"
+                    style={{ width: `${100 - sliderPosition}%` }}
+                  >
+                    <img
+                      src="/examples/enhanced.jpg"
+                      alt="Enhanced"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
                 </div>
                 
-                {/* 滑块指示器（垂直居中） */}
+                {/* 滑块指示器（绝对定位在两栏中间） */}
                 <div 
                   className="absolute top-0 bottom-0 w-1 bg-blue-500 z-10 pointer-events-none"
-                  style={{ left: `${sliderPosition}%` }}
+                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
                 >
                   <div 
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center"

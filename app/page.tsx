@@ -65,7 +65,7 @@ export default function Home() {
 
       {/* 示例展示 - 单案例 */}
       <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               8K 超高清效果展示
@@ -86,12 +86,14 @@ export default function Home() {
             
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
-              <ComparisonSlider
-                originalImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
-                enhancedImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
-                originalAlt="原图"
-                enhancedAlt="增强后 (8K 超高清)"
-              />
+              <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
+                <ComparisonSlider
+                  originalImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
+                  enhancedImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
+                  originalAlt="原图"
+                  enhancedAlt="增强后 (8K 超高清)"
+                />
+              </div>
             </div>
             
             {/* 描述 */}

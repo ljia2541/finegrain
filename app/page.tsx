@@ -132,7 +132,7 @@ export default function Home() {
                 
                 {/* 滑块线 */}
                 <div 
-                  className="absolute top-0 bottom-0 w-0.5 bg-white z-10 pointer-events-none"
+                  className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none"
                   style={{ left: `${sliderPosition}%` }}
                 />
                 

@@ -1,6 +1,6 @@
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
-import ExampleShowcase from '@/components/ExampleShowcase'
+import ComparisonSlider from '@/components/ComparisonSlider'
 import Pricing from '@/components/Pricing'
 import PrivacyNotice from '@/components/PrivacyNotice'
 
@@ -86,7 +86,12 @@ export default function Home() {
             
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
-              <ComparisonSliderDemo />
+              <ComparisonSlider
+                originalImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
+                enhancedImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
+                originalAlt="原图"
+                enhancedAlt="增强后 (8K 超高清)"
+              />
             </div>
             
             {/* 描述 */}
@@ -190,26 +195,6 @@ export default function Home() {
           <PrivacyNotice />
         </div>
       </section>
-    </div>
-  )
-}
-
-// 简化的对比滑块演示组件
-function ComparisonSliderDemo() {
-  return (
-    <div className="relative">
-      <img
-        src="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
-        alt="原图"
-        className="w-full rounded-lg"
-        style={{ filter: 'blur(2px)' }}
-      />
-      <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg">
-        原图
-      </div>
-      <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg">
-        增强后 ✨
-      </div>
     </div>
   )
 }

@@ -187,9 +187,11 @@ export default function Home() {
               <div className="flex-1 lg:text-left text-center">
                 <div className="flex items-center gap-2 text-sm text-blue-600 font-medium justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  <span>真实细节恢复</span>
+                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
+                    真实细节恢复
+                  </span>
                 </div>
-                <h3 className="text-3xl lg:text-4xl font-bold mt-4 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
+                <h3 className="text-xl lg:text-2xl font-bold mt-4 text-gray-800">
                   不是简单的滤镜或锐化
                 </h3>
                 <p className="text-gray-600 mt-4 leading-relaxed">

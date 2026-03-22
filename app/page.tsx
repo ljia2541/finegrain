@@ -86,13 +86,30 @@ export default function Home() {
             
             {/* 对比滑块 */}
             <div className="px-8 pb-8">
-              <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100">
-                <ComparisonSlider
-                  originalImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
-                  enhancedImage="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
-                  originalAlt="原图"
-                  enhancedAlt="增强后 (8K 超高清)"
+              <div className="aspect-video w-full rounded-lg overflow-hidden bg-gray-100 relative">
+                <img
+                  src="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg"
+                  alt="原图"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ filter: 'blur(3px)' }}
                 />
+                <img
+                  src="https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg"
+                  alt="增强后"
+                  className="absolute inset-0 w-1/2 h-full object-cover left-1/2"
+                />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg border-4 border-blue-500 flex items-center justify-center">
+                  <div className="flex gap-1">
+                    <div className="w-1 h-4 bg-gray-400 rounded-full" />
+                    <div className="w-1 h-4 bg-gray-400 rounded-full" />
+                  </div>
+                </div>
+                <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg">
+                  原图
+                </div>
+                <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-blue-600/90 text-white text-sm rounded-lg">
+                  增强后 ✨
+                </div>
               </div>
             </div>
             

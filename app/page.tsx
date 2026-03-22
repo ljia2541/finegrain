@@ -282,7 +282,7 @@ export default function Home() {
       </section>
 
       {/* 300 DPI 印刷质量展示 */}
-      <section className="py-12 px-4 bg-white">
+      <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -293,57 +293,81 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden p-8 mb-8">
+            <div className="flex flex-col lg:flex-row gap-8 items-center">
+              {/* 左侧图片对比 */}
+              <div className="flex-1 flex gap-4">
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
+                  <img 
+                    src="/examples/print_original.jpg" 
+                    alt="原图" 
+                    className="w-full aspect-square object-cover"
+                    style={{ filter: 'blur(2px) brightness(0.9)' }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">普通质量</span>
+                </div>
+                <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg ring-2 ring-blue-200">
+                  <img 
+                    src="/examples/print_enhanced.jpg" 
+                    alt="增强后" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">300 DPI ✨</span>
+                </div>
+              </div>
+              
+              {/* 右侧文字 */}
+              <div className="flex-1 lg:text-left text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  4K/8K 超高清输出
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  支持最高 8K 分辨率（7680×4320），满足专业印刷 300 DPI 需求，
+                  让照片在海报、画册、展览等场景都清晰动人。
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {/* 4×6 英寸 */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 shadow-lg border border-blue-100">
-              <div className="aspect-[4/6] bg-white rounded-lg shadow-md mb-4 flex items-center justify-center border border-gray-200">
-                <span className="text-gray-400 text-sm">4"×6"</span>
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
+              <div className="aspect-[4/3] bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg mb-3 flex items-center justify-center">
+                <span className="text-3xl">📷</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">4" × 6" (10×15cm)</h3>
-              <p className="text-sm text-gray-500 mb-2">标准照片尺寸</p>
-              <div className="flex items-center gap-2">
-                <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">1200×1800 px</span>
-                <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
-              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-1">4" × 6"</h3>
+              <p className="text-xs text-gray-500 mb-2">1200×1800 px</p>
+              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
             </div>
             
             {/* A4 */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 shadow-lg border border-purple-100">
-              <div className="aspect-[4/6] bg-white rounded-lg shadow-md mb-4 flex items-center justify-center border border-gray-200">
-                <span className="text-gray-400 text-sm">A4</span>
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
+              <div className="aspect-[4/3] bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg mb-3 flex items-center justify-center">
+                <span className="text-3xl">📄</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">A4 纸张</h3>
-              <p className="text-sm text-gray-500 mb-2">办公/学习必备</p>
-              <div className="flex items-center gap-2">
-                <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">2480×3508 px</span>
-                <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
-              </div>
+              <p className="text-xs text-gray-500 mb-2">2480×3508 px</p>
+              <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
             </div>
             
             {/* 海报 */}
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 shadow-lg border border-orange-100">
-              <div className="aspect-[4/6] bg-white rounded-lg shadow-md mb-4 flex items-center justify-center border border-gray-200">
-                <span className="text-gray-400 text-sm">海报</span>
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
+              <div className="aspect-[4/3] bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg mb-3 flex items-center justify-center">
+                <span className="text-3xl">🖼️</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">海报印刷</h3>
-              <p className="text-sm text-gray-500 mb-2">广告/宣传</p>
-              <div className="flex items-center gap-2">
-                <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">4K 分辨率</span>
-                <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">150+ DPI</span>
-              </div>
+              <p className="text-xs text-gray-500 mb-2">4K 分辨率</p>
+              <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">150+ DPI</span>
             </div>
             
-            {/* 8K 大幅印刷 */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 shadow-lg border border-green-100">
-              <div className="aspect-[4/6] bg-white rounded-lg shadow-md mb-4 flex items-center justify-center border border-gray-200">
-                <span className="text-gray-400 text-sm">8K</span>
+            {/* 8K 大幅 */}
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 text-center">
+              <div className="aspect-[4/3] bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg mb-3 flex items-center justify-center">
+                <span className="text-3xl">🎨</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-1">8K 超大幅</h3>
-              <p className="text-sm text-gray-500 mb-2">专业展览/拍卖</p>
-              <div className="flex items-center gap-2">
-                <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">7680×4320 px</span>
-                <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
-              </div>
+              <p className="text-xs text-gray-500 mb-2">7680×4320 px</p>
+              <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">300 DPI</span>
             </div>
           </div>
           

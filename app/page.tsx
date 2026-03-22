@@ -105,7 +105,8 @@ export default function Home() {
                 <img
                   src="/examples/enhanced.jpg"
                   alt="增强后"
-                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
                 
                 {/* 上层：模糊图（裁剪显示，只显示滑块左侧） */}
@@ -116,10 +117,12 @@ export default function Home() {
                   <img
                     src="/examples/original.jpg"
                     alt="原图"
-                    className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none"
+                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
                     style={{ 
                       width: '100vw',
                       maxWidth: 'none',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
                       filter: 'blur(4px) brightness(0.9)'
                     }}
                   />

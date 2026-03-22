@@ -110,16 +110,16 @@ export default function Home() {
                 
                 {/* 上层：模糊图（裁剪显示，只显示滑块左侧） */}
                 <div 
-                  className="absolute top-0 bottom-0 left-0 overflow-hidden pointer-events-none"
+                  className="absolute top-0 bottom-0 left-0 bg-gray-100 pointer-events-none overflow-hidden"
                   style={{ width: `${sliderPosition}%` }}
                 >
                   <img
                     src="/examples/original.jpg"
                     alt="原图"
-                    className="absolute top-0 h-full object-cover"
+                    className="absolute top-0 left-0 w-full h-full object-cover"
                     style={{ 
-                      width: '100vw',
-                      maxWidth: '100%',
+                      width: `${100000 / sliderPosition}%`,
+                      maxWidth: 'none',
                       filter: 'blur(4px) brightness(0.9)'
                     }}
                   />

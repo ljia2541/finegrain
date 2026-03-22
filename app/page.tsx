@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ImageUploader from '@/components/ImageUploader'
 import Features from '@/components/Features'
 import Pricing from '@/components/Pricing'
@@ -8,20 +8,6 @@ import PrivacyNotice from '@/components/PrivacyNotice'
 
 export default function Home() {
   const [sliderPosition, setSliderPosition] = useState(50)
-  const [containerWidth, setContainerWidth] = useState(0)
-
-  // 获取容器宽度，用于固定上层图片尺寸
-  useEffect(() => {
-    const updateWidth = () => {
-      const container = document.getElementById('comparison-container')
-      if (container) {
-        setContainerWidth(container.offsetWidth)
-      }
-    }
-    updateWidth()
-    window.addEventListener('resize', updateWidth)
-    return () => window.removeEventListener('resize', updateWidth)
-  }, [])
 
   const updateSlider = (clientX: number, rect: DOMRect) => {
     const x = clientX - rect.left
@@ -146,7 +132,9 @@ export default function Home() {
                       position: 'absolute',
                       top: 0,
                       left: 0,
-                      width: containerWidth,  // 固定宽度 = 主容器宽度
+                      width: '100%',
+                      minWidth: '100%',
+                      maxWidth: 'none',
                       height: '100%',
                       objectFit: 'cover',
                       filter: 'blur(4px) brightness(0.9)'

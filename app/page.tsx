@@ -193,21 +193,24 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* 电商 */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div 
-                className="relative aspect-video cursor-ew-resize"
-                onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-              >
-                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
-                <img 
-                  src="/examples/original.jpg" alt="" 
-                  className="absolute inset-0 w-full h-full object-contain"
-                  style={{ 
-                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-                    filter: 'blur(2px) brightness(0.95)'
-                  }}
-                />
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
+              <div className="flex">
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/original.jpg" 
+                    alt="原图" 
+                    className="w-full aspect-square object-cover"
+                    style={{ filter: 'blur(2px) brightness(0.95)' }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/enhanced.jpg" 
+                    alt="增强后" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">适用于电商</h3>
@@ -217,21 +220,24 @@ export default function Home() {
             
             {/* 印刷 */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div 
-                className="relative aspect-video cursor-ew-resize"
-                onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-              >
-                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
-                <img 
-                  src="/examples/original.jpg" alt="" 
-                  className="absolute inset-0 w-full h-full object-contain"
-                  style={{ 
-                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-                    filter: 'blur(2px) brightness(0.95)'
-                  }}
-                />
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
+              <div className="flex">
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/original.jpg" 
+                    alt="原图" 
+                    className="w-full aspect-square object-cover"
+                    style={{ filter: 'blur(2px) brightness(0.95)' }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/enhanced.jpg" 
+                    alt="增强后" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">任意尺寸都可印刷</h3>
@@ -241,21 +247,24 @@ export default function Home() {
             
             {/* AI Art */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div 
-                className="relative aspect-video cursor-ew-resize"
-                onMouseMove={handleMouseMove}
-                onTouchMove={handleTouchMove}
-              >
-                <img src="/examples/enhanced.jpg" alt="" className="absolute inset-0 w-full h-full object-contain" />
-                <img 
-                  src="/examples/original.jpg" alt="" 
-                  className="absolute inset-0 w-full h-full object-contain"
-                  style={{ 
-                    clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
-                    filter: 'blur(2px) brightness(0.95)'
-                  }}
-                />
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none" style={{ left: `${sliderPosition}%` }} />
+              <div className="flex">
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/original.jpg" 
+                    alt="原图" 
+                    className="w-full aspect-square object-cover"
+                    style={{ filter: 'blur(2px) brightness(0.95)' }}
+                  />
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                </div>
+                <div className="w-1/2 relative">
+                  <img 
+                    src="/examples/enhanced.jpg" 
+                    alt="增强后" 
+                    className="w-full aspect-square object-cover"
+                  />
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">优化并放大 AI art</h3>

@@ -7,7 +7,7 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 
 ### 1.2 核心价值主张
 - **细节修复**：使用 Finegrain 模型恢复图像细节，远超通用增强器
-- **无损放大**：支持最高 4 倍超分辨率放大，保持图像质量
+- **无损放大**：支持最高 10 倍超分辨率放大，保持图像质量
 - **格式兼容**：支持 HEIC/AVIF 等小众格式（差异化优势）
 - **快速处理**：云端实时处理，无需本地安装
 
@@ -67,8 +67,11 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 #### 3.1.3 图像增强
 - **功能描述**：使用 AI 模型增强图像质量
 - **模型选择**：
-  - 默认：Real-ESRGAN（快速、稳定）
-  - 高级：HAT/NAFNet（质量优先，付费）
+  - 免费档：Real-ESRGAN（快速、稳定）
+  - 基础档：Google Upscaler（效果更好）
+  - 人像主力：Crystal 4x（人像/老照片专精）
+  - 印刷专业：Recraft（300DPI印刷级输出）
+  - VIP极限：Crystal 10x（顶级高清放大）
 - **增强参数**：
   - 放大倍率：2x, 4x
   - 噪声控制：低/中/高
@@ -133,11 +136,13 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 
 **积分消耗规则：**
 
-| 处理类型 | 模型 | 分辨率 | 积分消耗 |
-|---------|------|--------|---------|
-| 简单处理 | Real-ESRGAN | 2x 放大 | 1 积分/张 |
-| 标准处理 | Real-ESRGAN | 4x 放大 | 2 积分/张 |
-| 高级处理 | HAT | 4x/8K 高分辨率 | 3 积分/张 |
+| 处理类型 | 模型 | 积分消耗 | 说明 |
+|---------|------|---------|------|
+| 免费档 | Real-ESRGAN | 1 积分/张 | 无门槛体验，拉新引流 |
+| 付费基础 | Google Upscaler | 3 积分/张 | 效果更好，价格适中 |
+| 人像主力 | Crystal 4x | 8 积分/张 | 人像/老照片核心卖点 |
+| 印刷专业 | Recraft | 6 积分/张 | 300DPI专业印刷输出 |
+| VIP极限 | Crystal 10x | 15 积分/张 | 顶级高清放大，控制使用率 |
 
 **退款政策：**
 - 积分包购买后 7 天内未使用可全额退款
@@ -199,61 +204,85 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
   })
   ```
 
-**模型 2：HAT - Hierarchical Transformer（付费版高级）**
+**模型 2：Google Upscaler（付费基础档）**
 
 基本信息：
-- **模型版本**：ckiplab/hat:latest
-- **处理时间**：30-60 秒/张（2K 图像）
-- **成本**：$0.008-0.012/张
-- **分辨率支持**：最高 8K
+- **模型版本**：google/upscaler
+- **处理时间**：10-15 秒/张（2K 图像）
+- **成本**：~$0.0065/张
+- **分辨率支持**：2x, 4x 放大
 - **优势**：
-  - 细节恢复 SOTA（State of the Art）
-  - 4x 放大质量优异，几乎无损失
-  - Transformer 架构，理解图像语义
+  - Google 官方模型，稳定性高
+  - 性价比优秀
+  - 适合通用图像增强
 - **劣势**：
-  - 处理时间长（6-10 倍于 Real-ESRGAN）
-  - 成本高（4 倍于 Real-ESRGAN）
+  - 非人像专精
+  - 不支持极限放大
 - **适用场景**：
-  - 付费用户专业需求
-  - 4K/8K 高清输出
-  - 专业用途（印刷、展览、商业）
-  - 老照片修复（细节恢复）
+  - 付费基础档用户
+  - 风景、产品、通用图片增强
+  - 性价比优先的用户
 - **Replicate 调用示例**：
   ```typescript
-  const output = await replicate.run("ckiplab/hat:latest", {
+  const output = await replicate.run("google/upscaler", {
     input: {
       image: imageUrl,
-      scale: 4, // 4x preferred
-      denoise_strength: 0.5,
     }
   })
   ```
 
-**模型 3：NAFNet - Noise Aggregation Filter Network（备用/降噪）**
+**模型 3：Crystal Upscaler（人像主力档）**
 
 基本信息：
-- **模型版本**：junyanz/naifnet:latest
-- **处理时间**：15-20 秒/张（2K 图像）
-- **成本**：$0.004-0.006/张
-- **分辨率支持**：最高 4K
+- **模型版本**：philz1337x/crystal-upscaler
+- **处理时间**：10-20 秒/张（2K 图像）
+- **成本**：$0.08-0.15/张
+- **分辨率支持**：最高 10K，4x/6x/10x 放大
 - **优势**：
-  - 纯卷积架构，无需大量计算
-  - 降噪效果优秀，适合噪声图像
-  - 模型体积小，启动快
+  - 人像专精，解决"塑料感皮肤"问题
+  - 面部细节还原自然
+  - 支持10K超高清输出
+  - 10倍速推理（比传统模型快10x）
 - **劣势**：
-  - 超分辨率效果不如 HAT
-  - 细节恢复一般
+  - 成本较高
+  - 主要针对人像优化，风景效果一般
 - **适用场景**：
-  - 噪声严重的图像（低光、ISO 高）
-  - 主模型故障时的降级方案
-  - 快速降噪 + 轻度放大
+  - 人像精修（证件照、自拍、肖像）
+  - 老照片修复
+  - 高端付费用户
 - **Replicate 调用示例**：
   ```typescript
-  const output = await replicate.run("junyanz/naifnet:latest", {
+  const output = await replicate.run("philz1337x/crystal-upscaler", {
     input: {
       image: imageUrl,
-      task: "denoise_sr", // 降噪 + 超分
-      scale: 2,
+      upscale_factor: 4, // 4x, 6x, or 10x
+    }
+  })
+  ```
+
+**模型 4：Recraft Crisp Upscale（印刷专业档）**
+
+基本信息：
+- **模型版本**：recraft-ai/recraft-crisp-upscale
+- **处理时间**：15-25 秒/张（2K 图像）
+- **成本**：~$0.045/张
+- **分辨率支持**：适合 300DPI 印刷输出
+- **优势**：
+  - 专业印刷级输出
+  - 色彩精准，边缘清晰
+  - 适合海报、画册、包装设计
+- **劣势**：
+  - 非人像专精
+  - 放大倍数有限
+- **适用场景**：
+  - 电商产品目录
+  - 印刷品设计
+  - 需要 300DPI 输出的专业场景
+- **Replicate 调用示例**：
+  ```typescript
+  const output = await replicate.run("recraft-ai/recraft-crisp-upscale", {
+    input: {
+      image: imageUrl,
     }
   })
   ```
@@ -306,31 +335,41 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 function selectModel(user: User, image: Image): Model {
   // 免费用户默认 Real-ESRGAN
   if (user.subscription === 'free') {
-    return { model: 'realesrgan', reason: 'free-user-default' }
+    return { model: 'realesrgan', credits: 1, reason: 'free-user-default' }
   }
 
-  // 用户手动选择
+  // 用户手动选择（按档位）
   if (user.modelPreference) {
-    return { model: user.modelPreference, reason: 'user-selected' }
+    const creditMap = {
+      'realesrgan': 1,
+      'google-upscaler': 3,
+      'crystal-4x': 8,
+      'recraft': 6,
+      'crystal-10x': 15
+    }
+    return { model: user.modelPreference, credits: creditMap[user.modelPreference], reason: 'user-selected' }
   }
 
   // 智能选择
-  const noiseLevel = analyzeNoiseLevel(image)
   const imageType = classifyImageType(image)
 
-  if (noiseLevel > 7) {
-    return { model: 'naifnet', reason: 'high-noise' }
+  // 人像场景 → Crystal 4x
+  if (imageType === 'portrait' || imageType === 'oldphoto') {
+    return { model: 'crystal-4x', credits: 8, reason: 'portrait-optimized' }
   }
 
-  if (imageType === 'anime') {
-    return { model: 'realesrgan-anime', reason: 'anime-style' }
+  // 印刷场景 → Recraft
+  if (imageType === 'print' || user.targetFormat === 'print') {
+    return { model: 'recraft', credits: 6, reason: 'print-professional' }
   }
 
-  if (image.width > 2000 && image.height > 2000) {
-    return { model: 'hat', reason: 'high-resolution' }
+  // 高分辨率需求 → Crystal 10x
+  if (image.width > 3000 || image.height > 3000 || user.qualityLevel === 'ultra') {
+    return { model: 'crystal-10x', credits: 15, reason: 'ultra-high-resolution' }
   }
 
-  return { model: 'realesrgan', reason: 'default' }
+  // 默认基础档
+  return { model: 'google-upscaler', credits: 3, reason: 'balanced-default' }
 }
 ```
 
@@ -354,8 +393,9 @@ function selectModel(user: User, image: Image): Model {
   └─ 是 → 启动降级
       ↓
 当前模型是？
-  ├─ HAT → 降级到 NAFNet
-  ├─ NAFNet → 降级到 Real-ESRGAN
+  ├─ Crystal 10x → 降级到 Crystal 4x
+  ├─ Crystal 4x → 降级到 Google Upscaler
+  ├─ Google Upscaler → 降级到 Real-ESRGAN
   └─ Real-ESRGAN → 全部失败，返回错误
       ↓
 降级模型调用
@@ -375,10 +415,11 @@ function selectModel(user: User, image: Image): Model {
 {
   "success": true,
   "imageUrl": "https://...",
+  "creditsUsed": 3, // 自动调整积分
   "warnings": [
     {
       "type": "model_fallback",
-      "message": "Primary model (HAT) unavailable. Used backup model (NAFNet). Quality may be slightly reduced."
+      "message": "Primary model (Crystal) unavailable. Used backup model (Google). Credits adjusted."
     }
   ]
 }
@@ -406,9 +447,11 @@ function selectModel(user: User, image: Image): Model {
 **监控面板**（可选）：
 ```
 实时监控面板：
-- Real-ESRGAN: ✓ 运行正常 (99.8% uptime)
-- HAT: ⚠️ 响应较慢 (avg 45s, target 30s)
-- NAFNet: ✓ 运行正常 (99.9% uptime)
+- Real-ESRGAN: ✓ 运行正常 (99.8% uptime) - 1积分/张
+- Google Upscaler: ✓ 运行正常 (99.5% uptime) - 3积分/张
+- Crystal 4x: ✓ 运行正常 (99.2% uptime) - 8积分/张
+- Recraft: ✓ 运行正常 (99.0% uptime) - 6积分/张
+- Crystal 10x: ⚠️ 使用率低，控制并发 - 15积分/张
 ```
 
 ##### 3.3.0.6 模型优化策略
@@ -526,13 +569,29 @@ async function setCache(cacheKey: string, resultUrl: string): Promise<void> {
 ```typescript
 function calculateCost(model: Model, resolution: Resolution): number {
   const baseCosts = {
-    'realesrgan': 0.002,
-    'hat': 0.008,
-    'naifnet': 0.004,
+    'realesrgan': 0.0025,    // $0.0025/张
+    'google-upscaler': 0.0065, // ~$0.0065/张
+    'crystal-4x': 0.08,       // $0.08-0.15/张
+    'crystal-10x': 0.15,    // ~$0.15/张
+    'recraft': 0.045,       // ~$0.045/张
   }
 
-  const sizeMultiplier = resolution.width * resolution.height / (1920 * 1080)
-  return baseCosts[model] * Math.max(1, sizeMultiplier)
+  // Crystal 模型按输出分辨率调整
+  if (model === 'crystal-10x') {
+    const mp = (resolution.width * resolution.height) / 1000000
+    if (mp > 50) return 0.25  // 极高分辨率
+    if (mp > 20) return 0.20  // 高分辨率
+    return 0.15  // 标准
+  }
+
+  if (model === 'crystal-4x') {
+    const mp = (resolution.width * resolution.height) / 1000000
+    if (mp > 20) return 0.12
+    if (mp > 10) return 0.10
+    return 0.08
+  }
+
+  return baseCosts[model] || 0.01
 }
 ```
 

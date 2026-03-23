@@ -29,7 +29,7 @@ const plans = [
       '优先处理',
     ],
     cta: '购买积分',
-    highlighted: true,
+    highlighted: false,
   },
   {
     name: '单次付费',
@@ -143,6 +143,13 @@ export default function Pricing() {
                 <div className="absolute -top-3 -right-3">
                   <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
                     🔥 {pkg.savings}
+                  </span>
+                </div>
+              )}
+              {pkg.highlighted && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    ⭐ 最受欢迎
                   </span>
                 </div>
               )}

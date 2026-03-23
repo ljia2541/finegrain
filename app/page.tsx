@@ -164,20 +164,6 @@ export default function Home() {
 
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              专业画质，不是滤镜
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              多数工具处理过度，容易出现塑料感皮肤、奇怪光晕和不真实的效果。
-              Finegrain 能恢复真实细节并自然校色。
-            </p>
-          </div>
-          <Features />
-        </div>
-      </section>
 
       {/* 真实细节恢复示例 */}
 
@@ -468,6 +454,21 @@ export default function Home() {
             </div>
           </div>
         </div>
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              专业画质，不是滤镜
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              多数工具处理过度，容易出现塑料感皮肤、奇怪光晕和不真实的效果。
+              Finegrain 能恢复真实细节并自然校色。
+            </p>
+          </div>
+          <Features />
+        </div>
+      </section>
+
       </section>
 
       {/* Pricing Section */}

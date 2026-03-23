@@ -177,72 +177,29 @@ export default function Pricing() {
       </div>
 
       {/* Credit Usage Rules */}
-      <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-8">
-        <h4 className="text-2xl font-bold text-center mb-6">🎯 积分消耗规则 - 简单透明</h4>
+      <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+        <h4 className="text-xl font-bold text-center mb-4">🎯 积分消耗规则</h4>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <div className="text-center mb-4">
-              <div className="text-4xl mb-2">📷</div>
-              <h5 className="font-bold text-lg mb-2">普通图片</h5>
-              <div className="text-3xl font-bold text-green-600">1 积分</div>
-              <div className="text-sm text-gray-600">每张图片</div>
-            </div>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p>• 2x 放大（Real-ESRGAN）</p>
-              <p>• 1080p 及以下分辨率</p>
-              <p>• 快速处理</p>
-            </div>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          <div className="bg-white rounded-lg p-4 shadow-md text-center">
+            <div className="text-2xl mb-1">📷</div>
+            <h5 className="font-bold text-sm mb-1">普通图片</h5>
+            <div className="text-xl font-bold text-green-600">1 积分</div>
+            <div className="text-xs text-gray-500">2x放大 / 1080p</div>
           </div>
           
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <div className="text-center mb-4">
-              <div className="text-4xl mb-2">🖼️</div>
-              <h5 className="font-bold text-lg mb-2">4K/8K 大图</h5>
-              <div className="text-3xl font-bold text-blue-600">2-3 积分</div>
-              <div className="text-sm text-gray-600">每张图片</div>
-            </div>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p>• 4x 放大（Real-ESRGAN）</p>
-              <p>• 4K/8K 高分辨率输出</p>
-              <p>• HAT 高级模型可选</p>
-            </div>
+          <div className="bg-white rounded-lg p-4 shadow-md text-center">
+            <div className="text-2xl mb-1">🖼️</div>
+            <h5 className="font-bold text-sm mb-1">4K/8K 大图</h5>
+            <div className="text-xl font-bold text-blue-600">2-3 积分</div>
+            <div className="text-xs text-gray-500">4x放大 / 高分辨率</div>
           </div>
           
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <div className="text-center mb-4">
-              <div className="text-4xl mb-2">🚀</div>
-              <h5 className="font-bold text-lg mb-2">高倍放大</h5>
-              <div className="text-3xl font-bold text-purple-600">额外 +1 积分</div>
-              <div className="text-sm text-gray-600">在基础之上</div>
-            </div>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p>• 8x 超高倍放大</p>
-              <p>• 极致细节恢复</p>
-              <p>• 专业级输出质量</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <h5 className="font-bold text-lg mb-4 text-center">💡 实际案例参考</h5>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="border-l-4 border-green-500 pl-4">
-              <p className="font-semibold mb-2">普通照片放大 2x：</p>
-              <p className="text-gray-600">原始 1080p → 增强 2x → <span className="font-bold text-green-600">1 积分</span></p>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <p className="font-semibold mb-2">老照片修复 4x：</p>
-              <p className="text-gray-600">原始 720p → 增强 4x → <span className="font-bold text-blue-600">2 积分</span></p>
-            </div>
-            <div className="border-l-4 border-purple-500 pl-4">
-              <p className="font-semibold mb-2">高分辨率 8K 输出：</p>
-              <p className="text-gray-600">原始 4K → HAT 模型 → <span className="font-bold text-purple-600">3 积分</span></p>
-            </div>
-            <div className="border-l-4 border-orange-500 pl-4">
-              <p className="font-semibold mb-2">极致放大 8x：</p>
-              <p className="text-gray-600">原始 1080p → 8x 放大 → <span className="font-bold text-orange-600">4 积分</span></p>
-            </div>
+          <div className="bg-white rounded-lg p-4 shadow-md text-center">
+            <div className="text-2xl mb-1">🚀</div>
+            <h5 className="font-bold text-sm mb-1">高倍放大</h5>
+            <div className="text-xl font-bold text-purple-600">+1 积分</div>
+            <div className="text-xs text-gray-500">8x超高倍放大</div>
           </div>
         </div>
       </div>

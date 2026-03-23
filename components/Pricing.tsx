@@ -174,44 +174,6 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Price Comparison Table */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h4 className="text-xl font-bold text-center mb-4">📊 价格对比一目了然</h4>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold">积分包</th>
-                  <th className="text-center py-3 px-4 font-semibold">总价</th>
-                  <th className="text-center py-3 px-4 font-semibold">每积分</th>
-                  <th className="text-center py-3 px-4 font-semibold">节省</th>
-                </tr>
-              </thead>
-              <tbody>
-                {creditPackages.map((pkg, index) => (
-                  <tr key={pkg.credits} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                    <td className="py-3 px-4 font-semibold">{pkg.credits} 积分包</td>
-                    <td className="py-3 px-4 text-center font-bold">{pkg.price}</td>
-                    <td className="py-3 px-4 text-center">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-semibold">
-                        {pkg.perCredit}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      {pkg.savings ? (
-                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">
-                          {pkg.savings}
-                        </span>
-                      ) : (
-                        <span className="text-gray-400">-</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
 
       {/* Credit Usage Rules */}

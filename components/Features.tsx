@@ -10,7 +10,7 @@ const features = [
   {
     icon: ImageIcon,
     title: '8x 超高清放大',
-    description: '最高支持 8 倍超分辨率放大，从缩略图到海报，从低清到 8K，保持清晰度。',
+    description: '最高支持 10 倍超分辨率放大，从缩略图到海报，从低清到 10K，保持清晰度。',
     gradient: 'from-purple-500 to-pink-500'
   },
   {

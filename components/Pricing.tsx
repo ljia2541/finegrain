@@ -20,30 +20,16 @@ const plans = [
   {
     name: '积分包',
     price: '$7.99',
-    period: '起 $0.035/积分',
+    period: '起 $0.04/积分',
     features: [
       '无水印',
-      'HAT 高级模型',
-      '最高 8K 分辨率',
+      'Google/Crystal/Recraft 模型',
+      '最高 10K 分辨率',
       '积分 6-12 个月有效',
       '优先处理',
     ],
     cta: '购买积分',
     highlighted: true,
-  },
-  {
-    name: '单次付费',
-    price: '$0.99',
-    period: '每张',
-    features: [
-      '无水印',
-      'HAT 高级模型',
-      '最高 8K 分辨率',
-      '按需付费',
-      '即时处理',
-    ],
-    cta: '立即购买',
-    highlighted: false,
   },
 ]
 
@@ -51,15 +37,15 @@ const creditPackages = [
   {
     credits: 100,
     price: '$4.99',
-    perCredit: '$0.05',
+    perCredit: '$0.049',
     savings: '',
     description: '适合偶尔使用'
   },
   {
     credits: 200,
     price: '$7.99',
-    perCredit: '$0.035',
-    savings: '省 30%',
+    perCredit: '$0.04',
+    savings: '省 18%',
     description: '超高性价比',
     highlighted: true
   },
@@ -67,14 +53,14 @@ const creditPackages = [
     credits: 500,
     price: '$12.99',
     perCredit: '$0.026',
-    savings: '省 48%',
+    savings: '省 47%',
     description: '大量使用首选'
   },
   {
     credits: 1000,
     price: '$19.99',
     perCredit: '$0.02',
-    savings: '省 60%',
+    savings: '省 59%',
     description: '极致优惠'
   },
 ]
@@ -83,7 +69,7 @@ export default function Pricing() {
   return (
     <div>
       {/* Main Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.name}
@@ -176,30 +162,49 @@ export default function Pricing() {
 
       </div>
 
-      {/* Credit Usage Rules */}
+      {/* Credit Usage Rules - Updated 5 Tiers */}
       <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
         <h4 className="text-xl font-bold text-center mb-4">🎯 积分消耗规则</h4>
         
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="bg-white rounded-lg p-4 shadow-md text-center">
-            <div className="text-2xl mb-1">📷</div>
-            <h5 className="font-bold text-sm mb-1">普通图片</h5>
-            <div className="text-xl font-bold text-green-600">1 积分</div>
-            <div className="text-xs text-gray-500">2x放大 / 1080p</div>
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-4">
+          <div className="bg-white rounded-lg p-3 shadow-md text-center">
+            <div className="text-xl mb-1">📷</div>
+            <h5 className="font-bold text-xs mb-1">免费档</h5>
+            <div className="text-lg font-bold text-gray-600">Real-ESRGAN</div>
+            <div className="text-sm font-bold text-green-600">1 积分</div>
+            <div className="text-xs text-gray-400">快速体验</div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 shadow-md text-center">
-            <div className="text-2xl mb-1">🖼️</div>
-            <h5 className="font-bold text-sm mb-1">4K/8K 大图</h5>
-            <div className="text-xl font-bold text-blue-600">2-3 积分</div>
-            <div className="text-xs text-gray-500">4x放大 / 高分辨率</div>
+          <div className="bg-white rounded-lg p-3 shadow-md text-center">
+            <div className="text-xl mb-1">🔷</div>
+            <h5 className="font-bold text-xs mb-1">基础档</h5>
+            <div className="text-lg font-bold text-gray-600">Google</div>
+            <div className="text-sm font-bold text-blue-600">3 积分</div>
+            <div className="text-xs text-gray-400">效果更好</div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 shadow-md text-center">
-            <div className="text-2xl mb-1">🚀</div>
-            <h5 className="font-bold text-sm mb-1">高倍放大</h5>
-            <div className="text-xl font-bold text-purple-600">+1 积分</div>
-            <div className="text-xs text-gray-500">8x超高倍放大</div>
+          <div className="bg-white rounded-lg p-3 shadow-md text-center">
+            <div className="text-xl mb-1">✨</div>
+            <h5 className="font-bold text-xs mb-1">人像主力</h5>
+            <div className="text-lg font-bold text-gray-600">Crystal 4x</div>
+            <div className="text-sm font-bold text-purple-600">8 积分</div>
+            <div className="text-xs text-gray-400">人像/老照片</div>
+          </div>
+
+          <div className="bg-white rounded-lg p-3 shadow-md text-center">
+            <div className="text-xl mb-1">🖼️</div>
+            <h5 className="font-bold text-xs mb-1">印刷专业</h5>
+            <div className="text-lg font-bold text-gray-600">Recraft</div>
+            <div className="text-sm font-bold text-orange-600">6 积分</div>
+            <div className="text-xs text-gray-400">300DPI印刷</div>
+          </div>
+
+          <div className="bg-white rounded-lg p-3 shadow-md text-center">
+            <div className="text-xl mb-1">👑</div>
+            <h5 className="font-bold text-xs mb-1">VIP极限</h5>
+            <div className="text-lg font-bold text-gray-600">Crystal 10x</div>
+            <div className="text-sm font-bold text-red-600">15 积分</div>
+            <div className="text-xs text-gray-400">10K超高清</div>
           </div>
         </div>
       </div>

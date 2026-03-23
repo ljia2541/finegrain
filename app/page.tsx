@@ -42,7 +42,7 @@ export default function Home() {
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 AI 图像增强
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  8K 超高清
+                  10K 超高清
                 </span>
               </h1>
               
@@ -69,7 +69,7 @@ export default function Home() {
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4M4 8V4m0 0h4" />
                   </svg>
-                  <span className="text-white/70 text-sm">8x 超高清</span>
+                  <span className="text-white/70 text-sm">10x 超高清</span>
                 </div>
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              8K 超高清效果展示
+              10K 超高清效果展示
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               真实的 AI 增强效果，不是滤镜
@@ -99,7 +99,7 @@ export default function Home() {
             <div className="p-8 pb-4">
               <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span>8x 超高清 • 实时处理 • 24小时删除</span>
+                <span>10x 超高清 • 实时处理 • 24小时删除</span>
               </div>
             </div>
             
@@ -155,7 +155,7 @@ export default function Home() {
                 人像照片增强
               </h3>
               <p className="text-gray-600">
-                低分辨率人像 → 8K 超高清（8x 放大）
+                低分辨率人像 → 10K 超高清（10x 放大）
               </p>
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function Home() {
                   AI 真正恢复图像中的丢失细节，让照片看起来更自然、更真实。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  从缩略图到海报，从低清到 8K，保持清晰度
+                  从缩略图到海报，从低清到 10K，保持清晰度
                 </p>
               </div>
               
@@ -307,7 +307,7 @@ export default function Home() {
               {/* 右侧文字 */}
               <div className="flex-1 lg:text-left text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  4K/8K 超高清输出
+                  4K/10K 超高清输出
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
                   支持最高 8K 分辨率（7680×4320），满足专业印刷 300 DPI 需求，

@@ -162,6 +162,7 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* Features Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -179,6 +180,7 @@ export default function Home() {
       </section>
 
       {/* 真实细节恢复示例 */}
+
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">

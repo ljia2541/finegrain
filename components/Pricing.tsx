@@ -161,53 +161,6 @@ export default function Pricing() {
         </div>
 
       </div>
-
-      {/* Credit Usage Rules - Updated 5 Tiers */}
-      <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
-        <h4 className="text-xl font-bold text-center mb-4">🎯 积分消耗规则</h4>
-        
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-4">
-          <div className="bg-white rounded-lg p-3 shadow-md text-center">
-            <div className="text-xl mb-1">📷</div>
-            <h5 className="font-bold text-xs mb-1">免费档</h5>
-            <div className="text-lg font-bold text-gray-600">Real-ESRGAN</div>
-            <div className="text-sm font-bold text-green-600">1 积分</div>
-            <div className="text-xs text-gray-400">快速体验</div>
-          </div>
-          
-          <div className="bg-white rounded-lg p-3 shadow-md text-center">
-            <div className="text-xl mb-1">🔷</div>
-            <h5 className="font-bold text-xs mb-1">基础档</h5>
-            <div className="text-lg font-bold text-gray-600">Google</div>
-            <div className="text-sm font-bold text-blue-600">3 积分</div>
-            <div className="text-xs text-gray-400">效果更好</div>
-          </div>
-          
-          <div className="bg-white rounded-lg p-3 shadow-md text-center">
-            <div className="text-xl mb-1">✨</div>
-            <h5 className="font-bold text-xs mb-1">人像主力</h5>
-            <div className="text-lg font-bold text-gray-600">Crystal 4x</div>
-            <div className="text-sm font-bold text-purple-600">8 积分</div>
-            <div className="text-xs text-gray-400">人像/老照片</div>
-          </div>
-
-          <div className="bg-white rounded-lg p-3 shadow-md text-center">
-            <div className="text-xl mb-1">🖼️</div>
-            <h5 className="font-bold text-xs mb-1">印刷专业</h5>
-            <div className="text-lg font-bold text-gray-600">Recraft</div>
-            <div className="text-sm font-bold text-orange-600">6 积分</div>
-            <div className="text-xs text-gray-400">300DPI印刷</div>
-          </div>
-
-          <div className="bg-white rounded-lg p-3 shadow-md text-center">
-            <div className="text-xl mb-1">👑</div>
-            <h5 className="font-bold text-xs mb-1">VIP极限</h5>
-            <div className="text-lg font-bold text-gray-600">Crystal 10x</div>
-            <div className="text-sm font-bold text-red-600">15 积分</div>
-            <div className="text-xs text-gray-400">10K超高清</div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

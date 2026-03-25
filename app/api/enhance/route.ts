@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { enhanceImageAsync } from '@/lib/replicate'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 /**
  * POST /api/enhance

@@ -6,8 +6,6 @@ import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const runtime = 'edge'
-
 export const metadata: Metadata = {
   title: 'Finegrain - AI 图像增强平台',
   description: '基于 AI 的在线图像增强服务，专注于细节修复和超分辨率放大',

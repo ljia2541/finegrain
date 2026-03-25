@@ -1,6 +1,0 @@
-CLOUDFLARE_API_TOKEN = "cfat_G7kWybCML7pR84ezyXbzXjGENhiYpTQHPcSzhoBG65cc5723"
-api_token = "cfat_G7kWybCML7pR84ezyXbzXjGENhiYpTQHPcSzhoBG65cc5723"
-account_id = "b8122ff3f404b8271bc74f4ede888c79"
-
-[env.production]
-account_id = "b8122ff3f404b8271bc74f4ede888c79"

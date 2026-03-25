@@ -7,8 +7,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // 启用静态导出
-  output: 'export',
+  // 移除静态导出以支持 API Routes
+  // output: 'export',
 }
 
 module.exports = nextConfig

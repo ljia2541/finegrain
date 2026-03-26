@@ -5,67 +5,70 @@ const replicate = new Replicate({
 })
 
 /**
+ * 支持的模型类型
+ */
+export type ModelType = 'crystal' | 'realesrgan'
+
+/**
+ * 放大倍率选项
+ */
+export type ScaleOption = 2 | 4 | 6 | 8 | 10
+
+/**
  * 图片增强接口
  */
 export interface EnhanceOptions {
   image: string // 图片 URL 或 base64
-  model?: 'realesrgan' | 'hat' | 'naifnet' // 模型选择
-  scale?: 2 | 4 // 放大倍率
-  denoiseStrength?: number // 降噪强度 (0-1)
+  model?: ModelType // 模型选择
+  scale?: ScaleOption // 放大倍率
 }
 
 /**
- * 调用 Replicate API 进行图片增强
+ * 调用 Replicate API 进行图片增强（同步，等待完成）
  */
 export async function enhanceImage(options: EnhanceOptions) {
   const {
     image,
-    model = 'realesrgan',
-    scale = 2,
-    denoiseStrength = 0.5,
+    model = 'crystal',
+    scale = 4,
   } = options
 
   try {
     let modelVersion: string
     let input: any
 
-    if (model === 'realesrgan') {
-      // Real-ESRGAN: 快速、稳定
-      modelVersion = 'xinntao/realesrgan:v4.0.0'
+    if (model === 'crystal') {
+      // Crystal Upscaler: 专为肖像/面部优化，支持 1-100x 放大
+      // 模型会自动选择最优版本
+      modelVersion = 'philz1337x/crystal-upscaler'
+      input = {
+        image,
+        scale_factor: scale,
+      }
+    } else if (model === 'realesrgan') {
+      // Real-ESRGAN: 通用图片放大，使用 nightmareai 版本（维护更活跃）
+      modelVersion = 'nightmareai/real-esrgan'
       input = {
         image,
         scale,
         face_enhance: false,
       }
-    } else if (model === 'hat') {
-      // HAT: 高质量、细节恢复
-      modelVersion = 'ckiplab/hat:latest'
-      input = {
-        image,
-        scale: scale === 4 ? 4 : 2,
-        denoise_strength: denoiseStrength,
-      }
-    } else if (model === 'naifnet') {
-      // NAFNet: 降噪优先
-      modelVersion = 'junyanz/naifnet:latest'
-      input = {
-        image,
-        task: 'denoise_sr',
-        scale: scale === 4 ? 4 : 2,
-      }
     } else {
       throw new Error(`Unknown model: ${model}`)
     }
 
-    // 调用 Replicate API
-    const output = await replicate.run(modelVersion, {
+    // 调用 Replicate API（同步等待）
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const output = await replicate.run(modelVersion as any, {
       input,
     })
 
-    // 返回结果
+    // 返回结果 - output 可能是字符串或字符串数组
+    const imageUrl = Array.isArray(output) ? output[0] : output
+
     return {
       success: true,
-      imageUrl: output as string,
+      imageUrl: imageUrl as string,
       model,
       scale,
     }
@@ -79,40 +82,31 @@ export async function enhanceImage(options: EnhanceOptions) {
 }
 
 /**
- * 异步图片增强（返回任务 ID）
+ * 异步图片增强（返回任务 ID，适用于长时间任务）
  */
 export async function enhanceImageAsync(options: EnhanceOptions) {
   const {
     image,
-    model = 'realesrgan',
-    scale = 2,
-    denoiseStrength = 0.5,
+    model = 'crystal',
+    scale = 4,
   } = options
 
   try {
     let modelVersion: string
     let input: any
 
-    if (model === 'realesrgan') {
-      modelVersion = 'xinntao/realesrgan:v4.0.0'
+    if (model === 'crystal') {
+      modelVersion = 'philz1337x/crystal-upscaler'
+      input = {
+        image,
+        scale_factor: scale,
+      }
+    } else if (model === 'realesrgan') {
+      modelVersion = 'nightmareai/real-esrgan'
       input = {
         image,
         scale,
         face_enhance: false,
-      }
-    } else if (model === 'hat') {
-      modelVersion = 'ckiplab/hat:latest'
-      input = {
-        image,
-        scale: scale === 4 ? 4 : 2,
-        denoise_strength: denoiseStrength,
-      }
-    } else if (model === 'naifnet') {
-      modelVersion = 'junyanz/naifnet:latest'
-      input = {
-        image,
-        task: 'denoise_sr',
-        scale: scale === 4 ? 4 : 2,
       }
     } else {
       throw new Error(`Unknown model: ${model}`)

@@ -10,7 +10,7 @@ export const runtime = 'nodejs'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { imageUrl, model = 'realesrgan', scale = 2 } = body
+    const { imageUrl, model = 'crystal', scale = 4 } = body
 
     if (!imageUrl) {
       return NextResponse.json(
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证模型选择
-    const validModels = ['realesrgan', 'hat', 'naifnet']
+    const validModels = ['crystal', 'realesrgan']
     if (!validModels.includes(model)) {
       return NextResponse.json(
         { error: `Invalid model. Supported: ${validModels.join(', ')}` },
@@ -28,10 +28,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 验证放大倍率
-    if (![2, 4].includes(scale)) {
+    // 验证放大倍率 (2, 4, 6, 8, 10)
+    const validScales = [2, 4, 6, 8, 10]
+    if (!validScales.includes(scale)) {
       return NextResponse.json(
-        { error: 'Invalid scale. Supported: 2, 4' },
+        { error: `Invalid scale. Supported: ${validScales.join(', ')}` },
         { status: 400 }
       )
     }

@@ -7,12 +7,45 @@ const replicate = new Replicate({
 /**
  * 支持的模型类型
  */
-export type ModelType = 'crystal' | 'realesrgan'
+export type ModelType = 'crystal' | 'realesrgan' | 'recraft'
 
 /**
  * 放大倍率选项
  */
 export type ScaleOption = 2 | 4 | 6 | 8 | 10
+
+/**
+ * Crystal 输入尺寸限制（长边最大像素）
+ * 超过此限制的图片不允许使用 Crystal 模型
+ */
+export const CRYSTAL_MAX_LONG_EDGE = 1000
+
+/**
+ * 校验图片尺寸是否满足 Crystal 输入要求
+ */
+export function validateCrystalInput(imageWidth: number, imageHeight: number): {
+  valid: boolean
+  message?: string
+} {
+  const longEdge = Math.max(imageWidth, imageHeight)
+  if (longEdge > CRYSTAL_MAX_LONG_EDGE) {
+    return {
+      valid: false,
+      message: `Crystal 超清模式仅支持 ${CRYSTAL_MAX_LONG_EDGE}px 以内图片，当前图片长边 ${longEdge}px。如需更大尺寸请使用其他模型。`,
+    }
+  }
+  return { valid: true }
+}
+
+/**
+ * Crystal 10x 单次付费价格（不走积分）
+ */
+export const CRYSTAL_10X_PRICE = 1.99 // USD
+
+/**
+ * Crystal 4x 积分消耗
+ */
+export const CRYSTAL_4X_CREDITS = 12
 
 /**
  * 图片增强接口
@@ -21,7 +54,36 @@ export interface EnhanceOptions {
   image: string // 图片 URL 或 base64
   model?: ModelType // 模型选择
   scale?: ScaleOption // 放大倍率
+  faceEnhance?: boolean // Real-ESRGAN 人脸增强（默认 false）
 }
+
+/**
+ * 模型配置
+ */
+const MODEL_CONFIG = {
+  crystal: {
+    id: 'philz1337x/crystal-upscaler',
+    displayName: 'Crystal',
+    supportsScale: true as const,
+    maxLongEdge: CRYSTAL_MAX_LONG_EDGE,
+    credits: { 4: CRYSTAL_4X_CREDITS, 10: 0 }, // 10x 不走积分
+    directPay: { 10: CRYSTAL_10X_PRICE },
+  },
+  realesrgan: {
+    id: 'nightmareai/real-esrgan',
+    displayName: 'Real-ESRGAN',
+    supportsScale: true as const,
+    maxLongEdge: 1440, // Replicate 建议最大 1440p 输入
+    credits: { 2: 1, 4: 1, 6: 1, 8: 1, 10: 1 },
+  },
+  recraft: {
+    id: 'recraft-ai/recraft-crisp-upscale',
+    displayName: 'Recraft',
+    supportsScale: false as const, // 无倍率参数，模型自动决定
+    maxLongEdge: null, // 无明确限制（10MB 文件大小限制）
+    credits: { 2: 6, 4: 6, 6: 6, 8: 6, 10: 6 },
+  },
+} as const
 
 /**
  * 调用 Replicate API 进行图片增强（同步，等待完成）
@@ -31,34 +93,39 @@ export async function enhanceImage(options: EnhanceOptions) {
     image,
     model = 'crystal',
     scale = 4,
+    faceEnhance = false,
   } = options
 
   try {
     let modelVersion: string
-    let input: any
+    let input: Record<string, unknown>
 
     if (model === 'crystal') {
-      // Crystal Upscaler: 专为肖像/面部优化，支持 1-100x 放大
-      // 模型会自动选择最优版本
-      modelVersion = 'philz1337x/crystal-upscaler'
+      modelVersion = MODEL_CONFIG.crystal.id
       input = {
         image,
         scale_factor: scale,
+        creativity: 0, // 默认保真模式
+        output_format: 'png',
       }
     } else if (model === 'realesrgan') {
-      // Real-ESRGAN: 通用图片放大，使用 nightmareai 版本（维护更活跃）
-      modelVersion = 'nightmareai/real-esrgan'
+      modelVersion = MODEL_CONFIG.realesrgan.id
       input = {
         image,
         scale,
-        face_enhance: false,
+        face_enhance: faceEnhance,
+      }
+    } else if (model === 'recraft') {
+      modelVersion = MODEL_CONFIG.recraft.id
+      input = {
+        image,
+        // Recraft 无其他参数
       }
     } else {
       throw new Error(`Unknown model: ${model}`)
     }
 
     // 调用 Replicate API（同步等待）
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const output = await replicate.run(modelVersion as any, {
       input,
     })
@@ -89,24 +156,32 @@ export async function enhanceImageAsync(options: EnhanceOptions) {
     image,
     model = 'crystal',
     scale = 4,
+    faceEnhance = false,
   } = options
 
   try {
     let modelVersion: string
-    let input: any
+    let input: Record<string, unknown>
 
     if (model === 'crystal') {
-      modelVersion = 'philz1337x/crystal-upscaler'
+      modelVersion = MODEL_CONFIG.crystal.id
       input = {
         image,
         scale_factor: scale,
+        creativity: 0,
+        output_format: 'png',
       }
     } else if (model === 'realesrgan') {
-      modelVersion = 'nightmareai/real-esrgan'
+      modelVersion = MODEL_CONFIG.realesrgan.id
       input = {
         image,
         scale,
-        face_enhance: false,
+        face_enhance: faceEnhance,
+      }
+    } else if (model === 'recraft') {
+      modelVersion = MODEL_CONFIG.recraft.id
+      input = {
+        image,
       }
     } else {
       throw new Error(`Unknown model: ${model}`)

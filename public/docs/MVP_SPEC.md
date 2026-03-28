@@ -461,10 +461,42 @@ const CRYSTAL_SIZE_LIMIT_MSG =
 
 **模型 5：（已合并到模型 3 Crystal Upscaler）**
 
-> Crystal 4x 和 Crystal 10x 现在统一为模型 3，通过 `upscale_factor` 参数区分档位。
-> - Crystal 4x：12 积分/张（走积分制，成本 $0.10-0.20）
-> - Crystal 10x：$1.99/张（不走积分，直接付费，成本 $0.40-1.60）
-> - Crystal 系列统一限制原图长边 ≤ 1000px
+> Crystal 4x 和 Crystal 10x 现在统一为模型 3，同一个模型通过 `scale_factor` 参数区分档位。
+
+**Crystal 10x 标准配置**：
+
+```
+模型名称（展示用）：Crystal 10x
+模型标识（代码调用）：philz1337x/crystal-upscaler
+scale_factor：10
+creativity：0（默认，保真模式）
+output_format：png
+输入限制：原图长边 ≤ 1000px
+计费方式：独立付费 $1.99/张，不走积分
+输出像素上限：≤100MP
+成本区间：$0.40 ~ $1.60
+降级方案：失败自动降级为 Crystal 4x
+```
+
+**Crystal 4x 标准配置**：
+
+```
+模型名称（展示用）：Crystal 4x
+模型标识（代码调用）：philz1337x/crystal-upscaler
+scale_factor：4
+creativity：0（默认，保真模式）
+output_format：png
+输入限制：原图长边 ≤ 1000px
+计费方式：12 积分/张
+输出像素上限：≤16MP
+成本区间：$0.10 ~ $0.20
+降级方案：失败自动降级为 Recraft → Google → Real-ESRGAN
+```
+
+**代码实现**：
+- `lib/replicate.ts`：已支持 `model: 'crystal'` + `scale: 10`，参数含 `creativity: 0` + `output_format: 'png'`
+- `app/api/enhance/route.ts`：已支持 Crystal 10x 后端尺寸校验，返回 `billing: { type: 'direct_pay', price: 1.99 }`
+- `CRYSTAL_MAX_LONG_EDGE = 1000`：前端和后端双重校验
 
 ##### 3.3.0.3 智能模型选择算法
 

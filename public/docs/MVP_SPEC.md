@@ -69,9 +69,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 - **模型选择**：
   - 免费档：Real-ESRGAN（快速、稳定、带人脸增强）
   - 基础档：Google Upscaler（效果更好）
-  - 人像主力：Crystal 4x（人像/面部/产品专精）
+  - 人像主力：Crystal 4x（12 积分，长边≤1000px）
   - 印刷专业：Recraft（300DPI印刷级输出）
-  - VIP极限：Crystal 10x（顶级高清放大，VIP专属）
+  - VIP极限：Crystal 10x（$1.99/张，长边≤1000px，不走积分）
 - **增强参数**：
   - 放大倍率：2x, 4x
   - 噪声控制：低/中/高
@@ -135,9 +135,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 |------|------|------|------|---------|--------|------|
 | 免费档 | Real-ESRGAN | 1 | $0 | $0.002 | - | 无门槛体验，带人脸增强，拉新引流 |
 | 付费基础 | Google Upscaler | 3 | $0.12 | ~$0.0065 | ~94% | 效果更好，价格适中 |
-| 人像主力 | Crystal 4x | 8 | $0.32 | $0.20 | 37.5% | 4x≈16MP，人像/面部/产品专精 |
+| 人像主力 | Crystal 4x | 12 | $0.24 | $0.10-0.20 | 17-58% | 4x，长边≤1000px，12积分 |
 | 印刷专业 | Recraft | 6 | $0.24 | ~$0.006 | ~97.5% | $6/千张，印刷级输出 |
-| VIP极限 | Crystal 10x | 20 | $0.80 | $1.60 | 50% | 10x≈100MP，VIP专属 |
+| VIP极限 | Crystal 10x | **$1.99/张** | $1.99 | $0.40-1.60 | 20-80% | 10x，长边≤1000px，**不走积分** |
 
 **退款政策：**
 - 积分包购买后 7 天内未使用可全额退款
@@ -261,7 +261,13 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 基本信息：
 - **模型版本**：philz1337x/crystal-upscaler
 - **定位**：VIP 专属人像模型，不做免费/基础档
-- **积分消耗**：Crystal 4x = 8 积分/张，Crystal 10x = 20 积分/张
+- **计费方式**：
+  - Crystal 4x → 12 积分/张（走积分制）
+  - Crystal 10x → **$1.99/张（不走积分，直接付费）**
+- **原图输入限制（必须严格执行）**：
+  - Crystal 系列统一限制：**原图长边 ≤ 1000px**
+  - 超过 1000px → 前端提示："Crystal 超清模式仅支持 1000px 以内图片，请使用其他模型或缩小图片"
+  - 此限制锁死成本上限，确保永不亏本
 - **处理时间**：10-20 秒/张（4x），20-40 秒/张（10x）
 - **分辨率支持**：1x～100x 缩放，实际可用 2x～10x，最高 10K 输出（无缝瓦片拼接）
 
@@ -334,12 +340,41 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 
 **定价与毛利率**：
 
-| 档位 | 倍数 | 积分 | 售价 | 实际API成本 | 毛利率 |
+| 档位 | 倍数 | 计费 | 售价 | 实际API成本 | 毛利率 |
 |------|------|------|------|-----------|--------|
-| Crystal 4x | 4x | 8 | $0.32 | $0.20 | 37.5% |
-| Crystal 10x | 10x | 20 | $0.80 | $1.60 | **50%** |
+| Crystal 4x | 4x | 12 积分 | $0.24 | $0.10~0.20 | **17%~58%** |
+| Crystal 10x | 10x | **$1.99/张** | $1.99 | $0.40~1.60 | **20%~80%** |
 
-> ⚠️ Crystal 10x 毛利率仅 50%，必须严格限制使用频率
+> Crystal 10x 不走积分制，单独定价 $1.99/张。积分制无法覆盖 $1.60 的 API 成本。
+
+**为什么 10x 不走积分**：
+- $1.60 的 API 成本，按 $0.02/积分需要 80 积分/张
+- 80 积分一张图 = 1000 积分包只能用 12 次，用户体验极差
+- 单独定价 $1.99/张更清晰：高端功能，按次付费
+
+**⚠️ 成本安全机制：原图长边 ≤ 1000px**
+
+限制原图长边 ≤ 1000px 后，所有输出像素和成本被锁死：
+
+Crystal 4x（长边 ≤ 1000px）：
+
+| 原图尺寸 | 4x 输出 | 输出MP | API成本 | 收入(12积分) | 利润 |
+|---------|---------|--------|---------|------------|------|
+| 1000×1000 | 4000×4000 | 16MP | $0.20 | $0.24 | +$0.04 ✅ |
+| 1000×750 | 4000×3000 | 12MP | $0.20 | $0.24 | +$0.04 ✅ |
+| 1000×500 | 4000×2000 | 8MP | $0.10 | $0.24 | +$0.14 ✅ |
+| 500×500 | 2000×2000 | 4MP | $0.05 | $0.24 | +$0.19 ✅ |
+
+Crystal 10x（长边 ≤ 1000px，$1.99/张）：
+
+| 原图尺寸 | 10x 输出 | 输出MP | API成本 | 收入 | 利润 |
+|---------|----------|--------|---------|------|------|
+| 1000×1000 | 10000×10000 | 100MP | $1.60 | $1.99 | +$0.39 ✅ |
+| 1000×750 | 10000×7500 | 75MP | $1.60 | $1.99 | +$0.39 ✅ |
+| 1000×500 | 10000×5000 | 50MP | $0.80 | $1.99 | +$1.19 ✅ |
+| 500×500 | 5000×5000 | 25MP | $0.40 | $1.99 | +$1.59 ✅ |
+
+> **结论：原图长边 ≤ 1000px 时，Crystal 4x 和 10x 在任何尺寸下都稳赚 ✅**
 
 **核心 Slogan**：
 > AI 真实还原人像细节，不锐化、不假脸
@@ -352,27 +387,40 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 - 海报、展览级输出
 - 高端付费用户
 
-**使用限制建议**：
+**使用限制**：
 - 仅对付费用户开放
-- Crystal 10x 建议每日限用 1-2 次
-- Crystal 4x 是主力推荐档位
+- **Crystal 系列统一限制原图长边 ≤ 1000px**（前端强制校验）
+- 超过限制 → 提示使用 Real-ESRGAN（支持 1440p 输入）
+- Crystal 10x 建议每日限用 3-5 次（防滥用）
 - 在前端明确标注"人像专用模型"
+
+**前端校验逻辑**：
+```typescript
+function validateCrystalInput(imageWidth: number, imageHeight: number): boolean {
+  const maxLongEdge = 1000
+  return Math.max(imageWidth, imageHeight) <= maxLongEdge
+}
+
+// 超出限制时的提示
+const CRYSTAL_SIZE_LIMIT_MSG =
+  "Crystal 超清模式仅支持 1000px 以内图片，如需更大尺寸请使用其他模型"
+```
 
 - **Replicate 调用示例**：
   ```typescript
-  // Crystal 4x（人像主力）
+  // Crystal 4x（人像主力，12 积分）
   const output = await replicate.run("philz1337x/crystal-upscaler", {
     input: {
       image: imageUrl,
-      upscale_factor: 4, // 推荐 4x，性价比最高
+      upscale_factor: 4,
     }
   })
 
-  // Crystal 10x（VIP极限）
+  // Crystal 10x（VIP极限，$1.99/张，不走积分）
   const output = await replicate.run("philz1337x/crystal-upscaler", {
     input: {
       image: imageUrl,
-      upscale_factor: 10, // VIP 档位，注意成本
+      upscale_factor: 10,
     }
   })
   ```
@@ -414,8 +462,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 **模型 5：（已合并到模型 3 Crystal Upscaler）**
 
 > Crystal 4x 和 Crystal 10x 现在统一为模型 3，通过 `upscale_factor` 参数区分档位。
-> - Crystal 4x：8 积分/张（成本 $0.20，毛利率 37.5%）
-> - Crystal 10x：20 积分/张（成本 $1.60，毛利率 50%）
+> - Crystal 4x：12 积分/张（走积分制，成本 $0.10-0.20）
+> - Crystal 10x：$1.99/张（不走积分，直接付费，成本 $0.40-1.60）
+> - Crystal 系列统一限制原图长边 ≤ 1000px
 
 ##### 3.3.0.3 智能模型选择算法
 
@@ -474,7 +523,7 @@ function selectModel(user: User, image: Image): Model {
     const creditMap = {
       'realesrgan': 1,
       'google-upscaler': 3,
-      'crystal': 8,       // 4x 默认，10x 需额外逻辑
+      'crystal': 12,      // 4x = 12积分；10x 不走积分，$1.99/张
       'recraft': 6,
     }
     return { model: user.modelPreference, credits: creditMap[user.modelPreference], reason: 'user-selected' }
@@ -485,7 +534,7 @@ function selectModel(user: User, image: Image): Model {
 
   // 人像场景 → Crystal（人像/面部/产品专精）
   if (imageType === 'portrait' || imageType === 'product') {
-    return { model: 'crystal', credits: 8, reason: 'portrait-optimized' }
+    return { model: 'crystal', credits: 12, reason: 'portrait-optimized' }
   }
 
   // 印刷场景 → Recraft
@@ -495,7 +544,7 @@ function selectModel(user: User, image: Image): Model {
 
   // 高分辨率需求 → Crystal 10x（VIP，成本高）
   if (image.width > 3000 || image.height > 3000 || user.qualityLevel === 'ultra') {
-    return { model: 'crystal', credits: 20, upscaleFactor: 10, reason: 'ultra-high-resolution' }
+    return { model: 'crystal', credits: 0, directPay: 1.99, upscaleFactor: 10, reason: 'ultra-high-resolution' }
   }
 
   // 默认基础档
@@ -580,9 +629,9 @@ function selectModel(user: User, image: Image): Model {
 实时监控面板：
 - Real-ESRGAN: ✓ 运行正常 (99.8% uptime) - 1积分/张 - 含人脸增强
 - Google Upscaler: ✓ 运行正常 (99.5% uptime) - 3积分/张
-- Crystal 4x: ✓ 运行正常 (99.2% uptime) - 8积分/张 - 4x≈16MP/$0.20 - 人像专精
+- Crystal 4x: ✓ 运行正常 (99.2% uptime) - 12积分/张 - 长边≤1000px - 人像专精
 - Recraft: ✓ 运行正常 (99.0% uptime) - 6积分/张 - $0.006/张超高性价比
-- Crystal 10x: ⚠️ 使用率低，控制并发 - 20积分/张 - 10x≈100MP/$1.60 - 毛利率仅50%
+- Crystal 10x: ⚠️ $1.99/张不走积分 - 长边≤1000px - 成本$0.40-1.60 - 毛利率20-80%
 ```
 
 ##### 3.3.0.6 模型优化策略

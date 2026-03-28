@@ -342,10 +342,10 @@ export default function Home() {
               <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">150+ DPI</span>
             </div>
             
-            {/* 8K 大幅 */}
+            {/* 10K 大幅 */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">🎨</div>
-              <h3 className="text-xs font-bold text-gray-900">8K/10K</h3>
+              <h3 className="text-xs font-bold text-gray-900">10K</h3>
               <p className="text-xs text-gray-500">Crystal 10x</p>
               <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">VIP 付费</span>
             </div>

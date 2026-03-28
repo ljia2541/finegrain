@@ -186,7 +186,7 @@ export default function Home() {
                   AI 真正恢复图像中的丢失细节，让照片看起来更自然、更真实。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  从缩略图到海报，从低清到 10K，保持清晰度
+                  从缩略图到高清，AI 真正恢复细节，不是滤镜
                 </p>
               </div>
               
@@ -258,10 +258,10 @@ export default function Home() {
                   珍贵记忆，清晰重现
                 </p>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  恢复模糊、泛黄的老照片，让珍贵的记忆永远清晰。
+                  恢复模糊的老照片，增强面部细节，让珍贵的记忆重新清晰。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  AI 智能修复噪点、划痕、褪色，重现昔日精彩瞬间
+                  Real-ESRGAN 模型修复模糊和压缩块，GFPGAN 增强面部细节
                 </p>
               </div>
             </div>
@@ -307,11 +307,11 @@ export default function Home() {
               {/* 右侧文字 */}
               <div className="flex-1 lg:text-left text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  4K/10K 超高清输出
+                  最高 4K 高清输出
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  支持最高 8K 分辨率（7680×4320），满足专业印刷 300 DPI 需求，
-                  让照片在海报、画册、展览等场景都清晰动人。
+                  免费版支持最高 4K 分辨率输出，满足日常高清需求。
+                  付费 Crystal 模型可输出最高 10K 超高清。
                 </p>
               </div>
             </div>
@@ -345,9 +345,9 @@ export default function Home() {
             {/* 8K 大幅 */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">🎨</div>
-              <h3 className="text-xs font-bold text-gray-900">8K</h3>
-              <p className="text-xs text-gray-500">7680×4320</p>
-              <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
+              <h3 className="text-xs font-bold text-gray-900">8K/10K</h3>
+              <p className="text-xs text-gray-500">Crystal 10x</p>
+              <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">VIP 付费</span>
             </div>
           </div>
           
@@ -448,8 +448,8 @@ export default function Home() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">优化并放大 AI art</h3>
-                <p className="text-gray-600 text-sm">Midjourney、Stable Diffusion 输出常需要二次清理</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">放大 AI 生成图片</h3>
+                <p className="text-gray-600 text-sm">Crystal 模型专为 AI 生成人像优化，自然放大无塑料感</p>
               </div>
             </div>
           </div>
@@ -461,8 +461,8 @@ export default function Home() {
               专业画质，不是滤镜
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              多数工具处理过度，容易出现塑料感皮肤、奇怪光晕和不真实的效果。
-              Finegrain 能恢复真实细节并自然校色。
+              多数工具处理过度，容易出现塑料感皮肤和不真实的效果。
+              Finegrain 使用 AI 真正恢复细节，保持自然真实。
             </p>
           </div>
           <Features />

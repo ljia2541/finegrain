@@ -4,19 +4,19 @@ const features = [
   {
     icon: Sparkles,
     title: '真实细节恢复',
-    description: 'AI 真正恢复图像中的丢失细节，修复模糊、压缩块和噪点，让照片看起来更自然、更真实。',
+    description: 'AI 真正恢复图像中的丢失细节，修复模糊和压缩块，不是简单锐化或滤镜。',
     gradient: 'from-blue-500 to-cyan-500'
   },
   {
     icon: ImageIcon,
     title: '超高清放大',
-    description: '支持 2x～10x 超分辨率放大，从缩略图到 4K 高清，保持清晰度。',
+    description: '支持 2x～10x 超分辨率放大，免费版可达 4K，Crystal 付费版可达 10K。',
     gradient: 'from-purple-500 to-pink-500'
   },
   {
     icon: CheckCircle,
     title: '人脸增强',
-    description: '内置 GFPGAN 人脸修复，智能恢复面部细节，适合老照片修复和人像精修。',
+    description: '内置 GFPGAN 人脸修复，恢复面部细节，自然真实无塑料感。人像专精 Crystal 效果更佳。',
     gradient: 'from-pink-500 to-rose-500'
   },
   {
@@ -33,8 +33,8 @@ const features = [
   },
   {
     icon: Clock,
-    title: '老照片修复',
-    description: 'AI 修复模糊、损坏的珍贵照片，恢复面部细节，让回忆重新清晰。',
+    title: '人像专精',
+    description: 'Crystal 模型专为真实人像优化，重建皮肤纹理和发丝，不改变人脸身份。',
     gradient: 'from-indigo-500 to-purple-500'
   },
 ]

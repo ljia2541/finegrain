@@ -23,13 +23,27 @@ const plans = [
     period: '起 $0.04/积分',
     features: [
       '无水印',
-      'Google/Crystal/Recraft 模型',
-      '最高 10K 分辨率',
+      'Crystal 人像专精 + Recraft 锐化',
+      '最高 4K 输出（积分模式）',
       '积分 6-12 个月有效',
       '优先处理',
     ],
     cta: '购买积分',
     highlighted: true,
+  },
+  {
+    name: 'Crystal 10x',
+    price: '$1.99',
+    period: '/张',
+    features: [
+      '最高 10K 超高清输出',
+      '人像专精，无塑料感',
+      '单独付费，不走积分',
+      '原图需 ≤ 1000px',
+      '适合人像精修、海报输出',
+    ],
+    cta: '立即使用',
+    highlighted: false,
   },
 ]
 
@@ -69,7 +83,7 @@ export default function Pricing() {
   return (
     <div>
       {/* Main Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.name}

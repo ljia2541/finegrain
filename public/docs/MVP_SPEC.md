@@ -69,9 +69,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 - **模型选择**：
   - 免费档：Real-ESRGAN（快速、稳定、带人脸增强）
   - 基础档：Google Upscaler（效果更好）
-  - 人像主力：Crystal 4x（人像/老照片专精）
+  - 人像主力：Crystal 4x（人像/面部/产品专精）
   - 印刷专业：Recraft（300DPI印刷级输出）
-  - VIP极限：Crystal 10x（顶级高清放大）
+  - VIP极限：Crystal 10x（顶级高清放大，VIP专属）
 - **增强参数**：
   - 放大倍率：2x, 4x
   - 噪声控制：低/中/高
@@ -135,9 +135,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 |------|------|------|------|---------|--------|------|
 | 免费档 | Real-ESRGAN | 1 | $0 | $0.002 | - | 无门槛体验，带人脸增强，拉新引流 |
 | 付费基础 | Google Upscaler | 3 | $0.12 | ~$0.0065 | ~94% | 效果更好，价格适中 |
-| 人像主力 | Crystal 4x | 8 | $0.32 | $0.08-0.15 | 53-75% | 人像/老照片核心卖点 |
-| 印刷专业 | Recraft | 6 | $0.24 | ~$0.045 | ~81% | 300DPI专业印刷输出 |
-| VIP极限 | Crystal 10x | 15 | $0.60 | ~$0.15 | ~75% | 顶级高清放大，控制使用率 |
+| 人像主力 | Crystal 4x | 8 | $0.32 | $0.05-0.10 | 69-84% | 人像/面部/产品专精，无塑料感 |
+| 印刷专业 | Recraft | 6 | $0.24 | ~$0.006 | ~97.5% | $6/千张，印刷级输出 |
+| VIP极限 | Crystal 10x | 15 | $0.60 | $0.20-0.80 | varies | 按输出像素阶梯计费，控制使用率 |
 
 **退款政策：**
 - 积分包购买后 7 天内未使用可全额退款
@@ -256,101 +256,129 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
   })
   ```
 
-**模型 3：Crystal 4x（人像主力档）**
+**模型 3：Crystal Upscaler（人像主力 + VIP极限）**
 
 基本信息：
 - **模型版本**：philz1337x/crystal-upscaler
-- **积分消耗**：8 积分/张
-- **处理时间**：10-20 秒/张（2K 图像）
-- **成本**：$0.08-0.15/张
-- **API成本毛利率**：53-75%
-- **分辨率支持**：最高 10K，4x/6x/10x 放大
-- **优势**：
-  - 人像专精，解决"塑料感皮肤"问题
-  - 面部细节还原自然
-  - 支持10K超高清输出
-  - 10倍速推理（比传统模型快10x）
-- **劣势**：
-  - 成本较高
-  - 主要针对人像优化，风景效果一般
-- **适用场景**：
-  - 人像精修（证件照、自拍、肖像）
-  - 老照片修复
-  - 高端付费用户
+- **定位**：VIP 专属人像模型，不做免费/基础档
+- **积分消耗**：Crystal 4x = 8 积分/张，Crystal 8x～10x = 15 积分/张
+- **处理时间**：10-20 秒/张（4x），20-40 秒/张（10x）
+- **分辨率支持**：1x～100x 缩放，实际可用 2x～10x，最高 10K 输出（无缝瓦片拼接）
+
+**真实核心功能**：
+- AI 真实重建皮肤纹理、发丝、五官细节（不是锐化滤镜）
+- 无塑料感、不改变人脸身份、不糊脸
+- 人像、面部、产品图专用优化
+- 10倍速推理（比传统模型快10x）
+- 适合 AI 生成人像（Midjourney / Stable Diffusion）
+
+**可宣传的功能**：
+- ✅ 真实细节恢复，不是简单滤镜锐化
+- ✅ AI 真正恢复丢失细节，自然真实
+- ✅ 最高 10 倍超高清放大，低清图 → 10K
+- ✅ 人像皮肤自然、不塑料、不改变人脸身份
+- ✅ 适合人像、面部、产品图、AI 绘图
+- ✅ 输出清晰，可用于海报、印刷、高清展示
+- ✅ 支持 4K/8K/10K 输出
+
+**不可夸大的点**：
+- ❌ 不擅长老照片修复（不处理划痕、泛黄、霉斑、破损）
+- ❌ 不擅长文字、Logo 极致锐利
+- ❌ 不做智能识别风景/人像自动切换
+- ❌ 不支持批量处理（Replicate 一次只能 1 张）
+- ❌ 不适合"512 百万像素"等夸张宣传
+
+**成本（按输出像素阶梯计费）**：
+
+| 输出像素范围 | 单价 | 折合人民币（≈） |
+|-------------|------|---------------|
+| 0～4MP | $0.05/张 | 0.36 元 |
+| 4～8MP | $0.10/张 | 0.72 元 |
+| 8～16MP | $0.20/张 | 1.44 元 |
+| 16～25MP | $0.40/张 | 2.88 元 |
+| 25～50MP | $0.80/张 | 5.76 元 |
+| 50～100MP | $1.60/张 | 11.52 元 |
+| 100～200MP+ | $3.20/张 | 23.04 元 |
+
+实际成本参考：
+- 4x 放大：大多落在 $0.05～$0.10/张
+- 8x～10x 放大：容易进入 $0.20/张以上
+- ⚠️ 这是高端付费模型，必须放在 VIP 档位
+
+**核心 Slogan**：
+> AI 真实还原人像细节，不锐化、不假脸
+> 从低清照片直出 10K 超高清人像大片
+
+**适用场景**：
+- 人像精修（证件照、自拍、肖像）
+- AI 生成人像放大（Midjourney / SD）
+- 电商产品图高清化
+- 海报、展览级输出
+- 高端付费用户
+
+**使用限制建议**：
+- 仅对付费用户开放
+- Crystal 10x 建议每日限用 1-2 次
+- 在前端明确标注"人像专用模型"
+
 - **Replicate 调用示例**：
   ```typescript
+  // Crystal 4x（人像主力）
   const output = await replicate.run("philz1337x/crystal-upscaler", {
     input: {
       image: imageUrl,
-      upscale_factor: 4, // 4x, 6x, or 10x
+      upscale_factor: 4, // 推荐 4x，性价比最高
+    }
+  })
+
+  // Crystal 10x（VIP极限）
+  const output = await replicate.run("philz1337x/crystal-upscaler", {
+    input: {
+      image: imageUrl,
+      upscale_factor: 10, // VIP 档位，注意成本
     }
   })
   ```
 
-**模型 4：Recraft（印刷专业档）**
+**模型 4：Recraft Crisp Upscale（印刷专业档）**
 
 基本信息：
 - **模型版本**：recraft-ai/recraft-crisp-upscale
 - **积分消耗**：6 积分/张
-- **处理时间**：15-25 秒/张（2K 图像）
-- **成本**：~$0.045/张
-- **API成本毛利率**：~81%
-- **分辨率支持**：300DPI 印刷级输出
+- **处理时间**：~9 秒/张
+- **成本**：$0.006/张（$6/千张，≈ 0.043 元/张）
+- **API成本毛利率**：~97.5%
+- **分辨率支持**：AI 自动决定输出大小，无需指定倍率
+- **输入限制**：最大 10MB
 - **优势**：
-  - 专业印刷级输出
-  - 色彩精准，边缘清晰
-  - 适合海报、画册、包装设计
+  - 极致性价比（$0.006/张）
+  - 官方维护（Official 模型），稳定性高（230 万次运行）
+  - Warm 状态（热启动，响应快）
+  - 让图像更锐利、更清晰，适合 Web 和印刷
 - **劣势**：
+  - 只有一个输入参数 `image`，无法控制放大倍率
   - 非人像专精
-  - 放大倍数有限
+  - 没有 README 文档，参数需从 Playground 推断
 - **适用场景**：
-  - 电商产品目录
-  - 印刷品设计
-  - 需要 300DPI 输出的专业场景
+  - 电商产品图锐化
+  - Web 图片清晰化
+  - 印刷素材准备
+  - 性价比优先的付费用户
 - **Replicate 调用示例**：
   ```typescript
   const output = await replicate.run("recraft-ai/recraft-crisp-upscale", {
     input: {
       image: imageUrl,
+      // 注意：无其他参数，模型自动处理
     }
   })
   ```
 
-**模型 5：Crystal 10x（VIP极限档）**
+**模型 5：（已合并到模型 3 Crystal Upscaler）**
 
-基本信息：
-- **模型版本**：philz1337x/crystal-upscaler（10x 模式）
-- **积分消耗**：15 积分/张
-- **处理时间**：20-40 秒/张（2K 图像）
-- **成本**：~$0.15/张
-- **API成本毛利率**：~75%
-- **分辨率支持**：最高 10K+，10x 放大
-- **优势**：
-  - 极限高清放大，支持 10K+ 输出
-  - 人像/风景均适用
-  - 细节重建极致
-  - 解决竞品（如 Let's Enhance）16x 的高端需求
-- **劣势**：
-  - 成本最高
-  - 处理时间较长
-  - 需要控制使用率避免亏损
-- **适用场景**：
-  - VIP 用户极致需求
-  - 海报、展览级输出
-  - 专业摄影师高端后期
-- **使用限制建议**：
-  - 仅对付费用户开放
-  - 每日限用 1-2 次
-  - 不放在首页主推
-- **Replicate 调用示例**：
-  ```typescript
-  const output = await replicate.run("philz1337x/crystal-upscaler", {
-    input: {
-      image: imageUrl,
-      upscale_factor: 10, // 10x mode
-    }
-  })
-  ```
+> Crystal 4x 和 Crystal 10x 现在统一为模型 3，通过 `upscale_factor` 参数区分档位。
+> - Crystal 4x：8 积分/张（人像主力）
+> - Crystal 10x：15 积分/张（VIP极限）
 
 ##### 3.3.0.3 智能模型选择算法
 
@@ -409,9 +437,8 @@ function selectModel(user: User, image: Image): Model {
     const creditMap = {
       'realesrgan': 1,
       'google-upscaler': 3,
-      'crystal-4x': 8,
+      'crystal': 8,       // 4x 默认，10x 需额外逻辑
       'recraft': 6,
-      'crystal-10x': 15
     }
     return { model: user.modelPreference, credits: creditMap[user.modelPreference], reason: 'user-selected' }
   }
@@ -419,9 +446,9 @@ function selectModel(user: User, image: Image): Model {
   // 智能选择
   const imageType = classifyImageType(image)
 
-  // 人像场景 → Crystal 4x
-  if (imageType === 'portrait' || imageType === 'oldphoto') {
-    return { model: 'crystal-4x', credits: 8, reason: 'portrait-optimized' }
+  // 人像场景 → Crystal（人像/面部/产品专精）
+  if (imageType === 'portrait' || imageType === 'product') {
+    return { model: 'crystal', credits: 8, reason: 'portrait-optimized' }
   }
 
   // 印刷场景 → Recraft
@@ -429,9 +456,9 @@ function selectModel(user: User, image: Image): Model {
     return { model: 'recraft', credits: 6, reason: 'print-professional' }
   }
 
-  // 高分辨率需求 → Crystal 10x
+  // 高分辨率需求 → Crystal（upscale_factor 动态调整）
   if (image.width > 3000 || image.height > 3000 || user.qualityLevel === 'ultra') {
-    return { model: 'crystal-10x', credits: 15, reason: 'ultra-high-resolution' }
+    return { model: 'crystal', credits: 15, upscaleFactor: 10, reason: 'ultra-high-resolution' }
   }
 
   // 默认基础档
@@ -460,9 +487,10 @@ function selectModel(user: User, image: Image): Model {
       ↓
 当前模型是？
   ├─ Crystal 10x → 降级到 Crystal 4x
-  ├─ Crystal 4x → 降级到 Google Upscaler
+  ├─ Crystal 4x → 降级到 Recraft
+  ├─ Recraft → 降级到 Google Upscaler
   ├─ Google Upscaler → 降级到 Real-ESRGAN
-  └─ Real-ESRGAN → 全部失败，返回错误
+  └─ Google Upscaler → 降级到 Real-ESRGAN
       ↓
 降级模型调用
   ↓
@@ -515,9 +543,9 @@ function selectModel(user: User, image: Image): Model {
 实时监控面板：
 - Real-ESRGAN: ✓ 运行正常 (99.8% uptime) - 1积分/张 - 含人脸增强
 - Google Upscaler: ✓ 运行正常 (99.5% uptime) - 3积分/张
-- Crystal 4x: ✓ 运行正常 (99.2% uptime) - 8积分/张
-- Recraft: ✓ 运行正常 (99.0% uptime) - 6积分/张
-- Crystal 10x: ⚠️ 使用率低，控制并发 - 15积分/张
+- Crystal 4x: ✓ 运行正常 (99.2% uptime) - 8积分/张 - 人像专精
+- Recraft: ✓ 运行正常 (99.0% uptime) - 6积分/张 - $0.006/张超高性价比
+- Crystal 10x: ⚠️ 使用率低，控制并发 - 15积分/张 - 按像素阶梯计费
 ```
 
 ##### 3.3.0.6 模型优化策略
@@ -635,26 +663,22 @@ async function setCache(cacheKey: string, resultUrl: string): Promise<void> {
 ```typescript
 function calculateCost(model: Model, resolution: Resolution): number {
   const baseCosts = {
-    'realesrgan': 0.002,     // $0.002/张 ($2/1000张)
+    'realesrgan': 0.002,      // $0.002/张 ($2/1000张)
     'google-upscaler': 0.0065, // ~$0.0065/张
-    'crystal-4x': 0.08,       // $0.08-0.15/张
-    'crystal-10x': 0.15,    // ~$0.15/张
-    'recraft': 0.045,       // ~$0.045/张
+    'crystal': 0.05,          // Crystal 基础，按输出像素阶梯调整
+    'recraft': 0.006,         // $0.006/张 ($6/1000张)
   }
 
-  // Crystal 模型按输出分辨率调整
-  if (model === 'crystal-10x') {
+  // Crystal 模型按输出像素阶梯计费
+  if (model === 'crystal') {
     const mp = (resolution.width * resolution.height) / 1000000
-    if (mp > 50) return 0.25  // 极高分辨率
-    if (mp > 20) return 0.20  // 高分辨率
-    return 0.15  // 标准
-  }
-
-  if (model === 'crystal-4x') {
-    const mp = (resolution.width * resolution.height) / 1000000
-    if (mp > 20) return 0.12
-    if (mp > 10) return 0.10
-    return 0.08
+    if (mp > 100) return 3.20  // 100-200MP+
+    if (mp > 50) return 1.60   // 50-100MP
+    if (mp > 25) return 0.80   // 25-50MP
+    if (mp > 16) return 0.40   // 16-25MP
+    if (mp > 8) return 0.20    // 8-16MP
+    if (mp > 4) return 0.10    // 4-8MP
+    return 0.05                 // 0-4MP
   }
 
   return baseCosts[model] || 0.01
@@ -906,7 +930,7 @@ POST /api/enhance
 Request:
 {
   "imageId": "uuid",
-  "model": "realesrgan" | "crystal" | "recraft",
+  "model": "realesrgan" | "crystal" | "recraft" | "google-upscaler",
   "scale": 2 | 4,
   "noiseLevel": "low" | "medium" | "high"
 }

@@ -571,12 +571,13 @@ function selectModel(user: User, image: Image): Model {
   ├─ 否 → 成功，返回结果
   └─ 是 → 启动降级
       ↓
-当前模型是？
-  ├─ Crystal 10x → 降级到 Crystal 4x
-  ├─ Crystal 4x → 降级到 Recraft
-  ├─ Recraft → 降级到 Google Upscaler
-  ├─ Google Upscaler → 降级到 Real-ESRGAN
-  └─ Google Upscaler → 降级到 Real-ESRGAN
+当前模式是？
+  ├─ 付费 10x 模式 → Crystal 10x → 降级到 Crystal 4x
+  └─ 积分模式 → 按画质从高到低：
+      ├─ Crystal 4x → 降级到 Recraft
+      ├─ Recraft → 降级到 Google Upscaler
+      ├─ Google Upscaler → 降级到 Real-ESRGAN
+      └─ Real-ESRGAN → 全部失败，返回错误
       ↓
 降级模型调用
   ↓
@@ -589,17 +590,43 @@ function selectModel(user: User, image: Image): Model {
 通知运维团队
 ```
 
+**输入尺寸自动路由**：
+
+```
+用户上传图片
+  ↓
+检查原图长边
+  ├─ ≤ 1000px → 可用 Crystal 系列
+  └─ > 1000px → 自动排除 Crystal，走积分模式降级链：
+      ├─ Recraft → Google Upscaler → Real-ESRGAN
+      └─ 提示："Crystal 超清模式仅支持 1000px 以内图片，已自动切换模型"
+```
+
 **用户体验优化**：
 ```typescript
-// 降级时返回友好提示
+// 积分模式降级时返回友好提示
 {
   "success": true,
   "imageUrl": "https://...",
-  "creditsUsed": 3, // 自动调整积分
+  "creditsUsed": 3, // 自动调整积分（降级后模型积分更少则退差额）
   "warnings": [
     {
       "type": "model_fallback",
-      "message": "Primary model (Crystal) unavailable. Used backup model (Google). Credits adjusted."
+      "message": "Primary model (Crystal 4x) unavailable. Used backup (Recraft). Credits adjusted."
+    }
+  ]
+}
+
+// 付费 10x 降级到积分 4x 时，退款差额
+// 10x 付了 $1.99 → 4x 只需 12 积分($0.24) → 退还 $1.75 或等值积分
+{
+  "success": true,
+  "imageUrl": "https://...",
+  "creditsUsed": 0,
+  "warnings": [
+    {
+      "type": "model_fallback",
+      "message": "Crystal 10x unavailable, used Crystal 4x instead. Refunded $1.75 as credits."
     }
   ]
 }

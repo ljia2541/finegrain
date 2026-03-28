@@ -67,7 +67,7 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 #### 3.1.3 图像增强
 - **功能描述**：使用 AI 模型增强图像质量
 - **模型选择**：
-  - 免费档：Real-ESRGAN（快速、稳定）
+  - 免费档：Real-ESRGAN（快速、稳定、带人脸增强）
   - 基础档：Google Upscaler（效果更好）
   - 人像主力：Crystal 4x（人像/老照片专精）
   - 印刷专业：Recraft（300DPI印刷级输出）
@@ -117,7 +117,7 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 1. **免费版**
    - 价格：$0
    - 额度：3 张/天
-   - 模型：Real-ESRGAN
+   - 模型：Real-ESRGAN（含人脸增强）
    - 限制：最大 1920x1080 分辨率，带水印
 
 2. **积分制**
@@ -133,7 +133,7 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 
 | 档位 | 模型 | 积分 | 售价 | API成本 | 毛利率 | 说明 |
 |------|------|------|------|---------|--------|------|
-| 免费档 | Real-ESRGAN | 1 | $0 | $0.0025 | - | 无门槛体验，拉新引流 |
+| 免费档 | Real-ESRGAN | 1 | $0 | $0.002 | - | 无门槛体验，带人脸增强，拉新引流 |
 | 付费基础 | Google Upscaler | 3 | $0.12 | ~$0.0065 | ~94% | 效果更好，价格适中 |
 | 人像主力 | Crystal 4x | 8 | $0.32 | $0.08-0.15 | 53-75% | 人像/老照片核心卖点 |
 | 印刷专业 | Recraft | 6 | $0.24 | ~$0.045 | ~81% | 300DPI专业印刷输出 |
@@ -183,30 +183,46 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 **模型 1：Real-ESRGAN（免费档）**
 
 基本信息：
-- **模型版本**：xinntao/realesrgan:v4.0.0
+- **模型版本**：nightmareai/real-esrgan
 - **积分消耗**：1 积分/张
 - **处理时间**：5-10 秒/张（2K 图像）
-- **成本**：$0.0025/张
+- **成本**：$0.002/张（$2 / 1000 张输出，≈ 0.015 元/张）
 - **API成本毛利率**：免费引流（用户付0积分）
-- **分辨率支持**：最高 4K（2x/4x 放大）
+- **分辨率支持**：2x～10x 放大，输入上限建议 1440p，输出可达 4K
+- **真实功能**：
+  - 超分辨率放大（2x～10x）
+  - GFPGAN 人脸增强（可选开启）
+  - 修复模糊、压缩块、轻微噪点
+  - 支持真实照片 + 动漫图像双模式
+- **可宣传的功能**：
+  - ✅ 真实细节恢复
+  - ✅ 人脸增强
+  - ✅ 老照片修复
+  - ✅ 4K 级别输出
+- **不可夸大的点**：
+  - ❌ 不适合极致 10K 超大图（应引导至 Crystal 10x）
+  - ❌ 不适合印刷级文字 / Logo 锐利度（应引导至 Recraft）
 - **优势**：
   - 处理速度快，适合批量处理
   - 稳定性高，故障率 < 0.1%
+  - 带人脸增强（GFPGAN），免费档即可处理人像
   - 支持动漫/真实图像双模式
 - **劣势**：
-  - 细节恢复较保守
-  - 4x 放大效果不如 Crystal
+  - 细节恢复较保守，不如 Crystal 自然
+  - 4x 以上放大效果不如 Crystal
+  - 输入上限建议 1440p，超大图需要先裁剪
 - **适用场景**：
   - 免费用户快速体验
+  - 老照片修复（带人脸增强）
   - 低分辨率图像（< 1080p）
   - 批量处理（用户上传多张）
 - **Replicate 调用示例**：
   ```typescript
-  const output = await replicate.run("xinntao/realesrgan:v4.0.0", {
+  const output = await replicate.run("nightmareai/real-esrgan", {
     input: {
       image: imageUrl,
-      scale: 2, // 2x or 4x
-      face_enhance: false,
+      scale: 2, // 2x, 4x, 6x, 8x, 10x
+      face_enhance: true, // 开启 GFPGAN 人脸增强
     }
   })
   ```
@@ -353,6 +369,7 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
       ↓
 分析图像特征（预处理）
   ├─ 动漫风格 → Real-ESRGAN-Anime 模式
+  ├─ 真实照片 + 含人脸 → Real-ESRGAN（开启 face_enhance）
   ├─ 真实照片 + 高质量 → HAT（质量优先）
   ├─ 真实照片 + 噪声多 → NAFNet（降噪优先）
   └─ 低分辨率（< 1080p）→ Real-ESRGAN（快速）
@@ -382,9 +399,9 @@ Finegrain 是一个基于 AI 的在线图像增强服务，专注于细节修复
 **模型选择代码示例**：
 ```typescript
 function selectModel(user: User, image: Image): Model {
-  // 免费用户默认 Real-ESRGAN
+  // 免费用户默认 Real-ESRGAN（含人脸增强）
   if (user.subscription === 'free') {
-    return { model: 'realesrgan', credits: 1, reason: 'free-user-default' }
+    return { model: 'realesrgan', credits: 1, faceEnhance: true, reason: 'free-user-default' }
   }
 
   // 用户手动选择（按档位）
@@ -496,7 +513,7 @@ function selectModel(user: User, image: Image): Model {
 **监控面板**（可选）：
 ```
 实时监控面板：
-- Real-ESRGAN: ✓ 运行正常 (99.8% uptime) - 1积分/张
+- Real-ESRGAN: ✓ 运行正常 (99.8% uptime) - 1积分/张 - 含人脸增强
 - Google Upscaler: ✓ 运行正常 (99.5% uptime) - 3积分/张
 - Crystal 4x: ✓ 运行正常 (99.2% uptime) - 8积分/张
 - Recraft: ✓ 运行正常 (99.0% uptime) - 6积分/张
@@ -618,7 +635,7 @@ async function setCache(cacheKey: string, resultUrl: string): Promise<void> {
 ```typescript
 function calculateCost(model: Model, resolution: Resolution): number {
   const baseCosts = {
-    'realesrgan': 0.0025,    // $0.0025/张
+    'realesrgan': 0.002,     // $0.002/张 ($2/1000张)
     'google-upscaler': 0.0065, // ~$0.0065/张
     'crystal-4x': 0.08,       // $0.08-0.15/张
     'crystal-10x': 0.15,    // ~$0.15/张
@@ -695,7 +712,7 @@ async function trackUsage(cost: number) {
 #### 3.3.2 API 服务
 - **推理服务**：Replicate API
 - **模型调用**：
-  - Real-ESRGAN：$0.001-0.003/张
+  - Real-ESRGAN：$0.002/张（$2/1000张）
   - HAT/NAFNet：$0.003-0.005/张
 - **队列管理**：处理并发请求，避免超时
 - **智能路由**：根据用户画像自动选择模型
@@ -889,7 +906,7 @@ POST /api/enhance
 Request:
 {
   "imageId": "uuid",
-  "model": "realesrgan" | "hat",
+  "model": "realesrgan" | "crystal" | "recraft",
   "scale": 2 | 4,
   "noiseLevel": "low" | "medium" | "high"
 }

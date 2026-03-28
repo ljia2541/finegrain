@@ -9,8 +9,8 @@ const plans = [
     period: '永久免费',
     features: [
       '3 张/天',
-      'Real-ESRGAN 模型',
-      '最大 1920x1080 分辨率',
+      'Real-ESRGAN + 人脸增强',
+      '最高 4K 分辨率',
       '带水印',
       '24 小时自动删除',
     ],

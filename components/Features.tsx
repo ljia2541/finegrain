@@ -4,19 +4,25 @@ const features = [
   {
     icon: Sparkles,
     title: '真实细节恢复',
-    description: '不是简单的滤镜或锐化，AI 真正恢复图像中的丢失细节，让照片看起来更自然、更真实。',
+    description: 'AI 真正恢复图像中的丢失细节，修复模糊、压缩块和噪点，让照片看起来更自然、更真实。',
     gradient: 'from-blue-500 to-cyan-500'
   },
   {
     icon: ImageIcon,
-    title: '8x 超高清放大',
-    description: '最高支持 10 倍超分辨率放大，从缩略图到海报，从低清到 10K，保持清晰度。',
+    title: '超高清放大',
+    description: '支持 2x～10x 超分辨率放大，从缩略图到 4K 高清，保持清晰度。',
     gradient: 'from-purple-500 to-pink-500'
   },
   {
+    icon: CheckCircle,
+    title: '人脸增强',
+    description: '内置 GFPGAN 人脸修复，智能恢复面部细节，适合老照片修复和人像精修。',
+    gradient: 'from-pink-500 to-rose-500'
+  },
+  {
     icon: Zap,
-    title: '快速批量处理',
-    description: '一次处理最多 20 张图片，适用于电商产品目录、摄影师批量后期等场景。',
+    title: '快速处理',
+    description: '基于云端 AI 模型，5-10 秒完成增强，无需等待，无需本地安装任何软件。',
     gradient: 'from-orange-500 to-red-500'
   },
   {
@@ -27,15 +33,9 @@ const features = [
   },
   {
     icon: Clock,
-    title: '实时处理',
-    description: '基于云端 AI 模型，快速处理您的图片，无需等待，无需本地安装任何软件。',
+    title: '老照片修复',
+    description: 'AI 修复模糊、损坏的珍贵照片，恢复面部细节，让回忆重新清晰。',
     gradient: 'from-indigo-500 to-purple-500'
-  },
-  {
-    icon: CheckCircle,
-    title: '智能优化',
-    description: 'AI 会根据图片内容自动选择最佳处理方案，人像、产品、风景各有侧重。',
-    gradient: 'from-teal-500 to-cyan-500'
   },
 ]
 

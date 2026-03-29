@@ -384,7 +384,7 @@ export default function Home() {
             <div className="bg-gradient-to-b from-amber-50 to-orange-50 rounded-lg p-2 shadow border-2 border-amber-300 text-center">
               <div className="text-xl mb-1">🔥</div>
               <h3 className="text-xs font-bold text-gray-900">10K</h3>
-              <p className="text-xs text-gray-500">Crystal 人像 10x</p>
+              <p className="text-xs text-gray-500">Crystal 人像 10x · 10K 超清</p>
               <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">$3.99</span>
             </div>
           </div>

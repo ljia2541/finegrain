@@ -199,6 +199,9 @@ export default function Home() {
                 <p className="text-gray-500 mt-4 text-sm">
                   从缩略图到高清，AI 真正恢复细节，不是滤镜
                 </p>
+                <p className="text-gray-500 mt-2 text-sm">
+                  适合人像、产品图、设计稿，保留真实质感，不做过度美化
+                </p>
               </div>
               
               {/* 右侧图片（并排） */}
@@ -222,11 +225,22 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* 10x 付费入口 */}
+            <div className="px-8 pb-6">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
+                <span className="text-2xl">🔥</span>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">极致 10x 超清人像 · 单次付费 $3.99</p>
+                  <p className="text-xs text-gray-600">10 倍极限放大，人像细节拉满，适合证件照 / 写真（不走积分）</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 老照片修复示例 */}
+      {/* 老照片清晰化示例 */}
       <section className="py-6 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
@@ -236,24 +250,28 @@ export default function Home() {
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
                   <img 
                     src="/examples/oldphoto_original.jpg" 
-                    alt="修复前" 
+                    alt="清晰化前" 
                     className="w-full aspect-square object-cover"
                     style={{ 
                       filter: 'grayscale(100%) sepia(60%) blur(0.5px) contrast(90%) brightness(85%)'
                     }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">修复前</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">清晰化前</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg ring-2 ring-orange-200">
                   <img 
                     src="/examples/oldphoto_enhanced.jpg" 
-                    alt="修复后" 
+                    alt="清晰化后" 
                     className="w-full aspect-square object-cover"
                     style={{ 
                       filter: 'contrast(105%) saturate(110%)'
                     }}
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">修复后 ✨</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">清晰化后 ✨</span>
+                </div>
+                {/* 不修复划痕/泛黄提示 */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-500 bg-white/80 backdrop-blur-sm px-2 py-1 rounded">
+                  仅优化清晰度，不修复划痕/泛黄
                 </div>
               </div>
 
@@ -262,14 +280,14 @@ export default function Home() {
                 <div className="flex items-center gap-2 justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
                   <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
-                    老照片修复
+                    老照片清晰化
                   </span>
                 </div>
                 <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-4">
                   珍贵记忆，清晰重现
                 </p>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  恢复模糊的老照片，增强面部细节，让珍贵的记忆重新清晰。
+                  修复模糊与压缩块，优化面部细节，让老照片更清晰。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
                   Real-ESRGAN 模型修复模糊和压缩块，GFPGAN 增强面部细节

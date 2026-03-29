@@ -99,7 +99,7 @@ export default function Home() {
             <div className="p-8 pb-4">
               <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span>4x 超高清 • 人脸增强 • 24小时删除</span>
+                <span>4x 超高清 • 人像细节优化 • 24小时删除</span>
               </div>
             </div>
             
@@ -155,8 +155,19 @@ export default function Home() {
                 人像照片增强
               </h3>
               <p className="text-gray-600">
-                低分辨率人像 → 高清修复（4x 放大 + 人脸增强）
+                低分辨率人像 → 高清修复（4x 放大 + 人像细节优化）
               </p>
+            </div>
+
+            {/* 10x 付费入口 */}
+            <div className="px-8 pb-8">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
+                <span className="text-2xl">🔥</span>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">极致 10x 超清人像</p>
+                  <p className="text-xs text-gray-600">支持 10 倍极限放大，人像细节拉满 · 单次付费 $3.99（不走积分）</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

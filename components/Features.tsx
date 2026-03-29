@@ -15,8 +15,8 @@ const features = [
   },
   {
     icon: CheckCircle,
-    title: '人脸增强',
-    description: '内置 GFPGAN 人脸修复，恢复面部细节，自然真实无塑料感。人像专精 Crystal 效果更佳。',
+    title: '人像细节优化',
+    description: '优化面部细节和皮肤纹理，自然真实无塑料感。人像专精 Crystal 效果更佳。',
     gradient: 'from-pink-500 to-rose-500'
   },
   {

@@ -40,7 +40,7 @@ export function validateCrystalInput(imageWidth: number, imageHeight: number): {
 /**
  * Crystal 10x 单次付费价格（不走积分）
  */
-export const CRYSTAL_10X_PRICE = 1.99 // USD
+export const CRYSTAL_10X_PRICE = 3.99 // USD
 
 /**
  * Crystal 4x 积分消耗

@@ -33,7 +33,7 @@ const plans = [
   },
   {
     name: 'Crystal 10x',
-    price: '$1.99',
+    price: '$3.99',
     period: '/张',
     features: [
       '最高 10K 超高清输出',

@@ -129,7 +129,7 @@ export default function Pricing() {
       {/* Credit Packages - Visual Cards */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
         <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 批量购买更优惠</h3>
-        <p className="text-center text-gray-600 mb-8">每档单价对比，让你"感觉赚翻"！</p>
+        <p className="text-center text-gray-600 mb-8">每档单价对比，批量购买更划算</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {creditPackages.map((pkg) => (
@@ -163,11 +163,11 @@ export default function Pricing() {
                 </div>
               </div>
 
-              <div className="text-center text-sm text-gray-500 mb-4">
-                {pkg.description}
+              <div className="text-center text-sm text-blue-700 font-semibold mb-4">
+                ✅ 推荐 · {pkg.description}
               </div>
 
-              <div className="text-center text-sm text-gray-600">
+              <div className="text-center text-sm text-gray-800 font-medium">
                 有效期：{pkg.credits >= 500 ? '12 个月' : '6 个月'}
               </div>
             </div>

@@ -7,7 +7,7 @@ export default function PrivacyNotice() {
         <Lock className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-blue-900 mb-3">
-            🔒 Privacy First: 您的隐私是我们的首要任务
+            🔒 Privacy First — 您的隐私是我们的首要任务
           </h3>
           <div className="space-y-2 text-sm text-blue-800">
             <p>
@@ -26,7 +26,7 @@ export default function PrivacyNotice() {
       <div className="mt-4 flex items-start gap-4 bg-yellow-50 border border-yellow-200 rounded p-3">
         <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-yellow-900">
-          <strong>⚠️ 重要提示：</strong>请在 24 小时内下载您的增强图片，之后它们将被自动删除且无法恢复。
+          <strong>⚠️ 重要提示：</strong>请在 24 小时内下载您的增强图片，之后它们将被自动删除且无法恢复，请及时备份。
         </p>
       </div>
     </div>

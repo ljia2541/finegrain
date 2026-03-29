@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { enhanceImageAsync, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, CRYSTAL_4X_CREDITS } from '@/lib/replicate'
+import { enhanceImageAsync, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, CRYSTAL_4X_CREDITS, GOOGLE_UPSCALER_CREDITS } from '@/lib/replicate'
 
 export const runtime = 'nodejs'
 
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证模型选择
-    const validModels = ['crystal', 'realesrgan', 'recraft']
+    const validModels = ['crystal', 'realesrgan', 'recraft', 'google']
     if (!validModels.includes(model)) {
       return NextResponse.json(
         { error: `Invalid model. Supported: ${validModels.join(', ')}` },
@@ -43,8 +43,18 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证放大倍率 (2, 4, 6, 8, 10)
-    // Recraft 不需要 scale 参数
-    if (model !== 'recraft') {
+    // Recraft 和 Google 不需要 scale 参数（或仅支持 2x/4x）
+    if (model === 'recraft') {
+      // Recraft 无 scale 参数，跳过
+    } else if (model === 'google') {
+      const validScales = [2, 4]
+      if (!validScales.includes(scale)) {
+        return NextResponse.json(
+          { error: `Google Upscaler only supports 2x and 4x. Got: ${scale}x` },
+          { status: 400 }
+        )
+      }
+    } else {
       const validScales = [2, 4, 6, 8, 10]
       if (!validScales.includes(scale)) {
         return NextResponse.json(
@@ -94,6 +104,8 @@ export async function POST(request: NextRequest) {
       } else {
         billing = { type: 'credits', credits: CRYSTAL_4X_CREDITS }
       }
+    } else if (model === 'google') {
+      billing = { type: 'credits', credits: GOOGLE_UPSCALER_CREDITS }
     }
 
     return NextResponse.json({

@@ -7,7 +7,7 @@ const replicate = new Replicate({
 /**
  * 支持的模型类型
  */
-export type ModelType = 'crystal' | 'realesrgan' | 'recraft'
+export type ModelType = 'crystal' | 'realesrgan' | 'recraft' | 'google'
 
 /**
  * 放大倍率选项
@@ -48,6 +48,11 @@ export const CRYSTAL_10X_PRICE = 3.99 // USD
 export const CRYSTAL_4X_CREDITS = 15
 
 /**
+ * Google Upscaler 积分消耗
+ */
+export const GOOGLE_UPSCALER_CREDITS = 3
+
+/**
  * 图片增强接口
  */
 export interface EnhanceOptions {
@@ -82,6 +87,14 @@ const MODEL_CONFIG = {
     supportsScale: false as const, // 无倍率参数，模型自动决定
     maxLongEdge: null, // 无明确限制（10MB 文件大小限制）
     credits: { 2: 6, 4: 6, 6: 6, 8: 6, 10: 6 },
+  },
+  google: {
+    id: 'google/upscaler',
+    displayName: 'Google Upscaler',
+    supportsScale: true as const,
+    maxLongEdge: null, // 10MB 文件大小限制
+    credits: { 2: GOOGLE_UPSCALER_CREDITS, 4: GOOGLE_UPSCALER_CREDITS },
+    supportedScales: [2, 4] as const, // 仅支持 2x 和 4x
   },
 } as const
 
@@ -120,6 +133,12 @@ export async function enhanceImage(options: EnhanceOptions) {
       input = {
         image,
         // Recraft 无其他参数
+      }
+    } else if (model === 'google') {
+      modelVersion = MODEL_CONFIG.google.id
+      input = {
+        image,
+        upscale_factor: scale === 2 ? 'x2' : 'x4',
       }
     } else {
       throw new Error(`Unknown model: ${model}`)
@@ -182,6 +201,12 @@ export async function enhanceImageAsync(options: EnhanceOptions) {
       modelVersion = MODEL_CONFIG.recraft.id
       input = {
         image,
+      }
+    } else if (model === 'google') {
+      modelVersion = MODEL_CONFIG.google.id
+      input = {
+        image,
+        upscale_factor: scale === 2 ? 'x2' : 'x4',
       }
     } else {
       throw new Error(`Unknown model: ${model}`)

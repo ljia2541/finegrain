@@ -213,7 +213,7 @@ export default function Home() {
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">原图</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
@@ -321,7 +321,7 @@ export default function Home() {
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.9)' }}
                   />
-                  <span className="absolute bottom-1 left-1 text-xs text-white bg-black/60 px-1.5 py-0.5 rounded">普通</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">普通</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow ring-2 ring-blue-200">
                   <img 
@@ -329,7 +329,7 @@ export default function Home() {
                     alt="增强后" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-1 right-1 text-xs text-white bg-blue-600/80 px-1.5 py-0.5 rounded">300 DPI</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">300 DPI</span>
                   {/* 局部放大镜效果 */}
                   <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden bg-blue-100">
                     <img 
@@ -432,7 +432,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">适用于电商</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🛒 适用于电商</h3>
                 <p className="text-gray-600 text-sm">为你的产品目录自动化图像增强</p>
               </div>
             </div>
@@ -459,8 +459,8 @@ export default function Home() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">任意尺寸都可印刷</h3>
-                <p className="text-gray-600 text-sm">低分辨率图片一打印就会糊</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🖨️ 放大后可支持专业印刷</h3>
+                <p className="text-gray-600 text-sm">低分辨率图片放大后可支持清晰印刷</p>
               </div>
             </div>
             
@@ -486,8 +486,8 @@ export default function Home() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">放大 AI 生成图片</h3>
-                <p className="text-gray-600 text-sm">Crystal 模型专为 AI 生成人像优化，自然放大无塑料感</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🎨 放大 AI 生成图片</h3>
+                <p className="text-gray-600 text-sm">Crystal 模型专为 AI 生成人像优化，自然放大无塑料感，保留真实质感</p>
               </div>
             </div>
           </div>

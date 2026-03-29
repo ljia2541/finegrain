@@ -45,7 +45,7 @@ export const CRYSTAL_10X_PRICE = 3.99 // USD
 /**
  * Crystal 4x 积分消耗
  */
-export const CRYSTAL_4X_CREDITS = 12
+export const CRYSTAL_4X_CREDITS = 15
 
 /**
  * 图片增强接口

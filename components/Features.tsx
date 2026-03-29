@@ -10,7 +10,7 @@ const features = [
   {
     icon: ImageIcon,
     title: '超高清放大',
-    description: '支持 2x～10x 超分辨率放大，免费版可达 4K，Crystal 付费版可达 10K。',
+    description: '支持 2x～10x 超分辨率放大，免费版支持最高 4K 尺寸显示，Crystal 付费版支持人像 10K 极限输出。',
     gradient: 'from-purple-500 to-pink-500'
   },
   {
@@ -34,7 +34,7 @@ const features = [
   {
     icon: Clock,
     title: '人像专精',
-    description: 'Crystal 模型专为真实人像优化，重建皮肤纹理和发丝，不改变人脸身份。',
+    description: 'Crystal 模型专为真实人像优化，重建皮肤纹理与发丝，保留原生人脸身份。搭配 10x 超清放大，适合证件照、写真等专业场景。',
     gradient: 'from-indigo-500 to-purple-500'
   },
 ]

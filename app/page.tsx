@@ -500,7 +500,7 @@ export default function Home() {
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               多数工具处理过度，容易出现塑料感皮肤和不真实的效果。
-              Finegrain 使用 AI 真正恢复细节，保持自然真实。
+              Finegrain Image Enhancer 使用 AI 真正恢复细节，保持自然真实。
             </p>
           </div>
           <Features />

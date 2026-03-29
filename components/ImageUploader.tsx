@@ -32,6 +32,11 @@ export default function ImageUploader() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (e.target.files && e.target.files[0]) {
+      if (e.target.files.length > 1) {
+        alert('当前仅支持单张图片上传')
+        e.target.value = ''
+        return
+      }
       handleFile(e.target.files[0])
     }
   }
@@ -101,7 +106,7 @@ export default function ImageUploader() {
             </h3>
             
             <p className="text-gray-600 mb-4 text-sm">
-              或者点击选择文件 • 最多 20 张 • 最高 512 百万像素
+              或者点击选择文件 • 单张上传 • 支持常见手机/相机照片
             </p>
             
             <div className="flex items-center gap-2 mb-6 text-xs text-gray-500">
@@ -117,6 +122,7 @@ export default function ImageUploader() {
               id="file-upload"
               className="hidden"
               accept="image/jpeg,image/png,image/webp,image/heic,image/avif"
+              multiple
               onChange={handleChange}
             />
             <label
@@ -134,6 +140,13 @@ export default function ImageUploader() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             <span>24 小时自动删除 • 加密处理 • 不存储用户图片</span>
+          </div>
+
+          {/* Crystal 模式尺寸提示 */}
+          <div className="mt-2 text-center">
+            <p className="text-xs text-amber-600">
+              💡 Crystal 人像模式仅支持 1000px 以内长边图片
+            </p>
           </div>
         </div>
       ) : (

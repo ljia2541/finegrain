@@ -330,6 +330,15 @@ export default function Home() {
                     className="w-full aspect-square object-cover"
                   />
                   <span className="absolute bottom-1 right-1 text-xs text-white bg-blue-600/80 px-1.5 py-0.5 rounded">300 DPI</span>
+                  {/* 局部放大镜效果 */}
+                  <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden bg-blue-100">
+                    <img 
+                      src="/examples/print_enhanced.jpg" 
+                      alt="细节" 
+                      className="w-full h-full object-cover"
+                      style={{ transform: 'scale(3)', objectPosition: '30% 40%' }}
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -339,8 +348,8 @@ export default function Home() {
                   最高 4K 高清输出
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  免费版支持最高 4K 分辨率输出，满足日常高清需求。
-                  付费 Crystal 模型可输出最高 10K 超高清。
+                  免费版支持最高 4K 尺寸显示，满足日常高清需求。
+                  付费 Crystal 模型支持人像 10K 极限输出。
                 </p>
               </div>
             </div>
@@ -368,15 +377,15 @@ export default function Home() {
               <div className="text-xl mb-1">🖼️</div>
               <h3 className="text-xs font-bold text-gray-900">海报</h3>
               <p className="text-xs text-gray-500">4K</p>
-              <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">150+ DPI</span>
+              <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">≥ 150 DPI</span>
             </div>
             
             {/* 10K 大幅 */}
-            <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
-              <div className="text-xl mb-1">🎨</div>
+            <div className="bg-gradient-to-b from-amber-50 to-orange-50 rounded-lg p-2 shadow border-2 border-amber-300 text-center">
+              <div className="text-xl mb-1">🔥</div>
               <h3 className="text-xs font-bold text-gray-900">10K</h3>
-              <p className="text-xs text-gray-500">Crystal 10x</p>
-              <span className="bg-green-100 text-green-700 text-xs px-1.5 py-0.5 rounded-full">VIP 付费</span>
+              <p className="text-xs text-gray-500">Crystal 人像 10x</p>
+              <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">$3.99</span>
             </div>
           </div>
           

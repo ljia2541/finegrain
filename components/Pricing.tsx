@@ -25,7 +25,7 @@ const plans = [
       '无水印',
       'Crystal 人像专精 + Recraft 细节恢复',
       '最高 4K 尺寸显示（积分模式）',
-      '积分 6-12 个月有效',
+      '积分 30-180 天有效',
       '优先处理',
     ],
     cta: '购买积分',
@@ -53,14 +53,16 @@ const creditPackages = [
     price: '$4.99',
     perCredit: '$0.049',
     savings: '',
-    description: '适合偶尔使用'
+    description: '适合偶尔使用，30天内轻松用完',
+    validity: '30 天',
   },
   {
     credits: 200,
     price: '$7.99',
     perCredit: '$0.04',
     savings: '省 18%',
-    description: '超高性价比',
+    description: '超高性价比，满足日常图片增强',
+    validity: '30 天',
     highlighted: true
   },
   {
@@ -68,14 +70,16 @@ const creditPackages = [
     price: '$12.99',
     perCredit: '$0.026',
     savings: '省 47%',
-    description: '大量使用首选'
+    description: '大量使用首选，适合项目创作',
+    validity: '180 天',
   },
   {
     credits: 1000,
     price: '$19.99',
     perCredit: '$0.02',
     savings: '省 59%',
-    description: '极致优惠'
+    description: '极致优惠，适合高频专业用户',
+    validity: '180 天',
   },
 ]
 
@@ -167,8 +171,8 @@ export default function Pricing() {
                 ✅ 推荐 · {pkg.description}
               </div>
 
-              <div className="text-center text-sm text-gray-800 font-medium">
-                有效期：{pkg.credits >= 500 ? '12 个月' : '6 个月'}
+              <div className="text-center text-sm text-orange-600 font-semibold">
+                有效期：{pkg.validity}
               </div>
             </div>
           ))}

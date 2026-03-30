@@ -171,6 +171,7 @@ export default function EnhancePage({
           imageWidth,
           imageHeight,
         }),
+        signal: AbortSignal.timeout(5 * 60 * 1000), // 5 分钟超时
       })
 
       const data = await res.json()
@@ -188,7 +189,11 @@ export default function EnhancePage({
       setPhase('result')
     } catch (err) {
       clearInterval(interval)
-      setError('网络错误，请重试。')
+      if (err instanceof DOMException && err.name === 'TimeoutError') {
+        setError('处理超时，请重试或换一张更小的图片。')
+      } else {
+        setError('网络错误，请检查网络连接后重试。')
+      }
       setPhase('preview')
     }
   }

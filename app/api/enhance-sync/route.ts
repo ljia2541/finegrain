@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, CRYSTAL_4X_CREDITS, GOOGLE_UPSCALER_CREDITS } from '@/lib/replicate'
 
 export const runtime = 'nodejs'
+// Vercel Hobby plan: max 60s, Pro: max 300s
+// Replicate can take 30-120s for some models
+export const maxDuration = 300
 
 export async function POST(request: NextRequest) {
   try {

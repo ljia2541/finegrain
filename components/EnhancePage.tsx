@@ -42,6 +42,7 @@ export default function EnhancePage({
   const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [imageBase64, setImageBase64] = useState<string | null>(null)
   const [imageWidth, setImageWidth] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
@@ -107,6 +108,7 @@ export default function EnhancePage({
     const reader = new FileReader()
     reader.onloadend = () => {
       setPreview(reader.result as string)
+      setImageBase64(reader.result as string)
     }
     reader.readAsDataURL(file)
 
@@ -134,41 +136,59 @@ export default function EnhancePage({
   }
 
   const handleProcess = async () => {
-    if (!selectedFile) return
+    if (!selectedFile || !imageBase64) return
 
     setPhase('processing')
     setProcessingProgress(0)
 
-    // Simulate progress
+    // 模拟进度到 80%
     const interval = setInterval(() => {
       setProcessingProgress(prev => {
-        if (prev >= 90) {
+        if (prev >= 80) {
           clearInterval(interval)
-          return 90
+          return 80
         }
-        return prev + Math.random() * 15
+        return prev + Math.random() * 12
       })
     }, 500)
 
     try {
-      // TODO: 实现真实的增强 API 调用
-      // const formData = new FormData()
-      // formData.append('image', selectedFile)
-      // formData.append('model', selectedModel.id)
-      // formData.append('scale', String(selectedScale))
-      // const res = await fetch('/api/enhance', { method: 'POST', body: formData })
-      // const data = await res.json()
-      // setResultUrl(data.imageUrl)
+      // 模型 ID 映射
+      let apiModel = selectedModel.id
+      let apiScale = selectedScale
+      if (apiModel === 'crystal10x') {
+        apiModel = 'crystal'
+        apiScale = 10
+      }
 
-      // 模拟处理完成
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      const res = await fetch('/api/enhance-sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageBase64,
+          model: apiModel,
+          scale: apiScale,
+          imageWidth,
+          imageHeight,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        clearInterval(interval)
+        setError(data.error || '增强处理失败，请重试。')
+        setPhase('preview')
+        return
+      }
+
       clearInterval(interval)
       setProcessingProgress(100)
-      setResultUrl(preview) // 演示：使用原图作为结果
+      setResultUrl(data.imageUrl)
       setPhase('result')
     } catch (err) {
       clearInterval(interval)
-      setError('处理失败，请重试。')
+      setError('网络错误，请重试。')
       setPhase('preview')
     }
   }
@@ -177,6 +197,7 @@ export default function EnhancePage({
     setPhase('upload')
     setSelectedFile(null)
     setPreview(null)
+    setImageBase64(null)
     setImageWidth(0)
     setImageHeight(0)
     setError(null)

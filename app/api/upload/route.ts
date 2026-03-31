@@ -63,7 +63,14 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Upload error:', error)
-    const msg = error instanceof Error ? error.message : String(error)
+    let msg = 'Unknown error'
+    if (error instanceof Error) {
+      msg = error.message
+    } else if (typeof error === 'object' && error !== null) {
+      msg = JSON.stringify(error)
+    } else {
+      msg = String(error)
+    }
     return NextResponse.json(
       { error: `Upload failed: ${msg}` },
       { status: 500 }

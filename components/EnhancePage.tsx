@@ -140,7 +140,6 @@ export default function EnhancePage({
     setPhase('processing')
     setProcessingProgress(0)
 
-    // 模拟进度到 30%（上传阶段）
     const interval = setInterval(() => {
       setProcessingProgress(prev => {
         if (prev >= 80) {
@@ -152,26 +151,43 @@ export default function EnhancePage({
     }, 500)
 
     try {
-      // 步骤 1：上传到 COS（FormData 二进制，不 base64）
-      const formData = new FormData()
-      formData.append('file', selectedFile)
-
-      const uploadRes = await fetch('/api/upload', {
+      // 步骤 1：获取 COS 预签名上传 URL（请求体极小，只有文件名）
+      const presignRes = await fetch('/api/presign', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: selectedFile.name,
+          contentType: selectedFile.type,
+        }),
       })
 
-      const uploadData = await uploadRes.json()
-      if (!uploadRes.ok || !uploadData.success) {
+      const presignData = await presignRes.json()
+      if (!presignRes.ok || !presignData.success) {
         clearInterval(interval)
-        setError(uploadData.error || '图片上传失败，请重试。')
+        setError(presignData.error || '获取上传凭证失败，请重试。')
         setPhase('preview')
         return
       }
 
-      setProcessingProgress(30) // 上传完成，进入增强阶段
+      setProcessingProgress(15)
 
-      // 步骤 2：调 enhance API（只传 URL，请求体极小）
+      // 步骤 2：直接 PUT 上传到 COS（绕过 Vercel 4.5MB 限制）
+      const uploadRes = await fetch(presignData.uploadUrl, {
+        method: 'PUT',
+        body: selectedFile,
+        headers: { 'Content-Type': selectedFile.type },
+      })
+
+      if (!uploadRes.ok) {
+        clearInterval(interval)
+        setError('图片上传失败，请重试。')
+        setPhase('preview')
+        return
+      }
+
+      setProcessingProgress(30)
+
+      // 步骤 3：调 enhance API（只传 COS 下载 URL，请求体极小）
       let apiModel = selectedModel.id
       let apiScale = selectedScale
       if (apiModel === 'crystal10x') {
@@ -183,13 +199,13 @@ export default function EnhancePage({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          imageUrl: uploadData.imageUrl,
+          imageUrl: presignData.downloadUrl,
           model: apiModel,
           scale: apiScale,
           imageWidth,
           imageHeight,
         }),
-        signal: AbortSignal.timeout(5 * 60 * 1000), // 5 分钟超时
+        signal: AbortSignal.timeout(5 * 60 * 1000),
       })
 
       const data = await res.json()

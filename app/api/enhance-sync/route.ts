@@ -9,14 +9,12 @@ export const maxDuration = 300
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { imageBase64, model = 'realesrgan', scale = 4, imageWidth, imageHeight, faceEnhance = false } = body
+    const { imageUrl, model = 'realesrgan', scale = 4, imageWidth, imageHeight, faceEnhance = false } = body
 
-    if (!imageBase64) {
-      return NextResponse.json({ error: 'imageBase64 is required' }, { status: 400 })
+    // imageUrl 是 COS 签名 URL
+    if (!imageUrl) {
+      return NextResponse.json({ error: 'imageUrl is required' }, { status: 400 })
     }
-
-    // 确保 base64 有 data URI 前缀
-    const imageData = imageBase64.startsWith('data:') ? imageBase64 : `data:image/png;base64,${imageBase64}`
 
     // 验证模型
     const validModels = ['crystal', 'realesrgan', 'recraft', 'google']
@@ -41,9 +39,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 调用同步增强（等待完成）
+    // 调用同步增强（等待完成）— imageUrl 直接传给 Replicate
     const result = await enhanceImage({
-      image: imageData,
+      image: imageUrl,
       model,
       scale: model === 'recraft' ? 4 : scale,
       faceEnhance,

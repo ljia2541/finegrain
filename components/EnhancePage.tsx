@@ -42,7 +42,7 @@ export default function EnhancePage({
   const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
-  const [imageBase64, setImageBase64] = useState<string | null>(null)
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [imageWidth, setImageWidth] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
@@ -108,7 +108,6 @@ export default function EnhancePage({
     const reader = new FileReader()
     reader.onloadend = () => {
       setPreview(reader.result as string)
-      setImageBase64(reader.result as string)
     }
     reader.readAsDataURL(file)
 
@@ -136,24 +135,43 @@ export default function EnhancePage({
   }
 
   const handleProcess = async () => {
-    if (!selectedFile || !imageBase64) return
+    if (!selectedFile) return
 
     setPhase('processing')
     setProcessingProgress(0)
 
-    // 模拟进度到 80%
+    // 模拟进度到 30%（上传阶段）
     const interval = setInterval(() => {
       setProcessingProgress(prev => {
         if (prev >= 80) {
           clearInterval(interval)
           return 80
         }
-        return prev + Math.random() * 12
+        return prev + Math.random() * 8
       })
     }, 500)
 
     try {
-      // 模型 ID 映射
+      // 步骤 1：上传到 COS（FormData 二进制，不 base64）
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const uploadData = await uploadRes.json()
+      if (!uploadRes.ok || !uploadData.success) {
+        clearInterval(interval)
+        setError(uploadData.error || '图片上传失败，请重试。')
+        setPhase('preview')
+        return
+      }
+
+      setProcessingProgress(30) // 上传完成，进入增强阶段
+
+      // 步骤 2：调 enhance API（只传 URL，请求体极小）
       let apiModel = selectedModel.id
       let apiScale = selectedScale
       if (apiModel === 'crystal10x') {
@@ -165,7 +183,7 @@ export default function EnhancePage({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          imageBase64,
+          imageUrl: uploadData.imageUrl,
           model: apiModel,
           scale: apiScale,
           imageWidth,
@@ -202,7 +220,7 @@ export default function EnhancePage({
     setPhase('upload')
     setSelectedFile(null)
     setPreview(null)
-    setImageBase64(null)
+    setUploadedImageUrl(null)
     setImageWidth(0)
     setImageHeight(0)
     setError(null)

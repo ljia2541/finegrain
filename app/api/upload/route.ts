@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { uploadToCos, getSignedUrl } from '@/lib/cos'
 
 export const runtime = 'nodejs'
 
 /**
  * POST /api/upload
- * 上传图片到 R2
+ * 上传图片到 COS，返回签名 URL
  */
 export async function POST(request: NextRequest) {
   try {
@@ -45,14 +46,17 @@ export async function POST(request: NextRequest) {
     const ext = file.name.split('.').pop() || 'jpg'
     const filename = `${timestamp}-${random}.${ext}`
 
-    // TODO: 上传到 R2
-    // 目前返回模拟数据
-    const imageUrl = `/uploads/${filename}`
+    // 上传到 COS
+    const { key } = await uploadToCos(buffer, filename, file.type)
+
+    // 返回签名 URL（2小时有效，足够 Replicate 处理 + 用户下载）
+    const signedUrl = getSignedUrl(key, 7200)
 
     return NextResponse.json({
       success: true,
       imageId: `${timestamp}-${random}`,
-      imageUrl,
+      imageUrl: signedUrl,
+      cosKey: key,
       filename,
       size: file.size,
       type: file.type,

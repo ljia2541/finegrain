@@ -135,7 +135,7 @@ export default function EnhancePage({
   }
 
   const handleProcess = async () => {
-    if (!selectedFile) return
+    if (!selectedFile || !preview) return
 
     setPhase('processing')
     setProcessingProgress(0)
@@ -151,13 +151,48 @@ export default function EnhancePage({
     }, 500)
 
     try {
+      // 检查像素是否超过 Replicate 限制（约 200 万像素）
+      // Real-ESRGAN 限制 ~2M 像素，Crystal 限制 ~1448x1448
+      const MAX_PIXELS = maxLongEdge ? maxLongEdge * maxLongEdge : 2_000_000
+      let fileToUpload: File = selectedFile
+      let uploadWidth = imageWidth
+      let uploadHeight = imageHeight
+
+      if (imageWidth * imageHeight > MAX_PIXELS) {
+        // 用 canvas 压缩到限制以内
+        const scale = Math.sqrt(MAX_PIXELS / (imageWidth * imageHeight))
+        const newWidth = Math.round(imageWidth * scale)
+        const newHeight = Math.round(imageHeight * scale)
+
+        const canvas = document.createElement('canvas')
+        canvas.width = newWidth
+        canvas.height = newHeight
+        const ctx = canvas.getContext('2d')
+        if (!ctx) throw new Error('Canvas not supported')
+
+        const img = new Image()
+        await new Promise<void>((resolve, reject) => {
+          img.onload = () => resolve()
+          img.onerror = () => reject(new Error('图片加载失败'))
+          img.src = preview
+        })
+        ctx.drawImage(img, 0, 0, newWidth, newHeight)
+
+        const blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((b) => resolve(b!), 'image/jpeg', 0.92)
+        })
+        fileToUpload = new File([blob], selectedFile.name, { type: 'image/jpeg' })
+        uploadWidth = newWidth
+        uploadHeight = newHeight
+      }
+
       // 步骤 1：获取 COS 预签名上传 URL（请求体极小，只有文件名）
       const presignRes = await fetch('/api/presign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          filename: selectedFile.name,
-          contentType: selectedFile.type,
+          filename: fileToUpload.name,
+          contentType: fileToUpload.type,
         }),
       })
 
@@ -174,8 +209,8 @@ export default function EnhancePage({
       // 步骤 2：直接 PUT 上传到 COS（绕过 Vercel 4.5MB 限制）
       const uploadRes = await fetch(presignData.uploadUrl, {
         method: 'PUT',
-        body: selectedFile,
-        headers: { 'Content-Type': selectedFile.type },
+        body: fileToUpload,
+        headers: { 'Content-Type': fileToUpload.type },
       })
 
       if (!uploadRes.ok) {
@@ -202,8 +237,8 @@ export default function EnhancePage({
           imageUrl: presignData.downloadUrl,
           model: apiModel,
           scale: apiScale,
-          imageWidth,
-          imageHeight,
+          imageWidth: uploadWidth,
+          imageHeight: uploadHeight,
         }),
         signal: AbortSignal.timeout(5 * 60 * 1000),
       })

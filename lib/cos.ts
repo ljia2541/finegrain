@@ -8,6 +8,9 @@ const cos = new COS({
 const BUCKET = process.env.TENCENT_COS_BUCKET || ''
 const REGION = process.env.TENCENT_COS_REGION || 'na-siliconvalley'
 
+// COS SDK 需要带前缀的 region 格式
+const COS_REGION = REGION.startsWith('cos.') ? REGION : `${REGION}`
+
 /**
  * 上传文件到 COS
  */

@@ -16,6 +16,7 @@ const plans = [
     ],
     cta: '立即试用',
     highlighted: false,
+    action: 'free',
   },
   {
     name: '积分包',
@@ -30,6 +31,7 @@ const plans = [
     ],
     cta: '购买积分',
     highlighted: true,
+    action: 'credits',
   },
   {
     name: 'Crystal 10x',
@@ -44,6 +46,7 @@ const plans = [
     ],
     cta: '立即使用',
     highlighted: false,
+    action: 'crystal10x',
   },
 ]
 
@@ -99,6 +102,7 @@ const subscriptionPlans = [
     ],
     cta: '订阅 Pro',
     highlighted: false,
+    planId: 'pro',
   },
   {
     name: 'Max',
@@ -115,6 +119,7 @@ const subscriptionPlans = [
     ],
     cta: '订阅 Max',
     highlighted: true,
+    planId: 'max',
   },
   {
     name: 'Ultra',
@@ -131,10 +136,34 @@ const subscriptionPlans = [
     ],
     cta: '订阅 Ultra',
     highlighted: false,
+    planId: 'ultra',
   },
 ]
 
 export default function Pricing() {
+  const handlePurchase = async (planType: string, planId: string) => {
+    if (planType === 'free') return
+
+    try {
+      const res = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planType, planId }),
+      })
+
+      const data = await res.json()
+
+      if (data.success && data.approvalUrl) {
+        window.location.href = data.approvalUrl
+      } else {
+        alert('支付创建失败：' + (data.error || '未知错误'))
+      }
+    } catch (error) {
+      console.error('Payment error:', error)
+      alert('支付请求失败，请稍后重试')
+    }
+  }
+
   return (
     <div>
       {/* Main Pricing Cards */}
@@ -169,6 +198,7 @@ export default function Pricing() {
               ))}
             </ul>
             <button
+              onClick={() => handlePurchase(plan.action, 'default')}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
                 plan.highlighted
                   ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -213,7 +243,7 @@ export default function Pricing() {
 
               <div className="text-center mb-4">
                 <div className="text-sm text-gray-600">{plan.credits} 积分/月</div>
-                <div className="text-sm text-green-600 font-semibold">年付 ${plan.yearlyPrice}/月，省 25%</div>
+                <div className="text-sm text-green-600 font-semibold">年付 {plan.yearlyPrice}/月，省 25%</div>
               </div>
 
               <ul className="space-y-2 mb-6 text-sm">
@@ -226,13 +256,15 @@ export default function Pricing() {
               </ul>
 
               <button
+                onClick={() => alert('月订阅功能即将上线，请先使用积分包')}
                 className={`w-full py-3 rounded-lg font-semibold transition-colors text-sm ${
                   plan.highlighted
-                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700 opacity-70'
+                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200 opacity-70'
                 }`}
+                disabled
               >
-                {plan.cta}
+                {plan.cta} 🚧 即将上线
               </button>
             </div>
           ))}
@@ -280,9 +312,16 @@ export default function Pricing() {
                 ✅ 推荐 · {pkg.description}
               </div>
 
-              <div className="text-center text-sm text-orange-600 font-semibold">
+              <div className="text-center text-sm text-orange-600 font-semibold mb-4">
                 有效期：{pkg.validity}
               </div>
+
+              <button
+                onClick={() => handlePurchase('credits', String(pkg.credits))}
+                className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-colors"
+              >
+                购买
+              </button>
             </div>
           ))}
         </div>

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import { Menu, X, LogOut } from 'lucide-react'
+import { Menu, X, LogOut, User } from 'lucide-react'
 
 const navItems = [
   { label: '免费增强', href: '/enhance/free' },
@@ -64,7 +64,7 @@ export default function Header() {
               <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
             ) : session?.user ? (
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
+                <Link href="/dashboard" className="flex items-center space-x-2 hover:bg-gray-50 rounded-lg px-2 py-1 transition-colors">
                   {session.user.image && (
                     <img
                       src={session.user.image}
@@ -76,7 +76,8 @@ export default function Header() {
                   <span className="text-sm text-gray-700 max-w-[120px] truncate">
                     {session.user.name}
                   </span>
-                </div>
+                  <User className="w-4 h-4 text-gray-400" />
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="text-gray-400 hover:text-red-500 transition-colors"
@@ -136,8 +137,12 @@ export default function Header() {
                   <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
                 </div>
               ) : session?.user ? (
-                <div className="px-3 py-2.5 flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div className="px-3 py-2.5 space-y-2">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
+                  >
                     {session.user.image && (
                       <img
                         src={session.user.image}
@@ -146,16 +151,18 @@ export default function Header() {
                         referrerPolicy="no-referrer"
                       />
                     )}
-                    <span className="text-sm text-gray-700">{session.user.name}</span>
-                  </div>
+                    <span>{session.user.name}</span>
+                    <User className="w-4 h-4 text-gray-400" />
+                  </Link>
                   <button
                     onClick={() => {
                       handleSignOut()
                       setMobileOpen(false)
                     }}
-                    className="text-sm text-red-500 hover:text-red-600"
+                    className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-gray-50"
                   >
-                    退出登录
+                    <LogOut className="w-4 h-4" />
+                    <span>退出登录</span>
                   </button>
                 </div>
               ) : (

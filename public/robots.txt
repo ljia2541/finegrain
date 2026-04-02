@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.finegrainimageenhancer.com/sitemap.xml
+
+# Block API routes
+User-agent: *
+Disallow: /api/
+Disallow: /payment/

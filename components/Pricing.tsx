@@ -19,13 +19,13 @@ const plans = [
   },
   {
     name: '积分包',
-    price: '$7.99',
-    period: '起 $0.04/积分',
+    price: '$5.99',
+    period: '起 $0.03-0.059/积分',
     features: [
       '无水印',
       'Crystal 人像专精 + Recraft 细节恢复',
       '最高 4K 尺寸显示（积分模式）',
-      '积分 30-180 天有效',
+      '积分 90-180 天有效',
       '优先处理',
     ],
     cta: '购买积分',
@@ -50,36 +50,87 @@ const plans = [
 const creditPackages = [
   {
     credits: 100,
-    price: '$4.99',
-    perCredit: '$0.049',
+    price: '$5.99',
+    perCredit: '$0.059',
     savings: '',
-    description: '适合偶尔使用，30天内轻松用完',
-    validity: '30 天',
+    description: '适合偶尔使用，轻松体验付费功能',
+    validity: '90 天',
   },
   {
     credits: 200,
-    price: '$7.99',
-    perCredit: '$0.04',
-    savings: '省 18%',
+    price: '$9.99',
+    perCredit: '$0.05',
+    savings: '省 15%',
     description: '超高性价比，满足日常图片增强',
-    validity: '30 天',
-    highlighted: true
+    validity: '90 天',
+    highlighted: true,
   },
   {
     credits: 500,
-    price: '$12.99',
-    perCredit: '$0.026',
-    savings: '省 47%',
+    price: '$19.99',
+    perCredit: '$0.04',
+    savings: '省 32%',
     description: '大量使用首选，适合项目创作',
     validity: '180 天',
   },
   {
     credits: 1000,
-    price: '$19.99',
-    perCredit: '$0.02',
-    savings: '省 59%',
+    price: '$29.99',
+    perCredit: '$0.03',
+    savings: '省 49%',
     description: '极致优惠，适合高频专业用户',
     validity: '180 天',
+  },
+]
+
+const subscriptionPlans = [
+  {
+    name: 'Pro',
+    monthlyPrice: '$7.99',
+    yearlyPrice: '$5.99',
+    credits: 200,
+    perCredit: '$0.04',
+    period: '月',
+    features: [
+      '每月 200 积分自动到账',
+      '用完即止，下月重置',
+      '无水印 + 优先处理',
+      '所有付费模型可用',
+    ],
+    cta: '订阅 Pro',
+    highlighted: false,
+  },
+  {
+    name: 'Max',
+    monthlyPrice: '$14.99',
+    yearlyPrice: '$11.99',
+    credits: 500,
+    perCredit: '$0.03',
+    period: '月',
+    features: [
+      '每月 500 积分自动到账',
+      '用完即止，下月重置',
+      '无水印 + 优先处理',
+      '所有付费模型可用',
+    ],
+    cta: '订阅 Max',
+    highlighted: true,
+  },
+  {
+    name: 'Ultra',
+    monthlyPrice: '$24.99',
+    yearlyPrice: '$19.99',
+    credits: 1000,
+    perCredit: '$0.025',
+    period: '月',
+    features: [
+      '每月 1000 积分自动到账',
+      '用完即止，下月重置',
+      '无水印 + 优先处理',
+      '所有付费模型可用',
+    ],
+    cta: '订阅 Ultra',
+    highlighted: false,
   },
 ]
 
@@ -131,9 +182,9 @@ export default function Pricing() {
       </div>
 
       {/* Credit Packages - Visual Cards */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
-        <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 批量购买更优惠</h3>
-        <p className="text-center text-gray-600 mb-8">每档单价对比，批量购买更划算</p>
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 mb-12">
+        <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 按需购买，灵活使用</h3>
+        <p className="text-center text-gray-600 mb-8">积分不过期快，适合偶尔使用或囤货慢慢用</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {creditPackages.map((pkg) => (
@@ -177,7 +228,64 @@ export default function Pricing() {
             </div>
           ))}
         </div>
+      </div>
 
+      {/* Monthly Subscriptions */}
+      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-8">
+        <h3 className="text-3xl font-bold text-center mb-2">🔄 月订阅 - 每月自动到账更划算</h3>
+        <p className="text-center text-gray-600 mb-8">固定用量选订阅，比积分包更便宜，随时取消</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {subscriptionPlans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`bg-white rounded-lg shadow-md p-6 relative transition-transform hover:scale-105 ${
+                plan.highlighted ? 'ring-2 ring-indigo-600 shadow-xl' : ''
+              }`}
+            >
+              {plan.highlighted && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    最受欢迎
+                  </span>
+                </div>
+              )}
+
+              <div className="text-center mb-4 mt-2">
+                <div className="text-2xl font-bold text-indigo-600 mb-1">{plan.name}</div>
+              </div>
+
+              <div className="text-center mb-2">
+                <div className="text-4xl font-bold text-gray-900">{plan.monthlyPrice}</div>
+                <div className="text-gray-500">/月</div>
+              </div>
+
+              <div className="text-center mb-4">
+                <div className="text-sm text-gray-600">{plan.credits} 积分/月</div>
+                <div className="text-sm text-green-600 font-semibold">年付 ${plan.yearlyPrice}/月，省 25%</div>
+              </div>
+
+              <ul className="space-y-2 mb-6 text-sm">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                className={`w-full py-3 rounded-lg font-semibold transition-colors text-sm ${
+                  plan.highlighted
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                }`}
+              >
+                {plan.cta}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

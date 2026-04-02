@@ -181,57 +181,8 @@ export default function Pricing() {
         ))}
       </div>
 
-      {/* Credit Packages - Visual Cards */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 mb-12">
-        <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 按需购买，灵活使用</h3>
-        <p className="text-center text-gray-600 mb-8">积分不过期快，适合偶尔使用或囤货慢慢用</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {creditPackages.map((pkg) => (
-            <div
-              key={pkg.credits}
-              className={`bg-white rounded-lg shadow-md p-6 relative transition-transform hover:scale-105 ${
-                pkg.highlighted ? 'ring-2 ring-blue-600 shadow-xl' : ''
-              }`}
-            >
-              {pkg.savings && (
-                <div className="absolute -top-3 -right-3">
-                  <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    🔥 {pkg.savings}
-                  </span>
-                </div>
-              )}
-              
-              <div className="text-center mb-4">
-                <div className="text-4xl font-bold text-blue-600 mb-1">{pkg.credits}</div>
-                <div className="text-gray-600">积分</div>
-              </div>
-              
-              <div className="text-center mb-4">
-                <div className="text-3xl font-bold text-gray-900">{pkg.price}</div>
-              </div>
-
-              <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-1">每积分单价</div>
-                  <div className="text-2xl font-bold text-blue-700">{pkg.perCredit}</div>
-                </div>
-              </div>
-
-              <div className="text-center text-sm text-blue-700 font-semibold mb-4">
-                ✅ 推荐 · {pkg.description}
-              </div>
-
-              <div className="text-center text-sm text-orange-600 font-semibold">
-                有效期：{pkg.validity}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Monthly Subscriptions */}
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-8">
+      {/* Monthly Subscriptions - FIRST */}
+      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-8 mb-12">
         <h3 className="text-3xl font-bold text-center mb-2">🔄 月订阅 - 每月自动到账更划算</h3>
         <p className="text-center text-gray-600 mb-8">固定用量选订阅，比积分包更便宜，随时取消</p>
         
@@ -283,6 +234,55 @@ export default function Pricing() {
               >
                 {plan.cta}
               </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Credit Packages - SECOND */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
+        <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 按需购买，灵活使用</h3>
+        <p className="text-center text-gray-600 mb-8">积分不过期快，适合偶尔使用或囤货慢慢用</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {creditPackages.map((pkg) => (
+            <div
+              key={pkg.credits}
+              className={`bg-white rounded-lg shadow-md p-6 relative transition-transform hover:scale-105 ${
+                pkg.highlighted ? 'ring-2 ring-blue-600 shadow-xl' : ''
+              }`}
+            >
+              {pkg.savings && (
+                <div className="absolute -top-3 -right-3">
+                  <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                    🔥 {pkg.savings}
+                  </span>
+                </div>
+              )}
+              
+              <div className="text-center mb-4">
+                <div className="text-4xl font-bold text-blue-600 mb-1">{pkg.credits}</div>
+                <div className="text-gray-600">积分</div>
+              </div>
+              
+              <div className="text-center mb-4">
+                <div className="text-3xl font-bold text-gray-900">{pkg.price}</div>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                <div className="text-center">
+                  <div className="text-sm text-gray-600 mb-1">每积分单价</div>
+                  <div className="text-2xl font-bold text-blue-700">{pkg.perCredit}</div>
+                </div>
+              </div>
+
+              <div className="text-center text-sm text-blue-700 font-semibold mb-4">
+                ✅ 推荐 · {pkg.description}
+              </div>
+
+              <div className="text-center text-sm text-orange-600 font-semibold">
+                有效期：{pkg.validity}
+              </div>
             </div>
           ))}
         </div>

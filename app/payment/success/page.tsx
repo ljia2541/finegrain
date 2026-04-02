@@ -1,16 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-export default function PaymentSuccess() {
+function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'capturing' | 'success' | 'error'>('capturing')
   const [message, setMessage] = useState('正在确认支付...')
 
   useEffect(() => {
     const token = searchParams.get('token')
-    const PayerID = searchParams.get('PayerID')
 
     if (!token) {
       setStatus('error')
@@ -18,11 +17,10 @@ export default function PaymentSuccess() {
       return
     }
 
-    // 自动捕获支付
-    capturePayment(token, PayerID)
+    capturePayment(token)
   }, [searchParams])
 
-  async function capturePayment(orderId: string, payerId: string | null) {
+  async function capturePayment(orderId: string) {
     try {
       const res = await fetch('/api/payment/capture', {
         method: 'POST',
@@ -34,7 +32,12 @@ export default function PaymentSuccess() {
 
       if (data.success) {
         setStatus('success')
-        setMessage(`支付成功！已购买 ${data.customId ? JSON.parse(data.customId).planId : ''} 方案`)
+        let planInfo = ''
+        try {
+          const customData = JSON.parse(data.customId)
+          planInfo = customData.planId || ''
+        } catch {}
+        setMessage(`支付成功！订单号: ${data.orderId}`)
       } else {
         setStatus('error')
         setMessage('支付确认失败，请联系客服')
@@ -77,5 +80,21 @@ export default function PaymentSuccess() {
         )}
       </div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="text-5xl">⏳</div>
+    </div>
+  )
+}
+
+export default function PaymentSuccess() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <PaymentSuccessContent />
+    </Suspense>
   )
 }

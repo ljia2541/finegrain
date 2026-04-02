@@ -19,7 +19,7 @@ const plans = [
   },
   {
     name: '积分包',
-    price: '$5.99',
+    price: '$9.99',
     period: '起 $0.03-0.059/积分',
     features: [
       '无水印',

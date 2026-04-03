@@ -4,7 +4,7 @@ import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
 export default function PrintEnhancePage() {
-  const { credits } = useCredits()
+  const { credits, formattedExpiry } = useCredits()
 
   return (
     <EnhancePage
@@ -14,6 +14,7 @@ export default function PrintEnhancePage() {
       scales={[2, 4]}
       isFree={false}
       currentCredits={credits}
+      creditsExpirySoon={formattedExpiry}
       badge="印刷级"
       badgeColor="bg-indigo-500"
       tips={[

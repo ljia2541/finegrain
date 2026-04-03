@@ -1,17 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, CRYSTAL_4X_CREDITS, GOOGLE_UPSCALER_CREDITS } from '@/lib/replicate'
+import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, MODEL_CONFIG } from '@/lib/replicate'
+import { getAuthSession } from '@/lib/auth'
+import { getUserBalance, deductCredits } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
-// Vercel Hobby plan: max 60s, Pro: max 300s
-// Replicate can take 30-120s for some models
 export const maxDuration = 300
 
+/**
+ * 获取模型所需的积分数量
+ */
+function getRequiredCredits(model: string, scale: number): number | null {
+  if (model === 'crystal' && scale === 10) return null // 10x 走直接付费，不走积分
+  const config = MODEL_CONFIG[model as keyof typeof MODEL_CONFIG]
+  if (!config) return null
+  return config.credits[scale as keyof typeof config.credits] || null
+}
+
+/**
+ * POST /api/enhance-sync
+ * 同步增强图片（等待 Replicate 处理完成）
+ * 
+ * 流程：
+ * 1. 验证登录状态
+ * 2. 检查积分余额（付费模型）
+ * 3. 上传前扣除积分
+ * 4. 调用 Replicate 增强
+ * 5. 失败则退还积分
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { imageUrl, model = 'realesrgan', scale = 4, imageWidth, imageHeight, faceEnhance = false } = body
 
-    // imageUrl 是 COS 签名 URL
     if (!imageUrl) {
       return NextResponse.json({ error: 'imageUrl is required' }, { status: 400 })
     }
@@ -39,39 +59,111 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 调用同步增强（等待完成）— imageUrl 直接传给 Replicate
-    const result = await enhanceImage({
-      image: imageUrl,
-      model,
-      scale: model === 'recraft' ? 4 : scale,
-      faceEnhance,
-    })
+    // ===== 积分逻辑 =====
+    const requiredCredits = getRequiredCredits(model, scale)
+    let userId: string | null = null
+    let creditsDeducted = false
+    let taskId: string | null = null
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error || 'Enhancement failed' }, { status: 500 })
+    if (requiredCredits !== null && requiredCredits > 0) {
+      // 付费模型：需要登录 + 扣积分
+      const session = await getAuthSession()
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: 'LOGIN_REQUIRED' }, { status: 401 })
+      }
+      userId = session.user.id
+
+      // 检查余额
+      const balance = await getUserBalance(userId)
+      if (balance < requiredCredits) {
+        return NextResponse.json({
+          error: 'INSUFFICIENT_CREDITS',
+          required: requiredCredits,
+          balance,
+        }, { status: 402 })
+      }
+
+      // 预扣积分（在 enhance 之前）
+      try {
+        taskId = crypto.randomUUID()
+        await deductCredits(userId, requiredCredits, model, taskId, {
+          inputUrl: imageUrl,
+          scale,
+        })
+        creditsDeducted = true
+      } catch (err: any) {
+        if (err.message === 'INSUFFICIENT_CREDITS') {
+          return NextResponse.json({
+            error: 'INSUFFICIENT_CREDITS',
+            required: requiredCredits,
+          }, { status: 402 })
+        }
+        console.error('Failed to deduct credits:', err)
+        return NextResponse.json({ error: 'Failed to process credits' }, { status: 500 })
+      }
     }
+    // Free model (realesrgan) or direct pay (crystal 10x): no credit deduction
 
-    // 计费信息
-    let billing = null
-    if (model === 'crystal' && scale === 10) {
-      billing = { type: 'direct_pay', price: CRYSTAL_10X_PRICE, currency: 'USD' }
-    } else if (model === 'crystal') {
-      billing = { type: 'credits', credits: CRYSTAL_4X_CREDITS }
-    } else if (model === 'recraft') {
-      billing = { type: 'credits', credits: 6 }
-    } else if (model === 'google') {
-      billing = { type: 'credits', credits: GOOGLE_UPSCALER_CREDITS }
+    // ===== 调用 Replicate =====
+    try {
+      const result = await enhanceImage({
+        image: imageUrl,
+        model,
+        scale: model === 'recraft' ? 4 : scale,
+        faceEnhance,
+      })
+
+      if (!result.success) {
+        // 退还积分
+        if (creditsDeducted && userId && taskId) {
+          try {
+            const { addCredits } = await import('@/lib/supabase')
+            await addCredits(userId, requiredCredits!, 'refund', `增强失败退还 ${requiredCredits} 积分 (${model})`, {
+              taskId,
+              model,
+            })
+            console.log(`Refunded ${requiredCredits} credits for failed enhance, userId=${userId}`)
+          } catch (refundErr) {
+            console.error('Failed to refund credits:', refundErr)
+          }
+        }
+        return NextResponse.json({ error: result.error || 'Enhancement failed' }, { status: 500 })
+      }
+
+      // 计费信息
+      let billing = null
+      if (model === 'crystal' && scale === 10) {
+        billing = { type: 'direct_pay', price: CRYSTAL_10X_PRICE, currency: 'USD' }
+      } else if (requiredCredits !== null) {
+        billing = { type: 'credits', credits: requiredCredits }
+      }
+
+      return NextResponse.json({
+        success: true,
+        imageUrl: result.imageUrl,
+        model: result.model,
+        scale: result.scale,
+        billing,
+        creditsUsed: requiredCredits,
+      })
+    } catch (err) {
+      // Replicate 调用出错，退还积分
+      if (creditsDeducted && userId && taskId) {
+        try {
+          const { addCredits } = await import('@/lib/supabase')
+          await addCredits(userId, requiredCredits!, 'refund', `增强出错退还 ${requiredCredits} 积分 (${model})`, {
+            taskId,
+            model,
+          })
+          console.log(`Refunded ${requiredCredits} credits for error enhance, userId=${userId}`)
+        } catch (refundErr) {
+          console.error('Failed to refund credits:', refundErr)
+        }
+      }
+      throw err
     }
-
-    return NextResponse.json({
-      success: true,
-      imageUrl: result.imageUrl,
-      model: result.model,
-      scale: result.scale,
-      billing,
-    })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Enhance sync error:', error)
-    return NextResponse.json({ error: 'Enhancement failed' }, { status: 500 })
+    return NextResponse.json({ error: error.message || 'Enhancement failed' }, { status: 500 })
   }
 }

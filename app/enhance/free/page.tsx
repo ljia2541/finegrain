@@ -4,7 +4,7 @@ import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
 export default function FreeEnhancePage() {
-  const { credits, loading } = useCredits()
+  const { credits, formattedExpiry } = useCredits()
 
   return (
     <EnhancePage
@@ -14,6 +14,7 @@ export default function FreeEnhancePage() {
       scales={[2, 4]}
       isFree
       currentCredits={credits}
+      creditsExpirySoon={formattedExpiry}
       badge="免费"
       badgeColor="bg-green-500"
       tips={[

@@ -24,6 +24,7 @@ interface EnhancePageProps {
   badge?: string
   badgeColor?: string
   tips?: string[]
+  creditsExpirySoon?: string | null
 }
 
 type Phase = 'upload' | 'preview' | 'processing' | 'result'
@@ -40,6 +41,7 @@ export default function EnhancePage({
   badge,
   badgeColor = 'bg-green-500',
   tips,
+  creditsExpirySoon,
 }: EnhancePageProps) {
   const [phase, setPhase] = useState<Phase>('upload')
   const [dragActive, setDragActive] = useState(false)
@@ -257,6 +259,23 @@ export default function EnhancePage({
 
       const data = await res.json()
 
+      if (res.status === 401 && data.error === 'LOGIN_REQUIRED') {
+        clearInterval(interval)
+        setError('请先登录后再使用付费模型')
+        setPhase('preview')
+        // 触发登录
+        const { signIn } = await import('next-auth/react')
+        signIn('google', { callbackUrl: window.location.pathname })
+        return
+      }
+
+      if (res.status === 402 && data.error === 'INSUFFICIENT_CREDITS') {
+        clearInterval(interval)
+        setError(`积分不足，需要 ${data.required} 积分，当前余额 ${data.balance} 积分。请先购买积分。`)
+        setPhase('preview')
+        return
+      }
+
       if (!res.ok || !data.success) {
         clearInterval(interval)
         setError(data.error || '增强处理失败，请重试。')
@@ -327,6 +346,9 @@ export default function EnhancePage({
             <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
               <span className="text-gray-500">剩余积分：</span>
               <span className="font-semibold text-gray-900">{currentCredits}</span>
+              {creditsExpirySoon && (
+                <span className="text-xs text-orange-600 font-medium">({creditsExpirySoon})</span>
+              )}
             </div>
 
             {models.length === 1 ? (

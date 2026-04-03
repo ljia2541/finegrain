@@ -278,6 +278,17 @@ export async function getEnhancementHistory(userId: string, limit: number = 10) 
 }
 
 /**
+ * 获取用户最早积分过期时间
+ */
+export async function getUserEarliestExpiry(userId: string): Promise<string | null> {
+  const { data, error } = await supabaseAdmin
+    .rpc('get_user_earliest_expiry', { p_user_id: userId })
+
+  if (error) return null
+  return data || null
+}
+
+/**
  * 获取用户统计
  */
 export async function getUserStats(userId: string) {

@@ -34,6 +34,11 @@ export async function GET() {
       getTransactions(session.user.id, { limit: 10 }),
     ])
 
+    let creditsExpireAt: string | null = null
+    try {
+      creditsExpireAt = await getUserEarliestExpiry(session.user.id)
+    } catch {}
+
     return NextResponse.json({
       user: {
         id: session.user.id,
@@ -46,6 +51,7 @@ export async function GET() {
         totalProcessed: stats.totalProcessed,
         totalPurchased: stats.totalPurchased,
         totalSpent: stats.totalSpent,
+        creditsExpireAt,
       },
       recentTransactions: transactions.map(tx => ({
         id: tx.id,

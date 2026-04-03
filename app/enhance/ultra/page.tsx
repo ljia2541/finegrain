@@ -4,7 +4,7 @@ import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
 export default function UltraEnhancePage() {
-  const { credits } = useCredits()
+  const { credits, formattedExpiry } = useCredits()
 
   return (
     <EnhancePage
@@ -15,6 +15,7 @@ export default function UltraEnhancePage() {
       isFree={false}
       directPrice="$3.99/张"
       currentCredits={credits}
+      creditsExpirySoon={formattedExpiry}
       maxLongEdge={1000}
       badge="VIP"
       badgeColor="bg-yellow-500"

@@ -276,6 +276,13 @@ export default function EnhancePage({
         return
       }
 
+      if (res.status === 429 && data.error === 'FREE_LIMIT_REACHED') {
+        clearInterval(interval)
+        setError(data.message || '今日免费次数已用完')
+        setPhase('preview')
+        return
+      }
+
       if (!res.ok || !data.success) {
         clearInterval(interval)
         setError(data.error || '增强处理失败，请重试。')

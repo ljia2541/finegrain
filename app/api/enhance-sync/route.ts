@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
     let userId: string | null = null
     let creditsDeducted = false
     let taskId: string | null = null
+    let isFreeEnhance = false
 
     if (requiredCredits !== null && requiredCredits > 0) {
       // 付费模型：需要登录 + 扣积分
@@ -103,6 +104,48 @@ export async function POST(request: NextRequest) {
       }
     }
     // Free model (realesrgan) or direct pay (crystal 10x): no credit deduction
+    if (requiredCredits === 0) {
+      isFreeEnhance = true
+      const session = await getAuthSession()
+      userId = session?.user?.id || null
+      taskId = crypto.randomUUID()
+
+      // 每日免费限制：3 次
+      const { supabaseAdmin } = await import('@/lib/supabase')
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      const { data: todayCount, error: countError } = await supabaseAdmin
+        .from('enhancement_history')
+        .select('id', { count: 'exact', head: true })
+        .eq(userId ? 'user_id' : 'user_id', userId || '')
+        .gte('created_at', today.toISOString())
+        .eq('status', 'completed')
+
+      // 对未登录用户，按 user_id = 'anonymous' 无法区分，所以也计入匿名用户
+      // 简化方案：未登录也尝试登录获取 session，没有则用 IP 查
+      let freeCount = todayCount?.length || 0
+
+      // 未登录时，通过 enhancement_history 查当天总免费量（近似）
+      if (!userId) {
+        const { count: anonCount } = await supabaseAdmin
+          .from('enhancement_history')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', today.toISOString())
+          .eq('model', 'realesrgan')
+          .eq('status', 'completed')
+        freeCount = anonCount || 0
+      }
+
+      if (freeCount >= 3) {
+        return NextResponse.json({
+          error: 'FREE_LIMIT_REACHED',
+          message: '今日免费次数已用完（3/3），请明天再试或购买积分包解锁更多功能',
+          limit: 3,
+          used: freeCount,
+        }, { status: 429 })
+      }
+    }
 
     // ===== 调用 Replicate =====
     try {
@@ -134,8 +177,29 @@ export async function POST(request: NextRequest) {
       let billing = null
       if (model === 'crystal' && scale === 10) {
         billing = { type: 'direct_pay', price: CRYSTAL_10X_PRICE, currency: 'USD' }
+      } else if (isFreeEnhance) {
+        billing = { type: 'free' }
       } else if (requiredCredits !== null) {
         billing = { type: 'credits', credits: requiredCredits }
+      }
+
+      // 记录增强历史（免费增强也需要记录以计数）
+      if (isFreeEnhance && taskId) {
+        try {
+          const { supabaseAdmin } = await import('@/lib/supabase')
+          await supabaseAdmin.from('enhancement_history').insert({
+            id: taskId,
+            user_id: userId || 'anonymous',
+            model,
+            scale,
+            credits_used: 0,
+            input_url: imageUrl,
+            output_url: result.imageUrl,
+            status: 'completed',
+          })
+        } catch (histErr) {
+          console.error('Failed to record free enhance history:', histErr)
+        }
       }
 
       return NextResponse.json({

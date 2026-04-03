@@ -1,8 +1,11 @@
 'use client'
 
 import EnhancePage from '@/components/EnhancePage'
+import { useCredits } from '@/hooks/useCredits'
 
 export default function PortraitEnhancePage() {
+  const { credits } = useCredits()
+
   return (
     <EnhancePage
       title="人像专业增强"
@@ -10,7 +13,7 @@ export default function PortraitEnhancePage() {
       models={[{ id: 'crystal', name: 'Crystal 4x', credits: 15 }]}
       scales={[4]}
       isFree={false}
-      currentCredits={0}
+      currentCredits={credits}
       maxLongEdge={1000}
       badge="人像专精"
       badgeColor="bg-purple-500"

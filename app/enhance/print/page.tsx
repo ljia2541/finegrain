@@ -1,16 +1,19 @@
 'use client'
 
 import EnhancePage from '@/components/EnhancePage'
+import { useCredits } from '@/hooks/useCredits'
 
 export default function PrintEnhancePage() {
+  const { credits } = useCredits()
+
   return (
     <EnhancePage
       title="印刷级高清增强"
       subtitle="Recraft 模型输出印刷级清晰度，文字 Logo 锐利无锯齿"
       models={[{ id: 'recraft', name: 'Recraft', credits: 6 }]}
-      scales={[2, 4, 6, 8, 10]}
+      scales={[2, 4]}
       isFree={false}
-      currentCredits={0}
+      currentCredits={credits}
       badge="印刷级"
       badgeColor="bg-indigo-500"
       tips={[

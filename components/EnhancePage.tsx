@@ -7,6 +7,9 @@ interface ModelOption {
   id: string
   name: string
   credits: number
+  description?: string
+  tag?: string       // e.g. "推荐", "最清晰"
+  tagColor?: string  // e.g. "bg-green-500"
 }
 
 interface EnhancePageProps {
@@ -55,6 +58,15 @@ export default function EnhancePage({
   const [sliderPos, setSliderPos] = useState(50)
 
   const currentModel = selectedModel
+
+  // 动态计算当前是否需要 maxLongEdge
+  const effectiveMaxLongEdge = selectedModel.id === 'crystal' || selectedModel.id === 'crystal10x' ? (maxLongEdge || 1000) : undefined
+
+  // 动态计算可用倍率
+  const effectiveScales = selectedModel.id === 'crystal10x' ? [10]
+    : selectedModel.id === 'crystal' ? scales.filter(s => s === 4)
+    : scales
+
   const cost = isFree ? 0 : (directPrice ? undefined : currentModel.credits)
   const remainingAfterProcess = !isFree && !directPrice && cost !== undefined
     ? currentCredits - cost
@@ -117,10 +129,10 @@ export default function EnhancePage({
       setImageHeight(img.naturalHeight)
 
       // Check max long edge
-      if (maxLongEdge) {
+      if (effectiveMaxLongEdge) {
         const longEdge = Math.max(img.naturalWidth, img.naturalHeight)
-        if (longEdge > maxLongEdge) {
-          setError(`图片长边 ${longEdge}px 超过限制 ${maxLongEdge}px，请缩小图片后重试。`)
+        if (longEdge > effectiveMaxLongEdge) {
+          setError(`图片长边 ${longEdge}px 超过限制 ${effectiveMaxLongEdge}px，请缩小图片后重试。`)
           return
         }
       }
@@ -153,7 +165,7 @@ export default function EnhancePage({
     try {
       // 检查像素是否超过 Replicate 限制（约 200 万像素）
       // Real-ESRGAN 限制 ~2M 像素，Crystal 限制 ~1448x1448
-      const MAX_PIXELS = maxLongEdge ? maxLongEdge * maxLongEdge : 2_000_000
+      const MAX_PIXELS = effectiveMaxLongEdge ? effectiveMaxLongEdge * effectiveMaxLongEdge : 2_000_000
       let fileToUpload: File = selectedFile
       let uploadWidth = imageWidth
       let uploadHeight = imageHeight
@@ -325,18 +337,36 @@ export default function EnhancePage({
             ) : (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
                 <span className="text-gray-500 shrink-0">使用模型：</span>
-                <select
-                  value={selectedModel.id}
-                  onChange={(e) => {
-                    const m = models.find(m => m.id === e.target.value)
-                    if (m) setSelectedModel(m)
-                  }}
-                  className="flex-1 bg-transparent font-semibold text-gray-900 outline-none cursor-pointer"
-                >
+                <div className="flex-1 flex flex-wrap gap-2">
                   {models.map(m => (
-                    <option key={m.id} value={m.id}>{m.name}（{m.credits} 积分）</option>
+                    <button
+                      key={m.id}
+                      onClick={() => {
+                        setSelectedModel(m)
+                        // 自动调整可选倍率
+                        const newScales = m.id === 'crystal10x' ? [10]
+                          : m.id === 'crystal' ? scales.filter(s => s === 4)
+                          : scales
+                        if (!newScales.includes(selectedScale)) {
+                          setSelectedScale(newScales[0])
+                        }
+                      }}
+                      className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                        selectedModel.id === m.id
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      {m.tag && (
+                        <span className={`absolute -top-2 -right-2 ${m.tagColor || 'bg-green-500'} text-white text-[10px] px-1.5 py-0 rounded-full leading-none`}>
+                          {m.tag}
+                        </span>
+                      )}
+                      {m.name}
+                      {m.credits > 0 && <span className="opacity-70 ml-1">({m.credits})</span>}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             )}
 
@@ -457,13 +487,13 @@ export default function EnhancePage({
                   放大倍率：
                 </span>
 
-                {scales.length === 1 ? (
+                {effectiveScales.length === 1 ? (
                   <span className="text-lg font-bold text-blue-600">
-                    {scales[0]}x
+                    {effectiveScales[0]}x
                   </span>
                 ) : (
                   <div className="flex flex-wrap gap-2">
-                    {scales.map(s => (
+                    {effectiveScales.map(s => (
                       <button
                         key={s}
                         onClick={() => setSelectedScale(s)}

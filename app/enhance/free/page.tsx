@@ -1,8 +1,11 @@
 'use client'
 
 import EnhancePage from '@/components/EnhancePage'
+import { useCredits } from '@/hooks/useCredits'
 
 export default function FreeEnhancePage() {
+  const { credits, loading } = useCredits()
+
   return (
     <EnhancePage
       title="免费图片增强"
@@ -10,7 +13,7 @@ export default function FreeEnhancePage() {
       models={[{ id: 'realesrgan', name: 'Real-ESRGAN', credits: 0 }]}
       scales={[2, 4]}
       isFree
-      currentCredits={0}
+      currentCredits={credits}
       badge="免费"
       badgeColor="bg-green-500"
       tips={[

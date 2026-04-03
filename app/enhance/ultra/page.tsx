@@ -1,8 +1,11 @@
 'use client'
 
 import EnhancePage from '@/components/EnhancePage'
+import { useCredits } from '@/hooks/useCredits'
 
 export default function UltraEnhancePage() {
+  const { credits } = useCredits()
+
   return (
     <EnhancePage
       title="10 倍超清人像增强"
@@ -11,7 +14,7 @@ export default function UltraEnhancePage() {
       scales={[10]}
       isFree={false}
       directPrice="$3.99/张"
-      currentCredits={0}
+      currentCredits={credits}
       maxLongEdge={1000}
       badge="VIP"
       badgeColor="bg-yellow-500"
@@ -19,6 +22,7 @@ export default function UltraEnhancePage() {
         '仅适合人像照片',
         '图片长边不可超过 1000px',
         '最高 10K 输出',
+        '单独付费，不走积分',
       ]}
     />
   )

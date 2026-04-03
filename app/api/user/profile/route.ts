@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthSession } from '@/lib/auth'
+import { getUserStats, getTransactions, initUser } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -15,9 +16,23 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // TODO: 接入 Supabase
-    // const stats = await getUserStats(session.user.id)
-    // const { transactions } = await getTransactions(session.user.id, { limit: 5 })
+    // 确保用户已初始化（兜底）
+    try {
+      await initUser(
+        session.user.id,
+        session.user.email || '',
+        session.user.name || undefined,
+        session.user.image || undefined,
+      )
+    } catch (e) {
+      // 初始化失败不阻塞 profile 查询
+      console.warn('Profile init warning:', e)
+    }
+
+    const [stats, { transactions }] = await Promise.all([
+      getUserStats(session.user.id),
+      getTransactions(session.user.id, { limit: 10 }),
+    ])
 
     return NextResponse.json({
       user: {
@@ -27,13 +42,20 @@ export async function GET() {
         avatar: session.user.image,
       },
       stats: {
-        credits: 0,
-        totalProcessed: 0,
-        totalPurchased: 0,
-        totalSpent: 0,
-        subscription: null,
+        credits: stats.credits,
+        totalProcessed: stats.totalProcessed,
+        totalPurchased: stats.totalPurchased,
+        totalSpent: stats.totalSpent,
       },
-      recentTransactions: [],
+      recentTransactions: transactions.map(tx => ({
+        id: tx.id,
+        type: tx.type,
+        amount: tx.amount,
+        balanceAfter: tx.balance_after,
+        description: tx.description,
+        model: tx.model,
+        createdAt: tx.created_at,
+      })),
     })
   } catch (error: any) {
     console.error('Get profile error:', error)

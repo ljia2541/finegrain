@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { getServerSession } from 'next-auth'
+import { initUser } from './supabase'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -22,6 +23,18 @@ export const authOptions: NextAuthOptions = {
       if (account && profile) {
         token.id = profile.sub
         token.picture = profile.picture
+
+        // 自动在 Supabase 创建用户 + 积分账户（幂等操作）
+        try {
+          await initUser(
+            profile.sub,
+            profile.email || '',
+            profile.name || undefined,
+            profile.picture || undefined,
+          )
+        } catch (err) {
+          console.error('Failed to init user in Supabase:', err)
+        }
       }
       return token
     },

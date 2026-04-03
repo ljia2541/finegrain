@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   User,
   CreditCard,
@@ -12,29 +12,30 @@ import {
   ArrowRight,
   ChevronRight,
   LogOut,
-  Settings,
   Shield,
   Gift,
   Crown,
   Zap,
   Sparkles,
+  RefreshCw,
 } from 'lucide-react'
 
-// 模拟数据（接入 Supabase 后替换）
-const mockStats = {
-  credits: 0,
-  totalProcessed: 0,
-  totalPurchased: 0,
-  totalSpent: 0,
+interface UserProfile {
+  credits: number
+  totalProcessed: number
+  totalPurchased: number
+  totalSpent: number
 }
 
-const mockTransactions = [
-  { id: 1, type: 'purchase' as const, description: '购买 200 积分包', amount: '+200', credits: 200, time: '2026-04-02 15:30', icon: Gift },
-  { id: 2, type: 'enhance' as const, description: 'Crystal 4x 人像增强', amount: '-15', credits: 185, time: '2026-04-02 14:20', icon: Sparkles },
-  { id: 3, type: 'enhance' as const, description: 'Google Upscaler 通用增强', amount: '-3', credits: 182, time: '2026-04-02 13:10', icon: Zap },
-  { id: 4, type: 'enhance' as const, description: 'Real-ESRGAN 免费增强', amount: '-1', credits: 181, time: '2026-04-02 12:00', icon: Sparkles },
-  { id: 5, type: 'purchase' as const, description: '购买 200 积分包', amount: '+200', credits: 182, time: '2026-04-01 10:00', icon: Gift },
-]
+interface Transaction {
+  id: string
+  type: string
+  amount: number
+  balanceAfter: number
+  description: string | null
+  model: string | null
+  createdAt: string
+}
 
 // 积分包快捷购买
 const quickBuyPackages = [
@@ -48,14 +49,38 @@ export default function Dashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions'>('overview')
+  const [stats, setStats] = useState<UserProfile | null>(null)
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchProfile = useCallback(async () => {
+    try {
+      const res = await fetch('/api/user/profile')
+      if (!res.ok) throw new Error('Failed to fetch')
+      const data = await res.json()
+      setStats(data.stats)
+      setTransactions(data.recentTransactions || [])
+      setError(null)
+    } catch (e) {
+      console.error('Failed to fetch profile:', e)
+      setError('加载失败，请刷新重试')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/')
+      return
     }
-  }, [status, router])
+    if (status === 'authenticated') {
+      fetchProfile()
+    }
+  }, [status, router, fetchProfile])
 
-  if (status === 'loading') {
+  if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-gray-400">加载中...</div>
@@ -66,6 +91,22 @@ export default function Dashboard() {
   if (!session?.user) return null
 
   const user = session.user
+
+  const getTransactionIcon = (type: string, model?: string | null) => {
+    if (type === 'purchase' || type === 'subscription' || type === 'bonus') return Gift
+    if (type === 'refund') return Coins
+    if (model?.includes('crystal')) return Sparkles
+    return Zap
+  }
+
+  const formatTime = (iso: string) => {
+    try {
+      const d = new Date(iso)
+      return d.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+    } catch {
+      return iso
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,6 +129,13 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={fetchProfile}
+                className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                title="刷新"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
               <a
                 href="/pricing"
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
@@ -108,6 +156,12 @@ export default function Dashboard() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-6">
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
         {/* Tab 切换 */}
         <div className="flex gap-1 mb-6 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
           <button
@@ -142,8 +196,7 @@ export default function Dashboard() {
                     <CreditCard className="w-5 h-5 text-blue-200" />
                     <span className="text-blue-200 text-sm">可用积分</span>
                   </div>
-                  <div className="text-5xl font-bold">{mockStats.credits}</div>
-                  <p className="text-blue-200 text-sm mt-1">登录后积分将在此显示</p>
+                  <div className="text-5xl font-bold">{stats?.credits ?? 0}</div>
                 </div>
                 <a
                   href="/pricing"
@@ -163,7 +216,7 @@ export default function Dashboard() {
                     <TrendingUp className="w-4 h-4 text-blue-600" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">{mockStats.totalProcessed}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats?.totalProcessed ?? 0}</div>
                 <div className="text-xs text-gray-500">总处理量</div>
               </div>
 
@@ -173,7 +226,7 @@ export default function Dashboard() {
                     <Gift className="w-4 h-4 text-green-600" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">{mockStats.totalPurchased}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats?.totalPurchased ?? 0}</div>
                 <div className="text-xs text-gray-500">累计充值积分</div>
               </div>
 
@@ -183,7 +236,7 @@ export default function Dashboard() {
                     <Zap className="w-4 h-4 text-orange-600" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">{mockStats.totalSpent}</div>
+                <div className="text-2xl font-bold text-gray-900">{stats?.totalSpent ?? 0}</div>
                 <div className="text-xs text-gray-500">累计消费积分</div>
               </div>
 
@@ -238,31 +291,38 @@ export default function Dashboard() {
                   查看全部 <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-              <div className="divide-y divide-gray-50">
-                {mockTransactions.slice(0, 5).map((tx) => {
-                  const isPurchase = tx.type === 'purchase'
-                  const Icon = tx.icon
-                  return (
-                    <div key={tx.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        isPurchase ? 'bg-green-50' : 'bg-blue-50'
-                      }`}>
-                        <Icon className={`w-5 h-5 ${isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-gray-900 truncate">{tx.description}</div>
-                        <div className="text-xs text-gray-400">{tx.time}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className={`text-sm font-bold ${isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
-                          {tx.amount} 积分
+              {transactions.length === 0 ? (
+                <div className="px-5 py-12 text-center">
+                  <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">暂无交易记录</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-50">
+                  {transactions.slice(0, 5).map((tx) => {
+                    const isPurchase = tx.type === 'purchase' || tx.type === 'subscription' || tx.type === 'bonus'
+                    const Icon = getTransactionIcon(tx.type, tx.model)
+                    return (
+                      <div key={tx.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                          isPurchase ? 'bg-green-50' : 'bg-blue-50'
+                        }`}>
+                          <Icon className={`w-5 h-5 ${isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
                         </div>
-                        <div className="text-xs text-gray-400">余额 {tx.credits}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-gray-900 truncate">{tx.description || tx.type}</div>
+                          <div className="text-xs text-gray-400">{formatTime(tx.createdAt)}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-sm font-bold ${isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
+                            {tx.amount > 0 ? '+' : ''}{tx.amount} 积分
+                          </div>
+                          <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
-              </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
 
             {/* 账户设置 */}
@@ -297,10 +357,16 @@ export default function Dashboard() {
         ) : (
           /* 交易记录 Tab */
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-100">
+            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <h2 className="font-bold text-gray-900">全部交易记录</h2>
+              <button
+                onClick={fetchProfile}
+                className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+              >
+                <RefreshCw className="w-3 h-3" /> 刷新
+              </button>
             </div>
-            {mockTransactions.length === 0 ? (
+            {transactions.length === 0 ? (
               <div className="px-5 py-12 text-center">
                 <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500">暂无交易记录</p>
@@ -310,9 +376,9 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="divide-y divide-gray-50">
-                {mockTransactions.map((tx) => {
-                  const isPurchase = tx.type === 'purchase'
-                  const Icon = tx.icon
+                {transactions.map((tx) => {
+                  const isPurchase = tx.type === 'purchase' || tx.type === 'subscription' || tx.type === 'bonus'
+                  const Icon = getTransactionIcon(tx.type, tx.model)
                   return (
                     <div key={tx.id} className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 transition-colors">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -321,14 +387,14 @@ export default function Dashboard() {
                         <Icon className={`w-5 h-5 ${isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-gray-900">{tx.description}</div>
-                        <div className="text-xs text-gray-400">{tx.time}</div>
+                        <div className="text-sm font-medium text-gray-900">{tx.description || tx.type}</div>
+                        <div className="text-xs text-gray-400">{formatTime(tx.createdAt)}</div>
                       </div>
                       <div className="text-right">
                         <div className={`text-sm font-bold ${isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
-                          {tx.amount}
+                          {tx.amount > 0 ? '+' : ''}{tx.amount}
                         </div>
-                        <div className="text-xs text-gray-400">余额 {tx.credits}</div>
+                        <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>
                       </div>
                     </div>
                   )

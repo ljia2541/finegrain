@@ -2,10 +2,15 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
+// Anon client (safe for client-side, respects RLS)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// ==================== 用户 ====================
+// Admin client (server-side only, bypasses RLS)
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+
+// ==================== 类型 ====================
 
 export type User = {
   id: string
@@ -24,19 +29,47 @@ export type CreditAccount = {
   updated_at: string
 }
 
-// ==================== 积分操作 ====================
+export type CreditTransaction = {
+  id: string
+  user_id: string
+  amount: number
+  balance_after: number
+  type: string
+  model: string | null
+  task_id: string | null
+  order_id: string | null
+  plan_id: string | null
+  description: string | null
+  expires_at: string | null
+  created_at: string
+}
+
+export type EnhancementRecord = {
+  id: string
+  user_id: string
+  model: string
+  scale: number | null
+  credits_used: number
+  input_url: string | null
+  output_url: string | null
+  status: string
+  created_at: string
+}
+
+// ==================== 用户 ====================
 
 /**
- * 初始化用户（首次登录时调用）
+ * 初始化用户（首次登录时调用，幂等）
+ * 在 JWT callback 中自动调用
  */
 export async function initUser(userId: string, email: string, name?: string, avatarUrl?: string) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('users')
     .upsert({
       id: userId,
       email,
-      name,
-      avatar_url: avatarUrl,
+      name: name || null,
+      avatar_url: avatarUrl || null,
       last_login_at: new Date().toISOString(),
     }, { onConflict: 'id' })
     .select()
@@ -45,25 +78,20 @@ export async function initUser(userId: string, email: string, name?: string, ava
   if (error) throw error
 
   // 确保积分账户存在
-  const { error: creditError } = await supabase
+  await supabaseAdmin
     .from('credit_accounts')
     .upsert({
       user_id: userId,
-      balance: 0,
-      total_earned: 0,
-      total_spent: 0,
     }, { onConflict: 'user_id' })
-
-  if (creditError) throw creditError
 
   return data as User
 }
 
 /**
- * 获取用户积分余额
+ * 获取用户积分余额（通过 RPC 函数，自动排除已过期积分）
  */
 export async function getUserBalance(userId: string): Promise<number> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .rpc('get_user_balance', { p_user_id: userId })
 
   if (error) throw error
@@ -74,7 +102,7 @@ export async function getUserBalance(userId: string): Promise<number> {
  * 获取积分账户详情
  */
 export async function getCreditAccount(userId: string): Promise<CreditAccount | null> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('credit_accounts')
     .select('*')
     .eq('user_id', userId)
@@ -84,8 +112,11 @@ export async function getCreditAccount(userId: string): Promise<CreditAccount | 
   return data as CreditAccount
 }
 
+// ==================== 积分操作 ====================
+
 /**
  * 增加积分（购买、赠送、退款）
+ * @returns 新余额
  */
 export async function addCredits(
   userId: string,
@@ -100,12 +131,11 @@ export async function addCredits(
     taskId?: string
   }
 ): Promise<number> {
-  // 获取当前余额
   const currentBalance = await getUserBalance(userId)
   const newBalance = currentBalance + amount
 
   // 写入流水
-  const { error: txError } = await supabase
+  const { error: txError } = await supabaseAdmin
     .from('credit_transactions')
     .insert({
       user_id: userId,
@@ -113,22 +143,22 @@ export async function addCredits(
       balance_after: newBalance,
       type,
       description,
-      plan_id: options?.planId,
-      order_id: options?.orderId,
-      model: options?.model,
-      task_id: options?.taskId,
+      plan_id: options?.planId || null,
+      order_id: options?.orderId || null,
+      model: options?.model || null,
+      task_id: options?.taskId || null,
       expires_at: options?.expiresAt ? new Date(options.expiresAt).toISOString() : null,
     })
 
   if (txError) throw txError
 
-  // 更新积分账户
-  const { error: accError } = await supabase
+  // 更新积分账户（原子操作）
+  const { error: accError } = await supabaseAdmin
     .from('credit_accounts')
     .update({
       balance: newBalance,
-      total_earned: type === 'purchase' || type === 'bonus' || type === 'refund'
-        ? `total_earned + ${amount}`
+      total_earned: (type === 'purchase' || type === 'bonus' || type === 'refund')
+        ? currentBalance + (await supabaseAdmin.from('credit_accounts').select('total_earned').eq('user_id', userId).single()).data?.total_earned || 0 + amount
         : undefined,
       updated_at: new Date().toISOString(),
     })
@@ -141,13 +171,18 @@ export async function addCredits(
 
 /**
  * 扣除积分（增强图片）
- * 返回扣除后的余额
+ * @throws Error('INSUFFICIENT_CREDITS') 余额不足
+ * @returns 扣除后的余额
  */
 export async function deductCredits(
   userId: string,
   amount: number,
   model: string,
-  taskId: string
+  taskId: string,
+  options?: {
+    inputUrl?: string
+    scale?: number
+  }
 ): Promise<number> {
   const currentBalance = await getUserBalance(userId)
 
@@ -158,7 +193,7 @@ export async function deductCredits(
   const newBalance = currentBalance - amount
 
   // 写入流水
-  const { error: txError } = await supabase
+  const { error: txError } = await supabaseAdmin
     .from('credit_transactions')
     .insert({
       user_id: userId,
@@ -173,28 +208,30 @@ export async function deductCredits(
   if (txError) throw txError
 
   // 更新积分账户
-  const { error: accError } = await supabase
+  const acc = await getCreditAccount(userId)
+  await supabaseAdmin
     .from('credit_accounts')
     .update({
       balance: newBalance,
-      total_spent: `total_spent + ${amount}`,
+      total_spent: (acc?.total_spent || 0) + amount,
       updated_at: new Date().toISOString(),
     })
     .eq('user_id', userId)
 
-  if (accError) throw accError
-
   // 记录增强历史
-  await supabase.from('enhancement_history').insert({
+  await supabaseAdmin.from('enhancement_history').insert({
     user_id: userId,
     model,
+    scale: options?.scale || null,
     credits_used: amount,
+    input_url: options?.inputUrl || null,
     status: 'processing',
-    task_id: taskId,
   })
 
   return newBalance
 }
+
+// ==================== 查询 ====================
 
 /**
  * 获取积分流水（分页）
@@ -207,7 +244,7 @@ export async function getTransactions(
     type?: string
   }
 ) {
-  let query = supabase
+  let query = supabaseAdmin
     .from('credit_transactions')
     .select('*')
     .eq('user_id', userId)
@@ -223,21 +260,21 @@ export async function getTransactions(
   )
 
   const { data, error } = await query
-  return { transactions: data || [], error }
+  return { transactions: (data as CreditTransaction[]) || [], error }
 }
 
 /**
  * 获取增强历史
  */
 export async function getEnhancementHistory(userId: string, limit: number = 10) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('enhancement_history')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(limit)
 
-  return { history: data || [], error }
+  return { history: (data as EnhancementRecord[]) || [], error }
 }
 
 /**

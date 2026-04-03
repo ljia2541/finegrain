@@ -8,9 +8,41 @@ import AuthProvider from '@/components/AuthProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Finegrain - AI 图像增强平台',
-  description: '基于 AI 的在线图像增强服务，专注于细节修复和超分辨率放大',
-  keywords: ['图像增强', 'AI', '超分辨率', '图像修复', 'Finegrain'],
+  title: {
+    default: 'FineGrain - AI Image Enhancer | Online AI Upscaling',
+    template: '%s | FineGrain',
+  },
+  description: 'AI-powered image enhancement platform. Upscale images up to 10x with Crystal, Real-ESRGAN, Google Upscaler, and Recraft models. Free trial available.',
+  keywords: ['AI image enhancer', 'image upscaler', 'super resolution', 'photo enhancement', 'Crystal upscaler', 'Real-ESRGAN', 'AI upscaling', 'image quality', 'FineGrain'],
+  authors: [{ name: 'FineGrain' }],
+  creator: 'FineGrain',
+  metadataBase: new URL('https://www.finegrainimageenhancer.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'FineGrain',
+    title: 'FineGrain - AI Image Enhancer | Upscale Images up to 10K',
+    description: 'Enhance and upscale your images with AI. Crystal 10x for portraits, Recraft for print quality, Real-ESRGAN for free. Try now!',
+    images: [{
+      url: '/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'FineGrain AI Image Enhancement',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FineGrain - AI Image Enhancer',
+    description: 'AI-powered image enhancement. Upscale to 10K. Free trial available.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 }
 
 export default function RootLayout({
@@ -19,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
           <div className="flex flex-col min-h-screen">

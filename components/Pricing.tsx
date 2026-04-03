@@ -148,12 +148,36 @@ export default function Pricing() {
     if (planType === 'free') return
 
     // 积分包需要登录
-    if (planType === 'credits' && !session?.user) {
+    if ((planType === 'credits' || planType === 'subscription') && !session?.user) {
       signIn('google', { callbackUrl: '/pricing' })
       return
     }
 
     try {
+      // 月订阅走专门的 API
+      if (planType === 'subscription') {
+        const res = await fetch('/api/payment/create-subscription', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ planId }),
+        })
+
+        const data = await res.json()
+
+        if (data.error === 'LOGIN_REQUIRED') {
+          signIn('google', { callbackUrl: '/pricing' })
+          return
+        }
+
+        if (data.success && data.approveUrl) {
+          window.location.href = data.approveUrl
+        } else {
+          alert('订阅创建失败：' + (data.error || 'PayPal 订阅计划尚未配置，请先使用积分包'))
+        }
+        return
+      }
+
+      // 一次性支付
       const res = await fetch('/api/payment/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -270,15 +294,14 @@ export default function Pricing() {
               </ul>
 
               <button
-                onClick={() => alert('月订阅功能即将上线，请先使用积分包')}
+                onClick={() => handlePurchase('subscription', plan.planId)}
                 className={`w-full py-3 rounded-lg font-semibold transition-colors text-sm ${
                   plan.highlighted
-                    ? 'bg-indigo-600 text-white hover:bg-indigo-700 opacity-70'
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200 opacity-70'
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                 }`}
-                disabled
               >
-                {plan.cta} 🚧 即将上线
+                {plan.cta}
               </button>
             </div>
           ))}
@@ -331,7 +354,7 @@ export default function Pricing() {
               </div>
 
               <button
-                onClick={() => handlePurchase('credits', String(pkg.credits))}
+              onClick={() => handlePurchase('credits', String(pkg.credits))}
                 className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-colors"
               >
                 购买

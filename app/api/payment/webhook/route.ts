@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyWebhookSignature, PAYPAL_PLANS } from '@/lib/paypal'
+import { verifyWebhookSignature, PAYPAL_PLANS, SUBSCRIPTION_CONFIG } from '@/lib/paypal'
 import { addCredits, initUser } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -8,8 +9,11 @@ export const runtime = 'nodejs'
  * POST /api/payment/webhook
  * PayPal Webhook 回调
  * 
- * 双重保险：即使 capture 接口失败，webhook 也能确保积分到账
- * 需要 PayPal 商家后台配置 webhook URL
+ * 处理事件：
+ * 1. CHECKOUT.ORDER.COMPLETED - 一次性支付成功（积分包/10x）
+ * 2. BILLING.SUBSCRIPTION.ACTIVATED - 月订阅激活（加首次积分）
+ * 3. BILLING.SUBSCRIPTION.RENEWED - 月订阅续费（每月加积分）
+ * 4. BILLING.SUBSCRIPTION.CANCELLED - 月订阅取消
  */
 export async function POST(request: NextRequest) {
   try {
@@ -24,52 +28,36 @@ export async function POST(request: NextRequest) {
     )
     if (!isValid) {
       console.warn('PayPal webhook signature verification failed')
-      // 不拒绝，因为沙箱环境可能没有 webhook ID
     }
 
     console.log('PayPal webhook:', eventType, body.id)
 
     switch (eventType) {
       case 'CHECKOUT.ORDER.APPROVED':
-        // 订单已批准（用户点了支付但还没 confirm）
         console.log('Order approved:', body.resource?.id)
         break
 
       case 'CHECKOUT.ORDER.COMPLETED': {
-        // 订单已完成（支付成功）
         const orderId = body.resource?.id
         const customId = body.resource?.purchase_units?.[0]?.custom_id
-
         if (!customId) break
 
         let planType: string, planId: string, userId: string
         try {
           ({ planType, planId, userId } = JSON.parse(customId))
         } catch {
-          console.error('Invalid custom_id in webhook')
           break
         }
 
         if (planType !== 'credits') break
 
         const plan = PAYPAL_PLANS.credits[planId as keyof typeof PAYPAL_PLANS.credits]
-        if (!plan) break
-
-        if (!userId) {
-          console.error('No userId in webhook custom_id')
-          break
-        }
+        if (!plan || !userId) break
 
         try {
-          // 确保用户存在
           await initUser(userId, '', undefined, undefined)
 
-          const expiresAt = new Date()
-          expiresAt.setDate(expiresAt.getDate() + plan.validityDays)
-
-          // 检查是否已经处理过（幂等：用 orderId 查流水）
-          // 如果已经有相同 orderId 的 purchase 记录，跳过
-          const { supabaseAdmin } = await import('@/lib/supabase')
+          // 幂等：用 orderId 去重
           const { data: existingTx } = await supabaseAdmin
             .from('credit_transactions')
             .select('id')
@@ -77,46 +65,142 @@ export async function POST(request: NextRequest) {
             .eq('type', 'purchase')
             .limit(1)
 
-          if (existingTx && existingTx.length > 0) {
-            console.log(`Order ${orderId} already processed, skipping`)
-            break
-          }
+          if (existingTx && existingTx.length > 0) break
 
-          await addCredits(
-            userId,
-            plan.credits,
-            'purchase',
-            `购买 ${plan.credits} 积分包 ($${plan.price}) - Webhook`,
-            {
-              planId,
-              orderId,
-              expiresAt: expiresAt.toISOString(),
-            }
-          )
-          console.log(`Credits added via webhook: userId=${userId}, credits=${plan.credits}, orderId=${orderId}`)
+          const expiresAt = new Date()
+          expiresAt.setDate(expiresAt.getDate() + plan.validityDays)
+
+          await addCredits(userId, plan.credits, 'purchase', `购买 ${plan.credits} 积分包 ($${plan.price}) - Webhook`, {
+            planId,
+            orderId,
+            expiresAt: expiresAt.toISOString(),
+          })
+          console.log(`Credits added via webhook: userId=${userId}, credits=${plan.credits}`)
         } catch (err) {
           console.error('Failed to add credits via webhook:', err)
         }
         break
       }
 
-      case 'BILLING.SUBSCRIPTION.ACTIVATED':
-        console.log('Subscription activated:', body.resource?.id)
-        // TODO: 月订阅支持
-        break
+      case 'BILLING.SUBSCRIPTION.ACTIVATED': {
+        // 月订阅首次激活
+        const subId = body.resource?.id
+        const customId = body.resource?.custom_id
+        if (!customId) {
+          console.error('Subscription activated without custom_id:', subId)
+          break
+        }
 
-      case 'BILLING.SUBSCRIPTION.RENEWED':
-        console.log('Subscription renewed:', body.resource?.id)
-        // TODO: 月续费时重置积分
-        break
+        let planId: string, userId: string
+        try {
+          ({ planId, userId } = JSON.parse(customId))
+        } catch {
+          break
+        }
 
-      case 'BILLING.SUBSCRIPTION.CANCELLED':
-        console.log('Subscription cancelled:', body.resource?.id)
-        // TODO: 标记订阅取消
+        const config = SUBSCRIPTION_CONFIG[planId as keyof typeof SUBSCRIPTION_CONFIG]
+        if (!config || !userId) break
+
+        try {
+          await initUser(userId, '', undefined, undefined)
+
+          // 记录订阅
+          const now = new Date()
+          const periodEnd = new Date(now)
+          periodEnd.setMonth(periodEnd.getMonth() + 1)
+
+          await supabaseAdmin.from('subscriptions').upsert({
+            user_id: userId,
+            plan_id: planId,
+            paypal_subscription_id: subId,
+            status: 'active',
+            credits_per_month: config.credits,
+            current_credits: config.credits,
+            started_at: now.toISOString(),
+            current_period_start: now.toISOString(),
+            current_period_end: periodEnd.toISOString(),
+          }, { onConflict: 'paypal_subscription_id' })
+
+          // 首次积分到账（月订阅积分不过期）
+          await addCredits(userId, config.credits, 'subscription', `${config.name} 首月积分 (${config.credits}积分)`, {
+            planId,
+          })
+
+          console.log(`Subscription activated: userId=${userId}, plan=${planId}, credits=${config.credits}`)
+        } catch (err) {
+          console.error('Failed to activate subscription:', err)
+        }
         break
+      }
+
+      case 'BILLING.SUBSCRIPTION.RENEWED': {
+        // 月订阅续费
+        const subId = body.resource?.id
+
+        // 查找订阅记录
+        const { data: sub } = await supabaseAdmin
+          .from('subscriptions')
+          .select('*')
+          .eq('paypal_subscription_id', subId)
+          .single()
+
+        if (!sub) {
+          console.error('Subscription renewed but not found:', subId)
+          break
+        }
+
+        const config = SUBSCRIPTION_CONFIG[sub.plan_id as keyof typeof SUBSCRIPTION_CONFIG]
+        if (!config) break
+
+        try {
+          const now = new Date()
+          const periodEnd = new Date(now)
+          periodEnd.setMonth(periodEnd.getMonth() + 1)
+
+          // 更新订阅周期
+          await supabaseAdmin
+            .from('subscriptions')
+            .update({
+              status: 'active',
+              current_credits: config.credits,
+              current_period_start: now.toISOString(),
+              current_period_end: periodEnd.toISOString(),
+            })
+            .eq('paypal_subscription_id', subId)
+
+          // 月积分到账（不过期）
+          await addCredits(
+            sub.user_id,
+            config.credits,
+            'subscription',
+            `${config.name} 月度积分续费 (${config.credits}积分)`,
+            { planId: sub.plan_id }
+          )
+
+          console.log(`Subscription renewed: userId=${sub.user_id}, plan=${sub.plan_id}, credits=${config.credits}`)
+        } catch (err) {
+          console.error('Failed to renew subscription:', err)
+        }
+        break
+      }
+
+      case 'BILLING.SUBSCRIPTION.CANCELLED': {
+        // 月订阅取消（保留积分到月底）
+        const subId = body.resource?.id
+
+        await supabaseAdmin
+          .from('subscriptions')
+          .update({
+            status: 'cancelled',
+            cancelled_at: new Date().toISOString(),
+          })
+          .eq('paypal_subscription_id', subId)
+
+        console.log('Subscription cancelled:', subId)
+        break
+      }
 
       default:
-        // 其他事件忽略
         break
     }
 

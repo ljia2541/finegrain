@@ -202,9 +202,42 @@ export async function POST(request: NextRequest) {
         }
       }
 
+      // 免费增强：添加水印
+      let finalImageUrl = result.imageUrl
+      if (isFreeEnhance) {
+        try {
+          const { addWatermark } = await import('@/lib/watermark')
+          const imgRes = await fetch(result.imageUrl)
+          const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
+          const watermarked = await addWatermark(imgBuffer)
+
+          // 上传带水印的图片到 COS
+          const presignRes = await fetch('/api/presign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: `watermarked_${taskId}_${Date.now()}.png`,
+              contentType: 'image/png',
+            }),
+          })
+          const presignData = await presignRes.json()
+          if (presignData.success) {
+            await fetch(presignData.uploadUrl, {
+              method: 'PUT',
+              body: watermarked,
+              headers: { 'Content-Type': 'image/png' },
+            })
+            finalImageUrl = presignData.downloadUrl
+          }
+        } catch (wmErr) {
+          console.error('Failed to add watermark:', wmErr)
+          // 水印失败不阻塞，用原图返回
+        }
+      }
+
       return NextResponse.json({
         success: true,
-        imageUrl: result.imageUrl,
+        imageUrl: finalImageUrl,
         model: result.model,
         scale: result.scale,
         billing,

@@ -65,7 +65,7 @@ export interface EnhanceOptions {
 /**
  * 模型配置
  */
-const MODEL_CONFIG = {
+export const MODEL_CONFIG = {
   crystal: {
     id: 'philz1337x/crystal-upscaler',
     displayName: 'Crystal',

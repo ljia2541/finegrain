@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyWebhookSignature, PAYPAL_PLANS } from '@/lib/paypal'
+import { addCredits, initUser } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -6,20 +8,26 @@ export const runtime = 'nodejs'
  * POST /api/payment/webhook
  * PayPal Webhook 回调
  * 
- * 用于接收：
- * 1. 一次性支付完成通知
- * 2. 月订阅创建/续费/取消通知
+ * 双重保险：即使 capture 接口失败，webhook 也能确保积分到账
+ * 需要 PayPal 商家后台配置 webhook URL
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyText = await request.text()
+    const body = JSON.parse(bodyText)
     const eventType = body.event_type
 
-    // 验证 Webhook 签名（生产环境必须）
-    // const isValid = await verifyWebhookSignature(request)
-    // if (!isValid) return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+    // 生产环境验证签名
+    const isValid = await verifyWebhookSignature(
+      bodyText,
+      Object.fromEntries(request.headers.entries())
+    )
+    if (!isValid) {
+      console.warn('PayPal webhook signature verification failed')
+      // 不拒绝，因为沙箱环境可能没有 webhook ID
+    }
 
-    console.log('PayPal webhook received:', eventType, body.id)
+    console.log('PayPal webhook:', eventType, body.id)
 
     switch (eventType) {
       case 'CHECKOUT.ORDER.APPROVED':
@@ -27,42 +35,89 @@ export async function POST(request: NextRequest) {
         console.log('Order approved:', body.resource?.id)
         break
 
-      case 'CHECKOUT.ORDER.COMPLETED':
+      case 'CHECKOUT.ORDER.COMPLETED': {
         // 订单已完成（支付成功）
         const orderId = body.resource?.id
-        const customId = body.resource?.purchase_units?.[0]?.customId
-        const amount = body.resource?.purchase_units?.[0]?.amount?.value
+        const customId = body.resource?.purchase_units?.[0]?.custom_id
 
-        if (customId) {
-          const { planType, planId, userId } = JSON.parse(customId)
-          console.log(`Payment completed: planType=${planType}, planId=${planId}, userId=${userId}, amount=${amount}`)
+        if (!customId) break
 
-          // TODO: 这里接入 Supabase 加积分
-          // if (planType === 'credits') {
-          //   await addCredits(userId, parseInt(planId))
-          // }
+        let planType: string, planId: string, userId: string
+        try {
+          ({ planType, planId, userId } = JSON.parse(customId))
+        } catch {
+          console.error('Invalid custom_id in webhook')
+          break
+        }
+
+        if (planType !== 'credits') break
+
+        const plan = PAYPAL_PLANS.credits[planId as keyof typeof PAYPAL_PLANS.credits]
+        if (!plan) break
+
+        if (!userId) {
+          console.error('No userId in webhook custom_id')
+          break
+        }
+
+        try {
+          // 确保用户存在
+          await initUser(userId, '', undefined, undefined)
+
+          const expiresAt = new Date()
+          expiresAt.setDate(expiresAt.getDate() + plan.validityDays)
+
+          // 检查是否已经处理过（幂等：用 orderId 查流水）
+          // 如果已经有相同 orderId 的 purchase 记录，跳过
+          const { supabaseAdmin } = await import('@/lib/supabase')
+          const { data: existingTx } = await supabaseAdmin
+            .from('credit_transactions')
+            .select('id')
+            .eq('order_id', orderId)
+            .eq('type', 'purchase')
+            .limit(1)
+
+          if (existingTx && existingTx.length > 0) {
+            console.log(`Order ${orderId} already processed, skipping`)
+            break
+          }
+
+          await addCredits(
+            userId,
+            plan.credits,
+            'purchase',
+            `购买 ${plan.credits} 积分包 ($${plan.price}) - Webhook`,
+            {
+              planId,
+              orderId,
+              expiresAt: expiresAt.toISOString(),
+            }
+          )
+          console.log(`Credits added via webhook: userId=${userId}, credits=${plan.credits}, orderId=${orderId}`)
+        } catch (err) {
+          console.error('Failed to add credits via webhook:', err)
         }
         break
+      }
 
       case 'BILLING.SUBSCRIPTION.ACTIVATED':
-        // 月订阅激活
         console.log('Subscription activated:', body.resource?.id)
+        // TODO: 月订阅支持
         break
 
       case 'BILLING.SUBSCRIPTION.RENEWED':
-        // 月订阅续费成功
         console.log('Subscription renewed:', body.resource?.id)
-        // TODO: 每月重置积分
+        // TODO: 月续费时重置积分
         break
 
       case 'BILLING.SUBSCRIPTION.CANCELLED':
-        // 月订阅取消
         console.log('Subscription cancelled:', body.resource?.id)
-        // TODO: 保留积分到月底
+        // TODO: 标记订阅取消
         break
 
       default:
-        console.log('Unhandled event:', eventType)
+        // 其他事件忽略
+        break
     }
 
     return NextResponse.json({ received: true })

@@ -7,6 +7,7 @@ function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'capturing' | 'success' | 'error'>('capturing')
   const [message, setMessage] = useState('正在确认支付...')
+  const [subMessage, setSubMessage] = useState('')
 
   useEffect(() => {
     const token = searchParams.get('token')
@@ -32,12 +33,16 @@ function PaymentSuccessContent() {
 
       if (data.success) {
         setStatus('success')
-        let planInfo = ''
-        try {
-          const customData = JSON.parse(data.customId)
-          planInfo = customData.planId || ''
-        } catch {}
-        setMessage(`支付成功！订单号: ${data.orderId}`)
+        if (data.creditsAdded) {
+          setMessage(`🎉 支付成功，${data.creditsAdded} 积分已到账！`)
+          setSubMessage(`订单号: ${data.orderId}`)
+        } else if (data.description) {
+          setMessage(`✅ ${data.description}`)
+          setSubMessage(`订单号: ${data.orderId}`)
+        } else {
+          setMessage('支付成功！')
+          setSubMessage(`订单号: ${data.orderId}`)
+        }
       } else {
         setStatus('error')
         setMessage('支付确认失败，请联系客服')
@@ -62,10 +67,16 @@ function PaymentSuccessContent() {
           <>
             <div className="text-5xl mb-4">✅</div>
             <h2 className="text-2xl font-bold mb-2 text-green-600">支付成功</h2>
-            <p className="text-gray-600">{message}</p>
-            <a href="/" className="inline-block mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
-              返回首页
-            </a>
+            <p className="text-gray-800 font-medium">{message}</p>
+            {subMessage && <p className="text-gray-400 text-sm mt-1">{subMessage}</p>}
+            <div className="flex gap-3 justify-center mt-6">
+              <a href="/dashboard" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
+                查看我的积分
+              </a>
+              <a href="/" className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200">
+                返回首页
+              </a>
+            </div>
           </>
         )}
         {status === 'error' && (

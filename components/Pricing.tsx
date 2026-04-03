@@ -1,5 +1,6 @@
 'use client'
 
+import { useSession, signIn } from 'next-auth/react'
 import { Check } from 'lucide-react'
 
 const plans = [
@@ -141,8 +142,16 @@ const subscriptionPlans = [
 ]
 
 export default function Pricing() {
+  const { data: session } = useSession()
+
   const handlePurchase = async (planType: string, planId: string) => {
     if (planType === 'free') return
+
+    // 积分包需要登录
+    if (planType === 'credits' && !session?.user) {
+      signIn('google', { callbackUrl: '/pricing' })
+      return
+    }
 
     try {
       const res = await fetch('/api/payment/create-order', {
@@ -152,6 +161,11 @@ export default function Pricing() {
       })
 
       const data = await res.json()
+
+      if (data.error === 'LOGIN_REQUIRED') {
+        signIn('google', { callbackUrl: '/pricing' })
+        return
+      }
 
       if (data.success && data.approvalUrl) {
         window.location.href = data.approvalUrl

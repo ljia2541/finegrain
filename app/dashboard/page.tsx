@@ -37,6 +37,14 @@ interface Transaction {
   createdAt: string
 }
 
+interface SubscriptionInfo {
+  planId: string
+  planName: string
+  creditsPerMonth: number
+  currentCredits: number
+  periodEnd: string
+}
+
 // 积分包快捷购买
 const quickBuyPackages = [
   { credits: 100, price: '$5.99', popular: false },
@@ -51,6 +59,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions'>('overview')
   const [stats, setStats] = useState<UserProfile | null>(null)
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -61,6 +70,7 @@ export default function Dashboard() {
       const data = await res.json()
       setStats(data.stats)
       setTransactions(data.recentTransactions || [])
+      if (data.subscription) setSubscription(data.subscription)
       setError(null)
     } catch (e) {
       console.error('Failed to fetch profile:', e)
@@ -246,8 +256,14 @@ export default function Dashboard() {
                     <Crown className="w-4 h-4 text-purple-600" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">—</div>
-                <div className="text-xs text-gray-500">订阅状态</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {subscription ? subscription.planName : '—'}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {subscription
+                    ? `${subscription.creditsPerMonth}积分/月 · 到期 ${new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}`
+                    : '未订阅'}
+                </div>
               </div>
             </div>
 

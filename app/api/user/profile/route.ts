@@ -39,6 +39,30 @@ export async function GET() {
       creditsExpireAt = await getUserEarliestExpiry(session.user.id)
     } catch {}
 
+    // 获取订阅状态
+    let subscription = null
+    try {
+      const { supabaseAdmin } = await import('@/lib/supabase')
+      const { data: subs } = await supabaseAdmin
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(1)
+
+      if (subs && subs.length > 0) {
+        const sub = subs[0]
+        subscription = {
+          planId: sub.plan_id,
+          planName: sub.plan_id.charAt(0).toUpperCase() + sub.plan_id.slice(1),
+          creditsPerMonth: sub.credits_per_month,
+          currentCredits: sub.current_credits,
+          periodEnd: sub.current_period_end,
+        }
+      }
+    } catch {}
+
     return NextResponse.json({
       user: {
         id: session.user.id,
@@ -53,6 +77,7 @@ export async function GET() {
         totalSpent: stats.totalSpent,
         creditsExpireAt,
       },
+      subscription,
       recentTransactions: transactions.map(tx => ({
         id: tx.id,
         type: tx.type,

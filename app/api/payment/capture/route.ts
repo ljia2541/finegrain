@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { captureOrder, PAYPAL_PLANS } from '@/lib/paypal'
+import { captureOrder, getOrder, PAYPAL_PLANS } from '@/lib/paypal'
 import { getAuthSession } from '@/lib/auth'
 import { addCredits, initUser } from '@/lib/supabase'
 
@@ -18,11 +18,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'orderId is required' }, { status: 400 })
     }
 
+    // PayPal capture 响应不返回 custom_id，需要先从 order 详情获取
+    const orderDetail = await getOrder(orderId)
+    const customId = orderDetail.purchase_units?.[0]?.custom_id
+
     const capture = await captureOrder(orderId)
 
     if (capture.status === 'COMPLETED') {
-      const customId = capture.purchaseUnits?.[0]?.customId
-      const amount = capture.purchaseUnits?.[0]?.amount?.value
+      const amount = capture.purchase_units?.[0]?.amount?.value
 
       if (!customId) {
         console.error('Missing custom_id in PayPal capture response')

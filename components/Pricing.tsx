@@ -236,7 +236,13 @@ export default function Pricing() {
               ))}
             </ul>
             <button
-              onClick={() => handlePurchase(plan.action, 'default')}
+              onClick={() => {
+                if (plan.action === 'credits') {
+                  document.getElementById('credit-packages')?.scrollIntoView({ behavior: 'smooth' })
+                } else {
+                  handlePurchase(plan.action, 'default')
+                }
+              }}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
                 plan.highlighted
                   ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -309,7 +315,7 @@ export default function Pricing() {
       </div>
 
       {/* Credit Packages - SECOND */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
+      <div id="credit-packages" className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
         <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 按需购买，灵活使用</h3>
         <p className="text-center text-gray-600 mb-8">积分不过期快，适合偶尔使用或囤货慢慢用</p>
         

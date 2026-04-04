@@ -53,6 +53,13 @@ const quickBuyPackages = [
   { credits: 1000, price: '$29.99', popular: false },
 ]
 
+// 月订阅方案
+const subscriptionPlans = [
+  { planId: 'pro', name: 'Pro', credits: 200, price: '$7.99/月', highlight: false },
+  { planId: 'max', name: 'Max', credits: 500, price: '$14.99/月', highlight: true },
+  { planId: 'ultra', name: 'Ultra', credits: 1000, price: '$24.99/月', highlight: false },
+]
+
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -105,6 +112,24 @@ export default function Dashboard() {
       }
     } catch {
       alert('支付请求失败，请稍后重试')
+    }
+  }, [])
+
+  const handleSubscribe = useCallback(async (planId: string) => {
+    try {
+      const res = await fetch('/api/payment/create-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planId }),
+      })
+      const data = await res.json()
+      if (data.success && data.approveUrl) {
+        window.location.href = data.approveUrl
+      } else {
+        alert('订阅创建失败：' + (data.error || 'PayPal 订阅计划尚未配置'))
+      }
+    } catch {
+      alert('订阅请求失败，请稍后重试')
     }
   }, [])
 
@@ -315,6 +340,56 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* 月订阅 */}
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-sm border border-indigo-100 overflow-hidden">
+              <div className="px-5 py-4 border-b border-indigo-100 flex items-center justify-between">
+                <h2 className="font-bold text-gray-900">🔄 月订阅</h2>
+                <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">每月自动到账更划算</span>
+              </div>
+              {subscription ? (
+                <div className="p-5">
+                  <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Crown className="w-5 h-5 text-purple-600" />
+                        <span className="font-bold text-lg text-gray-900">{subscription.planName}</span>
+                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">已订阅</span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {subscription.creditsPerMonth} 积分/月 · 到期 {new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}
+                      </p>
+                    </div>
+                    <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700">管理订阅 →</a>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-indigo-100">
+                  {subscriptionPlans.map((plan) => (
+                    <div key={plan.planId} className={`p-4 text-center ${plan.highlight ? 'bg-white/60' : ''}`}>
+                      {plan.highlight && (
+                        <div className="mb-1">
+                          <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">推荐</span>
+                        </div>
+                      )}
+                      <div className="text-lg font-bold text-gray-900">{plan.name}</div>
+                      <div className="text-xs text-gray-500 mb-1">{plan.credits} 积分/月</div>
+                      <div className="text-xl font-bold text-indigo-700">{plan.price}</div>
+                      <button
+                        onClick={() => handleSubscribe(plan.planId)}
+                        className={`mt-3 w-full py-2 rounded-lg text-sm font-semibold transition-colors ${
+                          plan.highlight
+                            ? 'bg-purple-600 text-white hover:bg-purple-700'
+                            : 'bg-white text-indigo-700 hover:bg-indigo-50 border border-indigo-200'
+                        }`}
+                      >
+                        订阅
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 最近记录 */}

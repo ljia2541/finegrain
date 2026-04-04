@@ -164,13 +164,13 @@ export default function Dashboard() {
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => handleQuickBuy(200)}
+              <a
+                href="#quick-buy"
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
               >
                 <Coins className="w-4 h-4" />
                 购买积分
-              </button>
+              </a>
               <button
                 onClick={() => signOut({ callbackUrl: '/' })}
                 className="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-red-500 transition-colors"
@@ -286,7 +286,7 @@ export default function Dashboard() {
             </div>
 
             {/* 快捷购买 */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div id="quick-buy" className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h2 className="font-bold text-gray-900">快速充值</h2>
                 <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">

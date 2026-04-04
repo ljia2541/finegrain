@@ -12,6 +12,7 @@ const navItems = [
   { label: '人像增强', href: '/enhance/portrait' },
   { label: '印刷高清', href: '/enhance/print' },
   { label: '10倍超清', href: '/enhance/ultra' },
+  { label: '定价', href: '/pricing' },
 ]
 
 export default function Header() {

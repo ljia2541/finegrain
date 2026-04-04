@@ -11,14 +11,22 @@ function PaymentSuccessContent() {
 
   useEffect(() => {
     const token = searchParams.get('token')
+    const isSubscription = searchParams.get('subscription') === '1'
 
-    if (!token) {
+    if (!token && !isSubscription) {
       setStatus('error')
       setMessage('缺少支付信息')
       return
     }
 
-    capturePayment(token)
+    if (isSubscription) {
+      // 订阅：PayPal approve 后跳转，积分由 Webhook ACTIVATED 事件自动发放
+      setStatus('success')
+      setMessage('🎉 订阅成功！积分将在几分钟内到账。')
+      setSubMessage('PayPal 正在处理订阅确认')
+    } else if (token) {
+      capturePayment(token)
+    }
   }, [searchParams])
 
   async function capturePayment(orderId: string) {

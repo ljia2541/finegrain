@@ -3,10 +3,13 @@ import Stripe from 'stripe'
 /**
  * Stripe 客户端（服务端使用）
  * 支付密钥在后端使用，不暴露给前端
+ * 注意：Stripe 暂未启用，key 为空时返回占位客户端
  */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2026-03-25.dahlia',
-})
+export const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2026-03-25.dahlia',
+    })
+  : null as unknown as Stripe
 
 /**
  * Stripe 商品配置

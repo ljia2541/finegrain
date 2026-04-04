@@ -12,6 +12,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { planType, planId, userId } = body
 
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json({ error: 'Stripe payment is not available yet' }, { status: 503 })
+    }
+
     if (!planType || !planId) {
       return NextResponse.json({ error: 'planType and planId are required' }, { status: 400 })
     }

@@ -238,9 +238,11 @@ export default function Pricing() {
             <button
               onClick={() => {
                 if (plan.action === 'credits') {
-                  document.getElementById('credit-packages')?.scrollIntoView({ behavior: 'smooth' })
+                  handlePurchase('credits', '200')
+                } else if (plan.action === 'free') {
+                  window.location.href = '/enhance/free'
                 } else {
-                  handlePurchase(plan.action, 'default')
+                  handlePurchase(plan.action, '')
                 }
               }}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${

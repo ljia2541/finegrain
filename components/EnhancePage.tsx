@@ -165,9 +165,10 @@ export default function EnhancePage({
     }, 500)
 
     try {
-      // 检查像素是否超过 Replicate 限制（约 200 万像素）
-      // Real-ESRGAN 限制 ~2M 像素，Crystal 限制 ~1448x1448
-      const MAX_PIXELS = effectiveMaxLongEdge ? effectiveMaxLongEdge * effectiveMaxLongEdge : 2_000_000
+      // 检查像素是否超过限制
+      // Real-ESRGAN / Recraft / Google Upscaler 限制 ~4M 像素
+      // Crystal 限制长边 ≤ 1000px（约 1M 像素）
+      const MAX_PIXELS = effectiveMaxLongEdge ? effectiveMaxLongEdge * effectiveMaxLongEdge : 4_000_000
       let fileToUpload: File = selectedFile
       let uploadWidth = imageWidth
       let uploadHeight = imageHeight
@@ -229,7 +230,8 @@ export default function EnhancePage({
 
       if (!uploadRes.ok) {
         clearInterval(interval)
-        setError('图片上传失败，请重试。')
+        console.error('COS upload failed:', uploadRes.status, await uploadRes.text().catch(() => ''))
+        setError(`图片上传失败（${uploadRes.status}），请重试。`)
         setPhase('preview')
         return
       }

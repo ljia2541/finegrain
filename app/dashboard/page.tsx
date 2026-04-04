@@ -90,6 +90,24 @@ export default function Dashboard() {
     }
   }, [status, router, fetchProfile])
 
+  const handleQuickBuy = useCallback(async (credits: number) => {
+    try {
+      const res = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planType: 'credits', planId: String(credits) }),
+      })
+      const data = await res.json()
+      if (data.success && data.approvalUrl) {
+        window.location.href = data.approvalUrl
+      } else {
+        alert('支付创建失败：' + (data.error || '未知错误'))
+      }
+    } catch {
+      alert('支付请求失败，请稍后重试')
+    }
+  }, [])
+
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -146,13 +164,13 @@ export default function Dashboard() {
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
-              <a
-                href="/pricing"
+              <button
+                onClick={() => handleQuickBuy(200)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
               >
                 <Coins className="w-4 h-4" />
                 购买积分
-              </a>
+              </button>
               <button
                 onClick={() => signOut({ callbackUrl: '/' })}
                 className="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-red-500 transition-colors"
@@ -209,7 +227,7 @@ export default function Dashboard() {
                   <div className="text-5xl font-bold">{stats?.credits ?? 0}</div>
                 </div>
                 <a
-                  href="/pricing"
+                  href="/pricing#credit-packages"
                   className="flex items-center gap-2 bg-white text-blue-600 px-5 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
                 >
                   <CreditCard className="w-4 h-4" />
@@ -288,7 +306,10 @@ export default function Dashboard() {
                     <div className="text-2xl font-bold text-blue-600">{pkg.credits}</div>
                     <div className="text-xs text-gray-500 mb-1">积分</div>
                     <div className="text-lg font-bold text-gray-900">{pkg.price}</div>
-                    <button className="mt-2 w-full py-1.5 bg-blue-600 text-white rounded-md text-xs font-semibold hover:bg-blue-700 transition-colors">
+                    <button
+                      onClick={() => handleQuickBuy(pkg.credits)}
+                      className="mt-2 w-full py-1.5 bg-blue-600 text-white rounded-md text-xs font-semibold hover:bg-blue-700 transition-colors"
+                    >
                       购买
                     </button>
                   </div>

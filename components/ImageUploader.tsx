@@ -106,39 +106,38 @@ export default function ImageUploader() {
             <Upload className="w-8 h-8 text-blue-600" />
           </div>
             
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              拖放到任意位置上传
-            </h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
+            拖放到任意位置上传
+          </h3>
             
-            <p className="text-gray-600 mb-4 text-sm">
-              或者点击选择文件 • 单张上传 • 支持常见手机/相机照片
-            </p>
+          <p className="text-gray-600 mb-4 text-sm">
+            或者点击选择文件 • 单张上传 • 支持常见手机/相机照片
+          </p>
             
-            <div className="flex items-center justify-center gap-2 mb-6 text-xs text-gray-500">
-              <span className="px-2 py-1 bg-white rounded border">JPG</span>
-              <span className="px-2 py-1 bg-white rounded border">PNG</span>
-              <span className="px-2 py-1 bg-white rounded border">WebP</span>
-              <span className="px-2 py-1 bg-white rounded border">HEIC</span>
-              <span className="px-2 py-1 bg-white rounded border">AVIF</span>
-            </div>
-            
-            <input
-              ref={fileInputRef}
-              type="file"
-              id="file-upload"
-              className="hidden"
-              accept="image/jpeg,image/png,image/webp,image/heic,image/avif"
-              multiple
-              onChange={handleChange}
-            />
-            <label
-              htmlFor="file-upload"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg cursor-pointer"
-            >
-              <Upload className="w-4 h-4" />
-              选择图片
-            </label>
+          <div className="flex items-center justify-center gap-2 mb-6 text-xs text-gray-500">
+            <span className="px-2 py-1 bg-white rounded border">JPG</span>
+            <span className="px-2 py-1 bg-white rounded border">PNG</span>
+            <span className="px-2 py-1 bg-white rounded border">WebP</span>
+            <span className="px-2 py-1 bg-white rounded border">HEIC</span>
+            <span className="px-2 py-1 bg-white rounded border">AVIF</span>
           </div>
+            
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="file-upload"
+            className="hidden"
+            accept="image/jpeg,image/png,image/webp,image/heic,image/avif"
+            multiple
+            onChange={handleChange}
+          />
+          <label
+            htmlFor="file-upload"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg cursor-pointer"
+          >
+            <Upload className="w-4 h-4" />
+            选择图片
+          </label>
           
           {/* 隐私提示 */}
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">

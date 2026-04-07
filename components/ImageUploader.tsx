@@ -1,13 +1,16 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { Upload } from 'lucide-react'
+import { useState, useCallback, useRef } from 'react'
+import { Upload, ArrowRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function ImageUploader() {
+  const router = useRouter()
   const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -65,41 +68,43 @@ export default function ImageUploader() {
     reader.readAsDataURL(file)
   }
 
-  const handleUpload = async () => {
+  const handleEnhance = () => {
     if (!selectedFile) return
+    // 跳转到增强页面，通过 sessionStorage 传递文件信息
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      sessionStorage.setItem('pendingImage', JSON.stringify({
+        name: selectedFile.name,
+        type: selectedFile.type,
+        size: selectedFile.size,
+        dataUrl: reader.result,
+      }))
+      router.push('/enhance/general')
+    }
+    reader.readAsDataURL(selectedFile)
+  }
 
-    setUploading(true)
-    
-    try {
-      // TODO: 实现上传逻辑
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      alert('上传成功！（演示）')
-    } catch (error) {
-      console.error('Upload error:', error)
-      alert('上传失败，请重试')
-    } finally {
-      setUploading(false)
+  const handleReupload = () => {
+    setSelectedFile(null)
+    setPreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
     }
   }
 
   return (
-    <div className="w-full">
-      {!preview ? (
-        <div
-          className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-            dragActive
-              ? 'border-blue-500 bg-blue-50'
-              : 'border-gray-300 hover:border-gray-400 bg-gray-50'
-          }`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          <div className="flex flex-col items-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4">
-              <Upload className="w-8 h-8 text-white" />
-            </div>
+    <div
+      className="w-full max-w-lg mx-auto rounded-2xl border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 p-8 transition-all hover:border-blue-300 hover:shadow-lg"
+      onDragEnter={handleDrag}
+      onDragLeave={handleDrag}
+      onDragOver={handleDrag}
+      onDrop={handleDrop}
+    >
+      {!selectedFile ? (
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center">
+            <Upload className="w-8 h-8 text-blue-600" />
+          </div>
             
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               拖放到任意位置上传
@@ -109,7 +114,7 @@ export default function ImageUploader() {
               或者点击选择文件 • 单张上传 • 支持常见手机/相机照片
             </p>
             
-            <div className="flex items-center gap-2 mb-6 text-xs text-gray-500">
+            <div className="flex items-center justify-center gap-2 mb-6 text-xs text-gray-500">
               <span className="px-2 py-1 bg-white rounded border">JPG</span>
               <span className="px-2 py-1 bg-white rounded border">PNG</span>
               <span className="px-2 py-1 bg-white rounded border">WebP</span>
@@ -118,6 +123,7 @@ export default function ImageUploader() {
             </div>
             
             <input
+              ref={fileInputRef}
               type="file"
               id="file-upload"
               className="hidden"
@@ -152,26 +158,28 @@ export default function ImageUploader() {
       ) : (
         <div className="space-y-4">
           <img
-            src={preview}
+            src={preview || ''}
             alt="Preview"
             className="w-full rounded-lg shadow-lg"
           />
           <div className="flex justify-center gap-4">
             <button
-              onClick={() => {
-                setSelectedFile(null)
-                setPreview(null)
-              }}
+              onClick={handleReupload}
               className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
             >
               重新选择
             </button>
             <button
-              onClick={handleUpload}
+              onClick={handleEnhance}
               disabled={uploading}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? '处理中...' : '开始增强'}
+              {uploading ? '处理中...' : (
+                <>
+                  开始增强
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </div>
         </div>

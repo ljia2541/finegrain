@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { Upload, Download, X, Loader2, Sparkles, ArrowRight } from 'lucide-react'
 
 interface ModelOption {
@@ -65,6 +65,24 @@ export default function EnhancePage({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
   const [sliderPos, setSliderPos] = useState(50)
+
+  // 从首页跳转过来时，自动读取待处理图片
+  useEffect(() => {
+    try {
+      const pending = sessionStorage.getItem('pendingImage')
+      if (pending) {
+        sessionStorage.removeItem('pendingImage')
+        const { name, type, dataUrl } = JSON.parse(pending)
+        fetch(dataUrl)
+          .then(res => res.blob())
+          .then(blob => {
+            const file = new File([blob], name, { type })
+            setSelectedFile(file)
+            setPreview(dataUrl)
+          })
+      }
+    } catch {}
+  }, [])
 
   const currentModel = selectedModel
 

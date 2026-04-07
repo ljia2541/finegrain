@@ -43,13 +43,15 @@ export async function GET() {
     let subscription = null
     try {
       const { supabaseAdmin } = await import('@/lib/supabase')
-      const { data: subs } = await supabaseAdmin
+      const { data: subs, error: subError } = await supabaseAdmin
         .from('subscriptions')
         .select('*')
         .eq('user_id', session.user.id)
         .eq('status', 'active')
         .order('created_at', { ascending: false })
         .limit(1)
+
+      console.log('[DEBUG] subscription query:', { userId: session.user.id, subs, subError })
 
       if (subs && subs.length > 0) {
         const sub = subs[0]
@@ -61,7 +63,9 @@ export async function GET() {
           periodEnd: sub.current_period_end,
         }
       }
-    } catch {}
+    } catch (e) {
+      console.error('[DEBUG] subscription query error:', e)
+    }
 
     return NextResponse.json({
       user: {

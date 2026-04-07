@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
 interface CrystalCropperProps {
@@ -12,7 +11,7 @@ interface CrystalCropperProps {
   onCancel: () => void
 }
 
-const MAX_CRYSTAL_PIXELS = 1000 // Crystal 长边最大像素
+const MAX_CRYSTAL_PIXELS = 1000
 
 export default function CrystalCropper({
   imageSrc,
@@ -22,52 +21,60 @@ export default function CrystalCropper({
   onCancel,
 }: CrystalCropperProps) {
   const imgRef = useRef<HTMLImageElement>(null)
-  const [crop, setCrop] = useState<Crop>()
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [cropPos, setCropPos] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const dragStart = useRef({ x: 0, y: 0 })
 
-  // 计算最大裁剪尺寸（不超过 1000px）
+  // 显示缩放（最大 500px 宽）
   const displayScale = Math.min(500 / imageWidth, 500 / imageHeight, 1)
   const displayWidth = imageWidth * displayScale
   const displayHeight = imageHeight * displayScale
 
-  // Crystal 允许的比例范围 1:3 ~ 3:1，即 0.33 ~ 3
-  const aspect = imageWidth / imageHeight
+  // 裁剪框尺寸（1000px 映射到显示尺寸）
+  const cropDisplaySize = MAX_CRYSTAL_PIXELS * displayScale
 
-  const getCroppedBlob = useCallback(async (): Promise<string> => {
-    if (!imgRef.current || !completedCrop) return imageSrc
+  // 裁剪框在显示尺寸内的位置限制
+  const maxX = Math.max(0, displayWidth - cropDisplaySize)
+  const maxY = Math.max(0, displayHeight - cropDisplaySize)
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+    dragStart.current = { x: e.clientX - cropPos.x, y: e.clientY - cropPos.y }
+  }
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging) return
+    const newX = Math.max(0, Math.min(maxX, e.clientX - dragStart.current.x))
+    const newY = Math.max(0, Math.min(maxY, e.clientY - dragStart.current.y))
+    setCropPos({ x: newX, y: newY })
+  }, [isDragging, maxX, maxY])
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleConfirm = () => {
+    if (!imgRef.current) return
 
     const img = imgRef.current
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')!
-
     // 计算实际像素的裁剪区域
-    const scaleX = img.naturalWidth / displayWidth
-    const scaleY = img.naturalHeight / displayHeight
+    const scaleX = imageWidth / displayWidth
+    const scaleY = imageHeight / displayHeight
 
-    const cropX = completedCrop.x * scaleX
-    const cropY = completedCrop.y * scaleY
-    const cropWidth = completedCrop.width * scaleX
-    const cropHeight = completedCrop.height * scaleY
+    const cropX = cropPos.x * scaleX
+    const cropY = cropPos.y * scaleY
+    const cropW = cropDisplaySize * scaleX
+    const cropH = cropDisplaySize * scaleY
 
-    // 确保裁剪后尺寸不超过 1000px
-    const longEdge = Math.max(cropWidth, cropHeight)
-    const scale = longEdge > MAX_CRYSTAL_PIXELS ? MAX_CRYSTAL_PIXELS / longEdge : 1
-
-    canvas.width = cropWidth * scale
-    canvas.height = cropHeight * scale
-
-    ctx.drawImage(
-      img,
-      cropX, cropY, cropWidth, cropHeight,
-      0, 0, canvas.width, canvas.height,
-    )
-
-    return canvas.toDataURL('image/png')
-  }, [completedCrop, displayWidth, displayHeight, imageSrc])
-
-  const handleConfirm = async () => {
-    const cropped = await getCroppedBlob()
-    onCropped(cropped)
+    const canvas = document.createElement('canvas')
+    canvas.width = cropW
+    canvas.height = cropH
+    const ctx = canvas.getContext('2d')!
+    ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH)
+    const dataUrl = canvas.toDataURL('image/png')
+    onCropped(dataUrl)
   }
 
   return (
@@ -75,27 +82,78 @@ export default function CrystalCropper({
       <div className="bg-white rounded-xl p-6 max-w-2xl w-full">
         <h3 className="text-lg font-bold text-gray-900 mb-2">调整裁剪区域</h3>
         <p className="text-sm text-gray-500 mb-4">
-          Crystal 仅支持 1000px 以内的图片。请裁剪到合适区域（支持 1:3 ~ 3:1 比例）
+          Crystal 仅支持 1000px 以内的图片，请拖动裁剪框选择区域
         </p>
 
-        <div className="flex justify-center overflow-hidden rounded-lg border border-gray-200 mb-4">
-          <ReactCrop
-            crop={crop}
-            onChange={(_, pct) => setCrop(pct)}
-            onComplete={(c) => setCompletedCrop(c)}
-            aspect={undefined}
-            minWidth={100}
-            minHeight={100}
-          >
-            <img
-              ref={imgRef}
-              src={imageSrc}
-              alt="待裁剪"
-              style={{ width: displayWidth, height: displayHeight }}
-              crossOrigin="anonymous"
+        {/* 图片容器 */}
+        <div
+          ref={containerRef}
+          className="relative overflow-hidden rounded-lg border border-gray-200 bg-gray-100 mx-auto select-none"
+          style={{ width: displayWidth, height: displayHeight }}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
+          <img
+            ref={imgRef}
+            src={imageSrc}
+            alt="待裁剪"
+            style={{ width: displayWidth, height: displayHeight }}
+            crossOrigin="anonymous"
+            draggable={false}
+          />
+
+          {/* 半透明遮罩 */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* 左边 */}
+            <div
+              className="absolute top-0 bg-black/50"
+              style={{ left: 0, top: 0, width: cropPos.x, height: displayHeight }}
             />
-          </ReactCrop>
+            {/* 右边 */}
+            <div
+              className="absolute top-0 bg-black/50"
+              style={{ left: cropPos.x + cropDisplaySize, top: 0, width: displayWidth - cropPos.x - cropDisplaySize, height: displayHeight }}
+            />
+            {/* 上 */}
+            <div
+              className="absolute top-0 bg-black/50"
+              style={{ left: cropPos.x, top: 0, width: cropDisplaySize, height: cropPos.y }}
+            />
+            {/* 下 */}
+            <div
+              className="absolute bg-black/50"
+              style={{ left: cropPos.x, top: cropPos.y + cropDisplaySize, width: cropDisplaySize, height: displayHeight - cropPos.y - cropDisplaySize }}
+            />
+          </div>
+
+          {/* 裁剪框 */}
+          <div
+            className="absolute border-2 border-white cursor-move z-10"
+            style={{
+              left: cropPos.x,
+              top: cropPos.y,
+              width: cropDisplaySize,
+              height: cropDisplaySize,
+              boxShadow: '0 0 0 9999px rgba(0,0,0,0.4)',
+            }}
+            onMouseDown={handleMouseDown}
+          >
+            {/* 四个角 */}
+            <div className="absolute -top-1 -left-1 w-3 h-3 bg-white rounded-full border-2 border-purple-600" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-purple-600" />
+            <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-white rounded-full border-2 border-purple-600" />
+            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-purple-600" />
+            {/* 中心十字 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xs font-mono opacity-70 pointer-events-none">
+              {Math.round(cropDisplaySize * (imageWidth / displayWidth))}px
+            </div>
+          </div>
         </div>
+
+        <p className="text-xs text-gray-400 text-center mt-2 mb-4">
+          拖动裁剪框选择 Crystal 支持的 1000px 区域
+        </p>
 
         <div className="flex justify-end gap-3">
           <button
@@ -106,8 +164,7 @@ export default function CrystalCropper({
           </button>
           <button
             onClick={handleConfirm}
-            disabled={!completedCrop?.width}
-            className="px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700"
           >
             确认裁剪
           </button>

@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Upload, Download, X, Loader2, Sparkles, ArrowRight } from 'lucide-react'
+import dynamic from 'next/dynamic'
+const CrystalCropper = dynamic(() => import('./CrystalCropper'), { ssr: false })
 
 interface ModelOption {
   id: string
@@ -56,6 +58,8 @@ export default function EnhancePage({
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [imageWidth, setImageWidth] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
+  const [showCropper, setShowCropper] = useState(false)
+  const [pendingCropImage, setPendingCropImage] = useState<{ file: File; dataUrl: string; width: number; height: number } | null>(null)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
   const [selectedScale, setSelectedScale] = useState<number>(scales[0])
   const [selectedCreditSource, setSelectedCreditSource] = useState<'auto' | 'subscription' | 'purchase'>('auto')
@@ -156,11 +160,13 @@ export default function EnhancePage({
       setImageWidth(img.naturalWidth)
       setImageHeight(img.naturalHeight)
 
-      // Check max long edge
+      // Check max long edge - if Crystal exceeds 1000px, show cropper instead of error
       if (effectiveMaxLongEdge) {
         const longEdge = Math.max(img.naturalWidth, img.naturalHeight)
         if (longEdge > effectiveMaxLongEdge) {
-          setError(`图片长边 ${longEdge}px 超过限制 ${effectiveMaxLongEdge}px，请缩小图片后重试。`)
+          // Crystal: show cropper to let user trim to 1000px
+          setPendingCropImage({ file, dataUrl: reader.result as string, width: img.naturalWidth, height: img.naturalHeight })
+          setShowCropper(true)
           return
         }
       }
@@ -383,6 +389,34 @@ export default function EnhancePage({
 
         {/* Main Card */}
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 space-y-6">
+          {/* Crystal Cropper */}
+          {showCropper && pendingCropImage && (
+            <CrystalCropper
+              imageSrc={pendingCropImage.dataUrl}
+              imageWidth={pendingCropImage.width}
+              imageHeight={pendingCropImage.height}
+              onCropped={(croppedUrl) => {
+                // Create a File from cropped data URL
+                fetch(croppedUrl)
+                  .then(res => res.blob())
+                  .then(blob => {
+                    const croppedFile = new File([blob], pendingCropImage!.file.name, { type: 'image/png' })
+                    setSelectedFile(croppedFile)
+                    setPreview(croppedUrl)
+                    setImageWidth(pendingCropImage!.width)
+                    setImageHeight(pendingCropImage!.height)
+                    setShowCropper(false)
+                    setPendingCropImage(null)
+                    setPhase('preview')
+                  })
+              }}
+              onCancel={() => {
+                setShowCropper(false)
+                setPendingCropImage(null)
+              }}
+            />
+          )}
+
           {/* Info Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">

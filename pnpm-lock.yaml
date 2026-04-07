@@ -59,6 +59,9 @@ importers:
       react-hook-form:
         specifier: ^7.49.3
         version: 7.71.2(react@18.3.1)
+      react-image-crop:
+        specifier: ^11.0.10
+        version: 11.0.10(react@18.3.1)
       replicate:
         specifier: ^0.29.1
         version: 0.29.4
@@ -84,6 +87,9 @@ importers:
         specifier: ^4.5.0
         version: 4.5.7(@types/react@18.3.28)(react@18.3.1)
     devDependencies:
+      '@types/react-image-crop':
+        specifier: ^9.0.2
+        version: 9.0.2(react@18.3.1)
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.19.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)
@@ -1848,6 +1854,10 @@ packages:
     resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
     peerDependencies:
       '@types/react': ^18.0.0
+
+  '@types/react-image-crop@9.0.2':
+    resolution: {integrity: sha512-gOa5G6CuPuRuvEfQty7Ho4GxsKNwRTdk2jwS/XmI3agPFvsVEmtxR9y3tt5Y3UNp4NkRHbnH4U4YLR04YlSARw==}
+    deprecated: This is a stub types definition. react-image-crop provides its own type definitions, so you do not need this installed.
 
   '@types/react@18.3.28':
     resolution: {integrity: sha512-z9VXpC7MWrhfWipitjNdgCauoMLRdIILQsAEV+ZesIzBq/oUlxk0m3ApZuMFCXdnS4U7KrI+l3WRUEGQ8K1QKw==}
@@ -4989,6 +4999,11 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
+  react-image-crop@11.0.10:
+    resolution: {integrity: sha512-+5FfDXUgYLLqBh1Y/uQhIycpHCbXkI50a+nbfkB1C0xXXUTwkisHDo2QCB1SQJyHCqIuia4FeyReqXuMDKWQTQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -7614,6 +7629,12 @@ snapshots:
   '@types/react-dom@18.3.7(@types/react@18.3.28)':
     dependencies:
       '@types/react': 18.3.28
+
+  '@types/react-image-crop@9.0.2(react@18.3.1)':
+    dependencies:
+      react-image-crop: 11.0.10(react@18.3.1)
+    transitivePeerDependencies:
+      - react
 
   '@types/react@18.3.28':
     dependencies:
@@ -11303,6 +11324,10 @@ snapshots:
       scheduler: 0.23.2
 
   react-hook-form@7.71.2(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
+  react-image-crop@11.0.10(react@18.3.1):
     dependencies:
       react: 18.3.1
 

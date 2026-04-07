@@ -231,7 +231,7 @@ export async function POST(request: NextRequest) {
       const result = await enhanceImage({
         image: processedImageUrl,
         model,
-        scale: model === 'recraft' ? 4 : scale,
+        scale,
         faceEnhance,
       })
 

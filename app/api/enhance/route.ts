@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     const result = await enhanceImageAsync({
       image: imageUrl,
       model,
-      scale: model === 'recraft' ? 4 : scale, // Recraft 无 scale 参数，传默认值
+      // Recraft only supports 2x, frontend limits selection
       faceEnhance,
     })
 

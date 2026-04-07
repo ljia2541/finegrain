@@ -684,6 +684,18 @@ export default function EnhancePage({
                   开始增强
                 </button>
               </div>
+              {/* Crystal crop button */}
+              {(selectedModel.id === 'crystal' || selectedModel.id === 'crystal10x') && imageWidth > 1000 && (
+                <button
+                  onClick={() => {
+                    setPendingCropImage({ file: selectedFile!, dataUrl: preview!, width: imageWidth, height: imageHeight })
+                    setShowCropper(true)
+                  }}
+                  className="w-full bg-purple-100 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-200 transition-colors text-center"
+                >
+                  裁剪图片（{Math.round(imageWidth * imageHeight / 10000)}万像素，点击裁剪到 1000px 以内）
+                </button>
+              )}
             </div>
           )}
 

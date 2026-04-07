@@ -79,7 +79,7 @@ export default function ImageUploader() {
         size: selectedFile.size,
         dataUrl: reader.result,
       }))
-      router.push('/enhance/general')
+      router.push('/enhance/free')
     }
     reader.readAsDataURL(selectedFile)
   }

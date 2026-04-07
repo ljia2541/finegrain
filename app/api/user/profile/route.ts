@@ -48,7 +48,7 @@ export async function GET() {
         .select('*')
         .eq('user_id', session.user.id)
         .eq('status', 'active')
-        .order('created_at', { ascending: false })
+        .order('started_at', { ascending: false })
         .limit(1)
 
       console.log('[DEBUG] subscription query:', { userId: session.user.id, subs, subError })

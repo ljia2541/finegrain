@@ -2,9 +2,72 @@ import { NextRequest, NextResponse } from 'next/server'
 import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, MODEL_CONFIG } from '@/lib/replicate'
 import { getAuthSession } from '@/lib/auth'
 import { getUserBalance, deductCredits, getUserBalanceSplit } from '@/lib/supabase'
+import sharp from 'sharp'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300
+
+// 模型 GPU 内存限制（最大像素数，4通道）
+const MODEL_MAX_PIXELS: Record<string, number> = {
+  crystal: 2_096_704,   // ~1440×1440，约 200 万像素
+  realesrgan: 4_194_304, // ~2048×2048，约 400 万像素
+  google: 4_194_304,     // 同上
+  recraft: 4_194_304,   // 同上
+}
+
+/**
+ * 预处理图片：如果超过模型 GPU 内存限制，先缩图再上传到 COS
+ * 返回适合模型处理的图片 URL
+ */
+async function preprocessImageForModel(imageUrl: string, model: string, baseUrl: string): Promise<string> {
+  const maxPixels = MODEL_MAX_PIXELS[model] || 4_194_304
+  
+  // 获取图片尺寸
+  const imgRes = await fetch(imageUrl)
+  const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
+  const metadata = await sharp(imgBuffer).metadata()
+  const width = metadata.width || 0
+  const height = metadata.height || 0
+  const totalPixels = width * height
+  
+  if (totalPixels <= maxPixels) {
+    return imageUrl // 不需要处理
+  }
+  
+  // 超出限制，按比例缩图到 GPU 能接受的最大尺寸
+  const ratio = Math.sqrt(maxPixels / totalPixels)
+  const newWidth = Math.round(width * ratio)
+  const newHeight = Math.round(height * ratio)
+  
+  console.log(`[preprocess] image ${width}x${height} (${totalPixels}px) exceeds limit ${maxPixels}, resizing to ${newWidth}x${newHeight}`)
+  
+  const resized = await sharp(imgBuffer)
+    .resize(newWidth, newHeight, { fit: 'inside', withoutEnlargement: true })
+    .png({ compressionLevel: 0 })
+    .toBuffer()
+  
+  // 上传到 COS（通过 presign API）
+  const taskId = `pre_${Date.now()}`
+  const presignRes = await fetch(baseUrl + '/api/presign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: `pre_${taskId}.png`, contentType: 'image/png' }),
+  })
+  const presignData = await presignRes.json()
+  if (!presignData.success) {
+    console.error('[preprocess] COS upload failed, using original URL')
+    return imageUrl
+  }
+  
+  await fetch(presignData.uploadUrl, {
+    method: 'PUT',
+    body: resized,
+    headers: { 'Content-Type': 'image/png' },
+  })
+  
+  console.log(`[preprocess] uploaded resized image: ${presignData.downloadUrl}`)
+  return presignData.downloadUrl
+}
 
 /**
  * 获取模型所需的积分数量
@@ -161,8 +224,12 @@ export async function POST(request: NextRequest) {
 
     // ===== 调用 Replicate =====
     try {
+      // 预处理：如果图片太大，先缩图到模型能处理的尺寸
+      const baseUrl = new URL(request.url).origin
+      const processedImageUrl = await preprocessImageForModel(imageUrl, model, baseUrl)
+      
       const result = await enhanceImage({
-        image: imageUrl,
+        image: processedImageUrl,
         model,
         scale: model === 'recraft' ? 4 : scale,
         faceEnhance,
@@ -214,16 +281,16 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 免费增强：添加水印
+      // 免费增强：添加水印；付费增强：转 PNG 确保无损
       let finalImageUrl = result.imageUrl
-      if (isFreeEnhance) {
-        try {
+      try {
+        const imgRes = await fetch(result.imageUrl)
+        const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
+        
+        if (isFreeEnhance) {
+          // 免费增强：添加水印
           const { addWatermark } = await import('@/lib/watermark')
-          const imgRes = await fetch(result.imageUrl)
-          const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
           const watermarked = await addWatermark(imgBuffer)
-
-          // 上传带水印的图片到 COS
           const presignRes = await fetch('/api/presign', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -241,10 +308,31 @@ export async function POST(request: NextRequest) {
             })
             finalImageUrl = presignData.downloadUrl
           }
-        } catch (wmErr) {
-          console.error('Failed to add watermark:', wmErr)
-          // 水印失败不阻塞，用原图返回
+        } else {
+          // 付费增强：转换为 PNG 确保无损输出
+          const sharp = (await import('sharp')).default
+          const pngBuffer = await sharp(imgBuffer).png({ compressionLevel: 0 }).toBuffer()
+          const presignRes = await fetch('/api/presign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: `enhanced_${taskId}_${Date.now()}.png`,
+              contentType: 'image/png',
+            }),
+          })
+          const presignData = await presignRes.json()
+          if (presignData.success) {
+            await fetch(presignData.uploadUrl, {
+              method: 'PUT',
+              body: pngBuffer,
+              headers: { 'Content-Type': 'image/png' },
+            })
+            finalImageUrl = presignData.downloadUrl
+          }
         }
+      } catch (err) {
+        console.error('Failed to process output image:', err)
+        // 处理失败不阻塞，用原图返回
       }
 
       return NextResponse.json({

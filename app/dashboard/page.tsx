@@ -38,6 +38,8 @@ interface Transaction {
   creditSource: string | null
   description: string | null
   model: string | null
+  orderId: string | null
+  planId: string | null
   createdAt: string
 }
 
@@ -437,20 +439,34 @@ export default function Dashboard() {
                 <div className="divide-y divide-gray-50">
                   {transactions.slice(0, 5).map((tx) => {
                     const isPurchase = tx.type === 'purchase' || tx.type === 'subscription' || tx.type === 'bonus'
+                    const isSubscription = tx.type === 'subscription'
                     const Icon = getTransactionIcon(tx.type, tx.model)
+                    // 订阅价格映射
+                    const subPriceMap: Record<string, string> = { pro: '$7.99', max: '$14.99', ultra: '$24.99' }
+                    // 积分包价格映射
+                    const purchasePriceMap: Record<number, string> = { 100: '$5.99', 200: '$9.99', 500: '$19.99', 1000: '$29.99' }
+                    const txPrice = isSubscription && tx.planId ? subPriceMap[tx.planId] : (!isSubscription && tx.amount > 0 ? purchasePriceMap[tx.amount] : null)
                     return (
                       <div key={tx.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          isPurchase ? 'bg-green-50' : 'bg-blue-50'
+                          isSubscription ? 'bg-purple-50' : isPurchase ? 'bg-green-50' : 'bg-blue-50'
                         }`}>
-                          <Icon className={`w-5 h-5 ${isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
+                          <Icon className={`w-5 h-5 ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium text-gray-900 truncate">{tx.description || tx.type}</div>
-                          <div className="text-xs text-gray-400">{formatTime(tx.createdAt)}</div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-900 truncate">{tx.description || tx.type}</span>
+                            {isSubscription && (
+                              <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">订阅</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-400">
+                            <span>{formatTime(tx.createdAt)}</span>
+                            {txPrice && <span>· {txPrice}</span>}
+                          </div>
                         </div>
                         <div className="text-right">
-                          <div className={`text-sm font-bold ${isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
+                          <div className={`text-sm font-bold ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
                             {tx.amount > 0 ? '+' : ''}{tx.amount} 积分
                           </div>
                           <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>
@@ -515,20 +531,32 @@ export default function Dashboard() {
               <div className="divide-y divide-gray-50">
                 {transactions.map((tx) => {
                   const isPurchase = tx.type === 'purchase' || tx.type === 'subscription' || tx.type === 'bonus'
+                  const isSubscription = tx.type === 'subscription'
                   const Icon = getTransactionIcon(tx.type, tx.model)
+                  const subPriceMap: Record<string, string> = { pro: '$7.99', max: '$14.99', ultra: '$24.99' }
+                  const purchasePriceMap: Record<number, string> = { 100: '$5.99', 200: '$9.99', 500: '$19.99', 1000: '$29.99' }
+                  const txPrice = isSubscription && tx.planId ? subPriceMap[tx.planId] : (!isSubscription && tx.amount > 0 ? purchasePriceMap[tx.amount] : null)
                   return (
                     <div key={tx.id} className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 transition-colors">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        isPurchase ? 'bg-green-50' : 'bg-blue-50'
+                        isSubscription ? 'bg-purple-50' : isPurchase ? 'bg-green-50' : 'bg-blue-50'
                       }`}>
-                        <Icon className={`w-5 h-5 ${isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
+                        <Icon className={`w-5 h-5 ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-blue-600'}`} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-gray-900">{tx.description || tx.type}</div>
-                        <div className="text-xs text-gray-400">{formatTime(tx.createdAt)}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-900">{tx.description || tx.type}</span>
+                          {isSubscription && (
+                            <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">订阅</span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-400">
+                          <span>{formatTime(tx.createdAt)}</span>
+                          {txPrice && <span>· {txPrice}</span>}
+                        </div>
                       </div>
                       <div className="text-right">
-                        <div className={`text-sm font-bold ${isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
+                        <div className={`text-sm font-bold ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
                           {tx.amount > 0 ? '+' : ''}{tx.amount}
                         </div>
                         <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>

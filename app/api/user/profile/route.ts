@@ -96,6 +96,8 @@ export async function GET() {
         creditSource: tx.credit_source,
         description: tx.description,
         model: tx.model,
+        orderId: tx.order_id,
+        planId: tx.plan_id,
         createdAt: tx.created_at,
       })),
     })

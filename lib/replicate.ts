@@ -139,6 +139,7 @@ export async function enhanceImage(options: EnhanceOptions) {
       input = {
         image,
         upscale_factor: scale === 2 ? 'x2' : 'x4',
+        compression_quality: 100,
       }
     } else {
       throw new Error(`Unknown model: ${model}`)
@@ -207,6 +208,7 @@ export async function enhanceImageAsync(options: EnhanceOptions) {
       input = {
         image,
         upscale_factor: scale === 2 ? 'x2' : 'x4',
+        compression_quality: 100,
       }
     } else {
       throw new Error(`Unknown model: ${model}`)

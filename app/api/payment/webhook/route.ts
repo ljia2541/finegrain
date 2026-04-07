@@ -121,9 +121,10 @@ export async function POST(request: NextRequest) {
             current_period_end: periodEnd.toISOString(),
           }, { onConflict: 'paypal_subscription_id' })
 
-          // 首次积分到账（月订阅积分不过期）
+          // 首次积分到账（月订阅积分 → subscription_balance）
           await addCredits(userId, config.credits, 'subscription', `${config.name} 首月积分 (${config.credits}积分)`, {
             planId,
+            creditSource: 'subscription',
           })
 
           console.log(`Subscription activated: userId=${userId}, plan=${planId}, credits=${config.credits}`)
@@ -168,13 +169,45 @@ export async function POST(request: NextRequest) {
             })
             .eq('paypal_subscription_id', subId)
 
-          // 月积分到账（不过期）
+          // 新周期开始：先清零旧订阅积分，再发放新月积分
+          const { data: oldBalances } = await supabaseAdmin
+            .rpc('get_user_balance_split', { p_user_id: sub.user_id })
+
+          const oldBal = Array.isArray(oldBalances) ? oldBalances[0] : oldBalances
+          const oldSubscriptionBalance = oldBal?.subscription_balance || 0
+          const oldTotalBalance = oldBal?.total_balance || 0
+
+          if (oldSubscriptionBalance > 0) {
+            const totalAfterClear = oldTotalBalance - oldSubscriptionBalance
+
+            // 写入清零流水
+            await supabaseAdmin.from('credit_transactions').insert({
+              user_id: sub.user_id,
+              amount: -oldSubscriptionBalance,
+              balance_after: totalAfterClear,
+              type: 'subscription_expire',
+              credit_source: 'subscription',
+              description: `订阅周期结束，清零 ${oldSubscriptionBalance} 剩余订阅积分`,
+            })
+
+            // 更新 subscription_balance 为 0
+            await supabaseAdmin
+              .from('credit_accounts')
+              .update({
+                subscription_balance: 0,
+                balance: totalAfterClear,
+                updated_at: new Date().toISOString(),
+              })
+              .eq('user_id', sub.user_id)
+          }
+
+          // 月积分到账（不过期）→ subscription_balance
           await addCredits(
             sub.user_id,
             config.credits,
             'subscription',
             `${config.name} 月度积分续费 (${config.credits}积分)`,
-            { planId: sub.plan_id }
+            { planId: sub.plan_id, creditSource: 'subscription' }
           )
 
           console.log(`Subscription renewed: userId=${sub.user_id}, plan=${sub.plan_id}, credits=${config.credits}`)

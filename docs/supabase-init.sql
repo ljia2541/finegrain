@@ -16,8 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
 -- 2. 积分账户表（每个用户一条）
 CREATE TABLE IF NOT EXISTS credit_accounts (
   user_id       TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-  balance       INTEGER NOT NULL DEFAULT 0,     -- 当前可用积分
-  total_earned  INTEGER NOT NULL DEFAULT 0,     -- 历史总获得
+  balance       INTEGER NOT NULL DEFAULT 0,     -- 当前可用购买积分
+  subscription_balance INTEGER NOT NULL DEFAULT 0, -- 当前可用订阅积分
+  total_earned  INTEGER NOT NULL DEFAULT 0,     -- 历史总获得（购买）
   total_spent   INTEGER NOT NULL DEFAULT 0,     -- 历史总消费
   updated_at    TIMESTAMPTZ DEFAULT NOW()
 );
@@ -28,7 +29,8 @@ CREATE TABLE IF NOT EXISTS credit_transactions (
   user_id       TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   amount        INTEGER NOT NULL,               -- 正数=获得，负数=消费
   balance_after INTEGER NOT NULL,               -- 操作后余额快照
-  type          TEXT NOT NULL,                  -- 'purchase'|'enhance'|'refund'|'bonus'|'subscription'
+  type          TEXT NOT NULL,                  -- 'purchase'|'enhance'|'refund'|'bonus'|'subscription'|'subscription_expire'
+  credit_source TEXT,                           -- 'purchase'|'subscription' — 标记积分所属池
   model         TEXT,                           -- 'crystal_4x'|'realesrgan' 等
   task_id       TEXT,                           -- 关联的增强任务 ID
   order_id      TEXT,                           -- 关联的支付订单 ID
@@ -134,6 +136,49 @@ BEGIN
     );
 
   RETURN v_balance;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 9. 函数：获取用户积分拆分（购买积分 + 订阅积分）
+CREATE OR REPLACE FUNCTION get_user_balance_split(p_user_id TEXT)
+RETURNS TABLE(purchase_balance BIGINT, subscription_balance BIGINT, total_balance BIGINT) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    COALESCE(SUM(CASE
+      WHEN type NOT IN ('purchase', 'subscription') THEN amount
+      WHEN type = 'purchase' AND (expires_at IS NULL OR expires_at > NOW()) THEN amount
+      ELSE 0
+    END), 0)::BIGINT as purchase_balance,
+    COALESCE(SUM(CASE
+      WHEN type = 'subscription' AND (expires_at IS NULL OR expires_at > NOW()) THEN amount
+      ELSE 0
+    END), 0)::BIGINT as subscription_balance,
+    COALESCE(SUM(CASE
+      WHEN type NOT IN ('purchase', 'subscription') THEN amount
+      WHEN type IN ('purchase', 'subscription') AND (expires_at IS NULL OR expires_at > NOW()) THEN amount
+      ELSE 0
+    END), 0)::BIGINT as total_balance
+  FROM credit_transactions
+  WHERE user_id = p_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 10. 函数：获取购买积分最早过期时间
+CREATE OR REPLACE FUNCTION get_user_purchase_earliest_expiry(p_user_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+DECLARE
+  v_expiry TIMESTAMPTZ;
+BEGIN
+  SELECT MIN(expires_at) INTO v_expiry
+  FROM credit_transactions
+  WHERE user_id = p_user_id
+    AND type = 'purchase'
+    AND amount > 0
+    AND expires_at IS NOT NULL
+    AND expires_at > NOW();
+
+  RETURN v_expiry;
 END;
 $$ LANGUAGE plpgsql;
 

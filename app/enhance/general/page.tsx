@@ -4,7 +4,7 @@ import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
 export default function GeneralEnhancePage() {
-  const { credits, formattedExpiry } = useCredits()
+  const { credits, purchaseCredits, subscriptionCredits, formattedExpiry, formattedSubExpiry } = useCredits()
 
   return (
     <EnhancePage
@@ -47,7 +47,10 @@ export default function GeneralEnhancePage() {
       scales={[2, 4]}
       isFree={false}
       currentCredits={credits}
+      purchaseCredits={purchaseCredits}
+      subscriptionCredits={subscriptionCredits}
       creditsExpirySoon={formattedExpiry}
+      subExpirySoon={formattedSubExpiry}
       badge="通用"
       tips={[
         'Crystal 4x 仅支持 4x 倍率，且原图长边 ≤ 1000px',

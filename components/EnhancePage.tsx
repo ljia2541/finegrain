@@ -20,11 +20,14 @@ interface EnhancePageProps {
   isFree: boolean
   directPrice?: string
   currentCredits?: number
+  purchaseCredits?: number
+  subscriptionCredits?: number
   maxLongEdge?: number
   badge?: string
   badgeColor?: string
   tips?: string[]
   creditsExpirySoon?: string | null
+  subExpirySoon?: string | null
 }
 
 type Phase = 'upload' | 'preview' | 'processing' | 'result'
@@ -37,11 +40,14 @@ export default function EnhancePage({
   isFree,
   directPrice,
   currentCredits = 0,
+  purchaseCredits = 0,
+  subscriptionCredits = 0,
   maxLongEdge,
   badge,
   badgeColor = 'bg-green-500',
   tips,
   creditsExpirySoon,
+  subExpirySoon,
 }: EnhancePageProps) {
   const [phase, setPhase] = useState<Phase>('upload')
   const [dragActive, setDragActive] = useState(false)
@@ -52,6 +58,7 @@ export default function EnhancePage({
   const [imageHeight, setImageHeight] = useState(0)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
   const [selectedScale, setSelectedScale] = useState<number>(scales[0])
+  const [selectedCreditSource, setSelectedCreditSource] = useState<'auto' | 'subscription' | 'purchase'>('auto')
   const [error, setError] = useState<string | null>(null)
   const [processingProgress, setProcessingProgress] = useState(0)
   const [resultUrl, setResultUrl] = useState<string | null>(null)
@@ -255,6 +262,7 @@ export default function EnhancePage({
           scale: apiScale,
           imageWidth: uploadWidth,
           imageHeight: uploadHeight,
+          creditSource: selectedCreditSource,
         }),
         signal: AbortSignal.timeout(5 * 60 * 1000),
       })
@@ -273,7 +281,13 @@ export default function EnhancePage({
 
       if (res.status === 402 && data.error === 'INSUFFICIENT_CREDITS') {
         clearInterval(interval)
-        setError(`积分不足，需要 ${data.required} 积分，当前余额 ${data.balance} 积分。请先购买积分。`)
+        let hint = `积分不足，需要 ${data.required} 积分，当前余额 ${data.balance} 积分。`
+        if (data.purchaseBalance > 0 && selectedCreditSource === 'subscription') {
+          hint = `订阅积分不足（${data.subscriptionBalance}/${data.required}），但购买积分有 ${data.purchaseBalance}。请切换扣费顺序为"购买优先"。`
+        } else if (data.subscriptionBalance > 0 && selectedCreditSource === 'purchase') {
+          hint = `购买积分不足（${data.purchaseBalance}/${data.required}），但订阅积分有 ${data.subscriptionBalance}。请切换扣费顺序为"订阅优先"。`
+        }
+        setError(hint)
         setPhase('preview')
         return
       }
@@ -358,7 +372,61 @@ export default function EnhancePage({
               {creditsExpirySoon && (
                 <span className="text-xs text-orange-600 font-medium">({creditsExpirySoon})</span>
               )}
+              {subscriptionCredits > 0 && (
+                <span className="text-xs text-purple-600 font-medium ml-1">
+                  📅 订阅{subscriptionCredits}
+                  {subExpirySoon && `(${subExpirySoon})`}
+                </span>
+              )}
+              {purchaseCredits > 0 && (
+                <span className="text-xs text-blue-600 font-medium ml-1">
+                  🛒 购买{purchaseCredits}
+                </span>
+              )}
             </div>
+
+            {/* 积分来源选择器（付费模型时显示） */}
+            {!isFree && !directPrice && currentCredits > 0 && (
+              <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                <span className="text-gray-500 shrink-0">扣费顺序：</span>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setSelectedCreditSource('auto')}
+                    className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                      selectedCreditSource === 'auto'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+                    }`}
+                  >
+                    自动
+                  </button>
+                  {subscriptionCredits > 0 && (
+                    <button
+                      onClick={() => setSelectedCreditSource('subscription')}
+                      className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                        selectedCreditSource === 'subscription'
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      订阅优先
+                    </button>
+                  )}
+                  {purchaseCredits > 0 && (
+                    <button
+                      onClick={() => setSelectedCreditSource('purchase')}
+                      className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                        selectedCreditSource === 'purchase'
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      购买优先
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
 
             {models.length === 1 ? (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">

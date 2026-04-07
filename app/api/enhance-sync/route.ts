@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, MODEL_CONFIG } from '@/lib/replicate'
 import { getAuthSession } from '@/lib/auth'
-import { getUserBalance, deductCredits } from '@/lib/supabase'
+import { getUserBalance, deductCredits, getUserBalanceSplit } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300
@@ -30,7 +30,7 @@ function getRequiredCredits(model: string, scale: number): number | null {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { imageUrl, model = 'realesrgan', scale = 4, imageWidth, imageHeight, faceEnhance = false } = body
+    const { imageUrl, model = 'realesrgan', scale = 4, imageWidth, imageHeight, faceEnhance = false, creditSource = 'auto' } = body
 
     if (!imageUrl) {
       return NextResponse.json({ error: 'imageUrl is required' }, { status: 400 })
@@ -74,29 +74,41 @@ export async function POST(request: NextRequest) {
       }
       userId = session.user.id
 
-      // 检查余额
-      const balance = await getUserBalance(userId)
+      // 检查余额（使用拆分余额以提供详细信息）
+      const balanceSplit = await getUserBalanceSplit(userId)
+      const balance = balanceSplit.total
       if (balance < requiredCredits) {
         return NextResponse.json({
           error: 'INSUFFICIENT_CREDITS',
           required: requiredCredits,
           balance,
+          purchaseBalance: balanceSplit.purchaseBalance,
+          subscriptionBalance: balanceSplit.subscriptionBalance,
         }, { status: 402 })
       }
 
       // 预扣积分（在 enhance 之前）
       try {
         taskId = crypto.randomUUID()
-        await deductCredits(userId, requiredCredits, model, taskId, {
+        const result = await deductCredits(userId, requiredCredits, model, taskId, {
           inputUrl: imageUrl,
           scale,
+          source: creditSource,
         })
         creditsDeducted = true
       } catch (err: any) {
         if (err.message === 'INSUFFICIENT_CREDITS') {
+          // Get split balance for the error response
+          let splitInfo: any = {}
+          try {
+            splitInfo = await getUserBalanceSplit(userId)
+          } catch {}
           return NextResponse.json({
             error: 'INSUFFICIENT_CREDITS',
             required: requiredCredits,
+            balance: splitInfo.total || 0,
+            purchaseBalance: splitInfo.purchaseBalance || 0,
+            subscriptionBalance: splitInfo.subscriptionBalance || 0,
           }, { status: 402 })
         }
         console.error('Failed to deduct credits:', err)

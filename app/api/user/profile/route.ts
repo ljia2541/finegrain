@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAuthSession } from '@/lib/auth'
-import { getUserStats, getTransactions, initUser } from '@/lib/supabase'
+import { getUserStats, getTransactions, initUser, getUserPurchaseEarliestExpiry, supabaseAdmin } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -34,15 +34,14 @@ export async function GET() {
       getTransactions(session.user.id, { limit: 10 }),
     ])
 
-    let creditsExpireAt: string | null = null
+    let purchaseCreditsExpireAt: string | null = null
     try {
-      creditsExpireAt = await getUserEarliestExpiry(session.user.id)
+      purchaseCreditsExpireAt = await getUserPurchaseEarliestExpiry(session.user.id)
     } catch {}
 
     // 获取订阅状态
     let subscription = null
     try {
-      const { supabaseAdmin } = await import('@/lib/supabase')
       const { data: subs, error: subError } = await supabaseAdmin
         .from('subscriptions')
         .select('*')
@@ -60,6 +59,7 @@ export async function GET() {
           planName: sub.plan_id.charAt(0).toUpperCase() + sub.plan_id.slice(1),
           creditsPerMonth: sub.credits_per_month,
           currentCredits: sub.current_credits,
+          periodStart: sub.current_period_start,
           periodEnd: sub.current_period_end,
         }
       }
@@ -75,11 +75,17 @@ export async function GET() {
         avatar: session.user.image,
       },
       stats: {
+        // 新的拆分积分
+        purchaseCredits: stats.purchaseCredits,
+        subscriptionCredits: stats.subscriptionCredits,
+        totalCredits: stats.totalCredits,
+        // 兼容旧字段
         credits: stats.credits,
         totalProcessed: stats.totalProcessed,
         totalPurchased: stats.totalPurchased,
         totalSpent: stats.totalSpent,
-        creditsExpireAt,
+        // 过期时间
+        creditsExpireAt: purchaseCreditsExpireAt,
       },
       subscription,
       recentTransactions: transactions.map(tx => ({
@@ -87,6 +93,7 @@ export async function GET() {
         type: tx.type,
         amount: tx.amount,
         balanceAfter: tx.balance_after,
+        creditSource: tx.credit_source,
         description: tx.description,
         model: tx.model,
         createdAt: tx.created_at,

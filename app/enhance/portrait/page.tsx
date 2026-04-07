@@ -4,7 +4,7 @@ import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
 export default function PortraitEnhancePage() {
-  const { credits, formattedExpiry } = useCredits()
+  const { credits, purchaseCredits, subscriptionCredits, formattedExpiry, formattedSubExpiry } = useCredits()
 
   return (
     <EnhancePage
@@ -14,7 +14,10 @@ export default function PortraitEnhancePage() {
       scales={[4]}
       isFree={false}
       currentCredits={credits}
+      purchaseCredits={purchaseCredits}
+      subscriptionCredits={subscriptionCredits}
       creditsExpirySoon={formattedExpiry}
+      subExpirySoon={formattedSubExpiry}
       maxLongEdge={1000}
       badge="人像专精"
       badgeColor="bg-purple-500"

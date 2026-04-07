@@ -22,9 +22,12 @@ import {
 
 interface UserProfile {
   credits: number
+  purchaseCredits: number
+  subscriptionCredits: number
   totalProcessed: number
   totalPurchased: number
   totalSpent: number
+  creditsExpireAt: string | null
 }
 
 interface Transaction {
@@ -32,6 +35,7 @@ interface Transaction {
   type: string
   amount: number
   balanceAfter: number
+  creditSource: string | null
   description: string | null
   model: string | null
   createdAt: string
@@ -250,6 +254,27 @@ export default function Dashboard() {
                     <span className="text-blue-200 text-sm">可用积分</span>
                   </div>
                   <div className="text-5xl font-bold">{stats?.credits ?? 0}</div>
+                  {/* 积分池拆分 */}
+                  <div className="mt-2 space-y-1 text-sm text-blue-100">
+                    <div className="flex items-center gap-1.5">
+                      <Crown className="w-3.5 h-3.5 text-blue-200" />
+                      <span>订阅积分：{(stats?.subscriptionCredits ?? 0)}</span>
+                      {subscription && (
+                        <span className="text-blue-200 text-xs">
+                          （{new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 到期）
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Gift className="w-3.5 h-3.5 text-blue-200" />
+                      <span>购买积分：{(stats?.purchaseCredits ?? 0)}</span>
+                      {stats?.creditsExpireAt && (
+                        <span className="text-blue-200 text-xs">
+                          （{new Date(stats.creditsExpireAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 过期）
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <a
                   href="/pricing#credit-packages"

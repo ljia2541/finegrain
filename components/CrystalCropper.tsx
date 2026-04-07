@@ -7,7 +7,7 @@ interface CrystalCropperProps {
   imageSrc: string
   imageWidth: number
   imageHeight: number
-  onCropped: (croppedDataUrl: string) => void
+  onCropped: (croppedDataUrl: string, croppedWidth: number, croppedHeight: number) => void
   onCancel: () => void
 }
 
@@ -65,8 +65,8 @@ export default function CrystalCropper({
 
     const cropX = cropPos.x * scaleX
     const cropY = cropPos.y * scaleY
-    const cropW = cropDisplaySize * scaleX
-    const cropH = cropDisplaySize * scaleY
+    const cropW = Math.round(cropDisplaySize * scaleX)
+    const cropH = Math.round(cropDisplaySize * scaleY)
 
     const canvas = document.createElement('canvas')
     canvas.width = cropW
@@ -74,7 +74,7 @@ export default function CrystalCropper({
     const ctx = canvas.getContext('2d')!
     ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH)
     const dataUrl = canvas.toDataURL('image/png')
-    onCropped(dataUrl)
+    onCropped(dataUrl, cropW, cropH)
   }
 
   return (

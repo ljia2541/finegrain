@@ -395,7 +395,7 @@ export default function EnhancePage({
               imageSrc={pendingCropImage.dataUrl}
               imageWidth={pendingCropImage.width}
               imageHeight={pendingCropImage.height}
-              onCropped={(croppedUrl) => {
+              onCropped={(croppedUrl, croppedWidth, croppedHeight) => {
                 // Create a File from cropped data URL
                 fetch(croppedUrl)
                   .then(res => res.blob())
@@ -403,8 +403,8 @@ export default function EnhancePage({
                     const croppedFile = new File([blob], pendingCropImage!.file.name, { type: 'image/png' })
                     setSelectedFile(croppedFile)
                     setPreview(croppedUrl)
-                    setImageWidth(pendingCropImage!.width)
-                    setImageHeight(pendingCropImage!.height)
+                    setImageWidth(croppedWidth)
+                    setImageHeight(croppedHeight)
                     setShowCropper(false)
                     setPendingCropImage(null)
                     setPhase('preview')

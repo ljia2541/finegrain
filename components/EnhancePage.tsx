@@ -92,6 +92,7 @@ export default function EnhancePage({
   // 动态计算可用倍率
   const effectiveScales = selectedModel.id === 'crystal10x' ? [10]
     : selectedModel.id === 'crystal' ? scales.filter(s => s === 4)
+    : selectedModel.id === 'recraft' ? scales.filter(s => s === 2)
     : scales
 
   const cost = isFree ? 0 : (directPrice ? undefined : currentModel.credits)

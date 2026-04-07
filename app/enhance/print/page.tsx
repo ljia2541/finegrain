@@ -11,7 +11,7 @@ export default function PrintEnhancePage() {
       title="印刷级高清增强"
       subtitle="Recraft 模型输出印刷级清晰度，文字 Logo 锐利无锯齿"
       models={[{ id: 'recraft', name: 'Recraft', credits: 6 }]}
-      scales={[2, 4]}
+      scales={[2]}
       isFree={false}
       currentCredits={credits}
       purchaseCredits={purchaseCredits}

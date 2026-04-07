@@ -291,7 +291,7 @@ export async function POST(request: NextRequest) {
           // 免费增强：添加水印
           const { addWatermark } = await import('@/lib/watermark')
           const watermarked = await addWatermark(imgBuffer)
-          const presignRes = await fetch('/api/presign', {
+          const presignRes = await fetch(baseUrl + '/api/presign', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -300,19 +300,20 @@ export async function POST(request: NextRequest) {
             }),
           })
           const presignData = await presignRes.json()
-          if (presignData.success) {
-            await fetch(presignData.uploadUrl, {
-              method: 'PUT',
-              body: watermarked,
-              headers: { 'Content-Type': 'image/png' },
-            })
-            finalImageUrl = presignData.downloadUrl
-          }
+          if (!presignData.success) throw new Error('COS upload failed: ' + JSON.stringify(presignData))
+          await fetch(presignData.uploadUrl, {
+            method: 'PUT',
+            body: watermarked,
+            headers: { 'Content-Type': 'image/png' },
+          })
+          finalImageUrl = presignData.downloadUrl
         } else {
           // 付费增强：转换为 PNG 确保无损输出
-          const sharp = (await import('sharp')).default
+          const sharpModule = await import('sharp')
+          const sharp = sharpModule.default
           const pngBuffer = await sharp(imgBuffer).png({ compressionLevel: 0 }).toBuffer()
-          const presignRes = await fetch('/api/presign', {
+          console.log(`[png] converted, size=${pngBuffer.length}`)
+          const presignRes = await fetch(baseUrl + '/api/presign', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -321,14 +322,14 @@ export async function POST(request: NextRequest) {
             }),
           })
           const presignData = await presignRes.json()
-          if (presignData.success) {
-            await fetch(presignData.uploadUrl, {
-              method: 'PUT',
-              body: pngBuffer,
-              headers: { 'Content-Type': 'image/png' },
-            })
-            finalImageUrl = presignData.downloadUrl
-          }
+          if (!presignData.success) throw new Error('COS upload failed: ' + JSON.stringify(presignData))
+          await fetch(presignData.uploadUrl, {
+            method: 'PUT',
+            body: pngBuffer,
+            headers: { 'Content-Type': 'image/png' },
+          })
+          console.log(`[png] uploaded to COS: ${presignData.downloadUrl}`)
+          finalImageUrl = presignData.downloadUrl
         }
       } catch (err) {
         console.error('Failed to process output image:', err)

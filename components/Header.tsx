@@ -7,7 +7,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { Menu, X, LogOut, User } from 'lucide-react'
 
 const navItems = [
-  { label: '免费增强', href: '/enhance/free' },
+  { label: 'Free Upscale', href: '/enhance/free' },
   { label: '通用增强', href: '/enhance/general' },
   { label: '人像增强', href: '/enhance/portrait' },
   { label: '印刷高清', href: '/enhance/print' },

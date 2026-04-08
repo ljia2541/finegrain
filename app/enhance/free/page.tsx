@@ -1,15 +1,38 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import EnhancePage from '@/components/EnhancePage'
 import { useCredits } from '@/hooks/useCredits'
 
+interface FreeUsage {
+  used: number
+  limit: number
+  remaining: number
+  isAnonymous: boolean
+}
+
 export default function FreeEnhancePage() {
   const { credits, purchaseCredits, subscriptionCredits, formattedExpiry, formattedSubExpiry } = useCredits()
+  const [freeUsage, setFreeUsage] = useState<FreeUsage | null>(null)
+
+  useEffect(() => {
+    fetch('/api/free-usage')
+      .then(res => res.json())
+      .then(data => setFreeUsage(data))
+      .catch(() => {})
+  }, [])
+
+  const tips = [
+    'Basic quality enhancement',
+    `Daily limit: 3 (${freeUsage ? `${freeUsage.remaining} remaining today` : '3 remaining today'})`,
+    'Output with watermark',
+    'Auto deleted after 24h',
+  ]
 
   return (
     <EnhancePage
-      title="免费图片增强"
-      subtitle="零门槛体验 AI 图片增强，快速提升画质"
+      title="Free Image Enhancer"
+      subtitle="Try AI image enhancement instantly, no account needed"
       models={[{ id: 'realesrgan', name: 'Real-ESRGAN', credits: 0 }]}
       scales={[2, 4]}
       isFree
@@ -18,14 +41,9 @@ export default function FreeEnhancePage() {
       subscriptionCredits={subscriptionCredits}
       creditsExpirySoon={formattedExpiry}
       subExpirySoon={formattedSubExpiry}
-      badge="免费"
+      badge="Free"
       badgeColor="bg-green-500"
-      tips={[
-        '效果为基础增强',
-        '每日限 3 张',
-        '输出带水印',
-        '24 小时自动删除',
-      ]}
+      tips={tips}
     />
   )
 }

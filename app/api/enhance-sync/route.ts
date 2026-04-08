@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { enhanceImage, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, MODEL_CONFIG } from '@/lib/replicate'
+import { enhanceImage, MODEL_CONFIG } from '@/lib/replicate'
 import { getAuthSession } from '@/lib/auth'
 import { getUserBalance, deductCredits, getUserBalanceSplit } from '@/lib/supabase'
 import sharp from 'sharp'
@@ -9,7 +9,6 @@ export const maxDuration = 300
 
 // 模型 GPU 内存限制（最大像素数，4通道）
 const MODEL_MAX_PIXELS: Record<string, number> = {
-  crystal: 2_096_704,   // ~1440×1440，约 200 万像素
   realesrgan: 4_194_304, // ~2048×2048，约 400 万像素
   google: 4_194_304,     // 同上
   recraft: 4_194_304,   // 同上
@@ -73,7 +72,6 @@ async function preprocessImageForModel(imageUrl: string, model: string, baseUrl:
  * 获取模型所需的积分数量
  */
 function getRequiredCredits(model: string, scale: number): number | null {
-  if (model === 'crystal' && scale === 10) return null // 10x 走直接付费，不走积分
   const config = MODEL_CONFIG[model as keyof typeof MODEL_CONFIG]
   if (!config) return null
   return config.credits[scale as keyof typeof config.credits] || null
@@ -100,19 +98,9 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证模型
-    const validModels = ['crystal', 'realesrgan', 'recraft', 'google']
+    const validModels = ['realesrgan', 'recraft', 'google']
     if (!validModels.includes(model)) {
       return NextResponse.json({ error: `Invalid model: ${model}` }, { status: 400 })
-    }
-
-    // Crystal 尺寸校验
-    if (model === 'crystal') {
-      if (imageWidth && imageHeight) {
-        const validation = validateCrystalInput(imageWidth, imageHeight)
-        if (!validation.valid) {
-          return NextResponse.json({ error: validation.message }, { status: 400 })
-        }
-      }
     }
 
     // 倍率校验
@@ -178,7 +166,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to process credits' }, { status: 500 })
       }
     }
-    // Free model (realesrgan) or direct pay (crystal 10x): no credit deduction
+    // Free model (realesrgan): no credit deduction
     if (requiredCredits === 0) {
       isFreeEnhance = true
       const session = await getAuthSession()
@@ -243,9 +231,7 @@ export async function POST(request: NextRequest) {
 
       // 计费信息
       let billing = null
-      if (model === 'crystal' && scale === 10) {
-        billing = { type: 'direct_pay', price: CRYSTAL_10X_PRICE, currency: 'USD' }
-      } else if (isFreeEnhance) {
+      if (isFreeEnhance) {
         billing = { type: 'free' }
       } else if (requiredCredits !== null) {
         billing = { type: 'credits', credits: requiredCredits }

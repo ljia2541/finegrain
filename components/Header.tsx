@@ -11,7 +11,6 @@ const navItems = [
   { label: 'General', href: '/enhance/general' },
   { label: 'Portrait', href: '/enhance/portrait' },
   { label: 'Print', href: '/enhance/print' },
-  { label: '10x Ultra', href: '/enhance/ultra' },
   { label: 'Pricing', href: '/pricing' },
 ]
 

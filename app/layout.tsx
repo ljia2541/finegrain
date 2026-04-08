@@ -12,8 +12,8 @@ export const metadata: Metadata = {
     default: 'FineGrain - AI Image Enhancer | Online AI Upscaling',
     template: '%s | FineGrain',
   },
-  description: 'AI-powered image enhancement platform. Upscale images up to 10x with Crystal, Real-ESRGAN, Google Upscaler, and Recraft models. Free trial available.',
-  keywords: ['AI image enhancer', 'image upscaler', 'super resolution', 'photo enhancement', 'Crystal upscaler', 'Real-ESRGAN', 'AI upscaling', 'image quality', 'FineGrain'],
+  description: 'AI-powered image enhancement platform. Upscale images with Real-ESRGAN, Google Upscaler, and Recraft models. Free trial available.',
+  keywords: ['AI image enhancer', 'image upscaler', 'super resolution', 'photo enhancement', 'Real-ESRGAN', 'AI upscaling', 'image quality', 'FineGrain'],
   authors: [{ name: 'FineGrain' }],
   creator: 'FineGrain',
   metadataBase: new URL('https://www.finegrainimageenhancer.com'),
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'FineGrain',
-    title: 'FineGrain - AI Image Enhancer | Upscale Images up to 10K',
-    description: 'Enhance and upscale your images with AI. Crystal 10x for portraits, Recraft for print quality, Real-ESRGAN for free. Try now!',
+    title: 'FineGrain - AI Image Enhancer | Upscale Images up to 4x',
+    description: 'Enhance and upscale your images with AI. Recraft for print quality, Google Upscaler for natural fidelity, Real-ESRGAN for free. Try now!',
     images: [{
       url: '/og-image.png',
       width: 1200,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'FineGrain - AI Image Enhancer',
-    description: 'AI-powered image enhancement. Upscale to 10K. Free trial available.',
+    description: 'AI-powered image enhancement. Upscale to 4x. Free trial available.',
   },
   robots: {
     index: true,

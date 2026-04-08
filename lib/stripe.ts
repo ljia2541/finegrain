@@ -33,8 +33,6 @@ export const STRIPE_PRICES = {
     max: { priceId: 'price_placeholder_max', credits: 500 },
     ultra: { priceId: 'price_placeholder_ultra', credits: 1000 },
   },
-  // Crystal 10x 一次性支付
-  crystal10x: { priceId: 'price_placeholder_crystal10x', credits: 0 },
 } as const
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.finegrainimageenhancer.com'

@@ -10,7 +10,7 @@ export const runtime = 'nodejs'
  * PayPal Webhook 回调
  * 
  * 处理事件：
- * 1. CHECKOUT.ORDER.COMPLETED - 一次性支付成功（积分包/10x）
+ * 1. CHECKOUT.ORDER.COMPLETED - 一次性支付成功（积分包）
  * 2. BILLING.SUBSCRIPTION.ACTIVATED - 月订阅激活（加首次积分）
  * 3. BILLING.SUBSCRIPTION.RENEWED - 月订阅续费（每月加积分）
  * 4. BILLING.SUBSCRIPTION.CANCELLED - 月订阅取消

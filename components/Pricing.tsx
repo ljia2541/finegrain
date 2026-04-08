@@ -25,7 +25,7 @@ const plans = [
     period: 'From $0.03/credit',
     features: [
       'No watermark',
-      'Crystal Portrait + Recraft Detail',
+      'Google Upscaler + Recraft Detail',
       'Up to 4K display (credit mode)',
       'Credits valid 90-180 days',
       'Priority processing',
@@ -33,21 +33,6 @@ const plans = [
     cta: 'Buy Credits',
     highlighted: true,
     action: 'credits',
-  },
-  {
-    name: 'Crystal 10x',
-    price: '$3.99',
-    period: '/image',
-    features: [
-      'Up to 10K portrait ultra HD output',
-      'Portrait specialist, no plastic look',
-      'Separate payment, no credits',
-      '⚠️ Original must be ≤ 1000px',
-      'Perfect for portrait retouching and poster output',
-    ],
-    cta: 'Use Now',
-    highlighted: false,
-    action: 'crystal10x',
   },
 ]
 
@@ -99,7 +84,7 @@ const subscriptionPlans = [
       '200 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      'All paid models available (Crystal 10x $3.99/image extra)',
+      'All paid models available',
     ],
     cta: 'Subscribe Pro',
     highlighted: false,
@@ -116,7 +101,7 @@ const subscriptionPlans = [
       '500 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      'All paid models available (Crystal 10x $3.99/image extra)',
+      'All paid models available',
     ],
     cta: 'Subscribe Max',
     highlighted: true,
@@ -133,7 +118,7 @@ const subscriptionPlans = [
       '1000 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      'All paid models available (Crystal 10x $3.99/image extra)',
+      'All paid models available',
     ],
     cta: 'Subscribe Ultra',
     highlighted: false,
@@ -205,7 +190,7 @@ export default function Pricing() {
   return (
     <div>
       {/* Main Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.name}

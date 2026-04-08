@@ -55,11 +55,9 @@ export default function ApiDocsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   <tr><td className="px-3 py-2 font-mono text-blue-600">imageUrl</td><td className="px-3 py-2">string</td><td className="px-3 py-2">Yes</td><td className="px-3 py-2">COS signed URL</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">model</td><td className="px-3 py-2">string</td><td className="px-3 py-2">Yes</td><td className="px-3 py-2">crystal | realesrgan | recraft | google</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">scale</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Scale factor 2/4/6/8/10</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">model</td><td className="px-3 py-2">string</td><td className="px-3 py-2">Yes</td><td className="px-3 py-2">realesrgan | recraft | google</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">scale</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Scale factor 2/4/6/8</td></tr>
                   <tr><td className="px-3 py-2 font-mono text-blue-600">faceEnhance</td><td className="px-3 py-2">boolean</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Real-ESRGAN only, enables face enhancement</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageWidth</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Original image width (required for Crystal)</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageHeight</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Original image height (required for Crystal)</td></tr>
                 </tbody>
               </table>
             </div>
@@ -78,8 +76,6 @@ export default function ApiDocsPage() {
                   <tr><td className="px-3 py-2">Real-ESRGAN</td><td className="px-3 py-2">1</td><td className="px-3 py-2">Free tier</td></tr>
                   <tr><td className="px-3 py-2">Google Upscaler</td><td className="px-3 py-2">3</td><td className="px-3 py-2">Basic paid</td></tr>
                   <tr><td className="px-3 py-2">Recraft</td><td className="px-3 py-2">6</td><td className="px-3 py-2">Print pro</td></tr>
-                  <tr><td className="px-3 py-2">Crystal 4x</td><td className="px-3 py-2">15</td><td className="px-3 py-2">Portrait pro</td></tr>
-                  <tr><td className="px-3 py-2">Crystal 10x</td><td className="px-3 py-2">$3.99/image</td><td className="px-3 py-2">Not credit-based</td></tr>
                 </tbody>
               </table>
             </div>
@@ -115,7 +111,7 @@ export default function ApiDocsPage() {
                   <code className="text-sm text-gray-700">/api/payment/create-order</code>
                   <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">PayPal</span>
                 </div>
-                <p className="text-xs text-gray-500">Create PayPal payment order (credits / Crystal 10x)</p>
+                <p className="text-xs text-gray-500">Create PayPal payment order (credits)</p>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">

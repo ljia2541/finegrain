@@ -35,14 +35,6 @@ export default function GeneralEnhancePage() {
           tag: 'Sharpest',
           tagColor: 'bg-indigo-500',
         },
-        {
-          id: 'crystal',
-          name: 'Crystal 4x',
-          credits: 15,
-          description: 'Portrait specialist, no plastic look, 4x only',
-          tag: 'Portrait',
-          tagColor: 'bg-purple-500',
-        },
       ]}
       scales={[2, 4]}
       isFree={false}
@@ -53,7 +45,6 @@ export default function GeneralEnhancePage() {
       subExpirySoon={formattedSubExpiry}
       badge="General"
       tips={[
-        'Crystal 4x supports 4x only, original must have long edge ≤ 1000px',
         'Different models excel at different things — switch and compare',
         'Not sure which to pick? Google Upscaler is stable and reliable.',
       ]}

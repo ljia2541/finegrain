@@ -36,7 +36,6 @@ const MODEL_NAMES: Record<string, string> = {
   'realesrgan': 'Real-ESRGAN',
   'google-upscaler': 'Google Upscaler',
   'recraft': 'Recraft',
-  'crystal': 'Crystal',
 }
 
 function formatDate(dateStr: string) {

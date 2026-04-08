@@ -7,45 +7,12 @@ const replicate = new Replicate({
 /**
  * 支持的模型类型
  */
-export type ModelType = 'crystal' | 'realesrgan' | 'recraft' | 'google'
+export type ModelType = 'realesrgan' | 'recraft' | 'google'
 
 /**
  * 放大倍率选项
  */
-export type ScaleOption = 2 | 4 | 6 | 8 | 10
-
-/**
- * Crystal 输入尺寸限制（长边最大像素）
- * 超过此限制的图片不允许使用 Crystal 模型
- */
-export const CRYSTAL_MAX_LONG_EDGE = 1000
-
-/**
- * 校验图片尺寸是否满足 Crystal 输入要求
- */
-export function validateCrystalInput(imageWidth: number, imageHeight: number): {
-  valid: boolean
-  message?: string
-} {
-  const longEdge = Math.max(imageWidth, imageHeight)
-  if (longEdge > CRYSTAL_MAX_LONG_EDGE) {
-    return {
-      valid: false,
-      message: `Crystal 超清模式仅支持 ${CRYSTAL_MAX_LONG_EDGE}px 以内图片，当前图片长边 ${longEdge}px。如需更大尺寸请使用其他模型。`,
-    }
-  }
-  return { valid: true }
-}
-
-/**
- * Crystal 10x 单次付费价格（不走积分）
- */
-export const CRYSTAL_10X_PRICE = 3.99 // USD
-
-/**
- * Crystal 4x 积分消耗
- */
-export const CRYSTAL_4X_CREDITS = 15
+export type ScaleOption = 2 | 4 | 6 | 8
 
 /**
  * Google Upscaler 积分消耗
@@ -66,27 +33,19 @@ export interface EnhanceOptions {
  * 模型配置
  */
 export const MODEL_CONFIG = {
-  crystal: {
-    id: 'philz1337x/crystal-upscaler',
-    displayName: 'Crystal',
-    supportsScale: true as const,
-    maxLongEdge: CRYSTAL_MAX_LONG_EDGE,
-    credits: { 4: CRYSTAL_4X_CREDITS, 10: 0 }, // 10x 不走积分
-    directPay: { 10: CRYSTAL_10X_PRICE },
-  },
   realesrgan: {
     id: 'nightmareai/real-esrgan',
     displayName: 'Real-ESRGAN',
     supportsScale: true as const,
     maxLongEdge: 1440, // Replicate 建议最大 1440p 输入
-    credits: { 2: 1, 4: 1, 6: 1, 8: 1, 10: 1 },
+    credits: { 2: 1, 4: 1, 6: 1, 8: 1 },
   },
   recraft: {
     id: 'recraft-ai/recraft-crisp-upscale',
     displayName: 'Recraft',
     supportsScale: false as const, // 无倍率参数，模型自动决定
     maxLongEdge: null, // 无明确限制（10MB 文件大小限制）
-    credits: { 2: 6, 4: 6, 6: 6, 8: 6, 10: 6 },
+    credits: { 2: 6, 4: 6, 6: 6, 8: 6 },
   },
   google: {
     id: 'google/upscaler',
@@ -104,7 +63,7 @@ export const MODEL_CONFIG = {
 export async function enhanceImage(options: EnhanceOptions) {
   const {
     image,
-    model = 'crystal',
+    model = 'realesrgan',
     scale = 4,
     faceEnhance = false,
   } = options
@@ -113,15 +72,7 @@ export async function enhanceImage(options: EnhanceOptions) {
     let modelVersion: string
     let input: Record<string, unknown>
 
-    if (model === 'crystal') {
-      modelVersion = MODEL_CONFIG.crystal.id
-      input = {
-        image,
-        scale_factor: scale,
-        creativity: 0, // 默认保真模式
-        output_format: 'png',
-      }
-    } else if (model === 'realesrgan') {
+    if (model === 'realesrgan') {
       modelVersion = MODEL_CONFIG.realesrgan.id
       input = {
         image,
@@ -174,7 +125,7 @@ export async function enhanceImage(options: EnhanceOptions) {
 export async function enhanceImageAsync(options: EnhanceOptions) {
   const {
     image,
-    model = 'crystal',
+    model = 'realesrgan',
     scale = 4,
     faceEnhance = false,
   } = options
@@ -183,15 +134,7 @@ export async function enhanceImageAsync(options: EnhanceOptions) {
     let modelVersion: string
     let input: Record<string, unknown>
 
-    if (model === 'crystal') {
-      modelVersion = MODEL_CONFIG.crystal.id
-      input = {
-        image,
-        scale_factor: scale,
-        creativity: 0,
-        output_format: 'png',
-      }
-    } else if (model === 'realesrgan') {
+    if (model === 'realesrgan') {
       modelVersion = MODEL_CONFIG.realesrgan.id
       input = {
         image,

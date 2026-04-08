@@ -48,12 +48,6 @@ export const PAYPAL_PLANS = {
       validityDays: 180,
     },
   },
-  crystal10x: {
-    name: 'Crystal 10x 单次增强',
-    description: '10K 人像超高清增强 - 1张',
-    price: '3.99',
-    currency: 'USD',
-  },
 } as const
 
 export type CreditPlanKey = keyof typeof PAYPAL_PLANS.credits
@@ -92,7 +86,7 @@ async function getAccessToken(): Promise<string> {
  * 创建 PayPal 订单（一次性支付）
  */
 export async function createOrder(
-  planType: 'credits' | 'crystal10x',
+  planType: 'credits',
   planId: string,
   userId?: string,
 ): Promise<{ orderId: string; approvalUrl: string }> {
@@ -104,9 +98,6 @@ export async function createOrder(
     if (!plan) throw new Error(`Invalid credit plan: ${planId}`)
     amount = plan.price
     description = plan.description
-  } else if (planType === 'crystal10x') {
-    amount = PAYPAL_PLANS.crystal10x.price
-    description = PAYPAL_PLANS.crystal10x.description
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.finegrainimageenhancer.com'

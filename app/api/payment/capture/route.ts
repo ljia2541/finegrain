@@ -91,9 +91,6 @@ export async function POST(request: NextRequest) {
             )
             description = `${plan.credits} 积分已到账`
           }
-        } else if (planType === 'crystal10x') {
-          // Crystal 10x 不走积分，记录即可
-          description = 'Crystal 10x 单次增强已激活'
         }
       } catch (creditError: any) {
         console.error('Failed to add credits:', creditError)

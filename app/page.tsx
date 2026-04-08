@@ -48,7 +48,7 @@ export default function Home() {
 
               {/* Subtitle */}
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                Upload any image. AI upscale 2x~10x. Multiple models available. Professional quality without filters.
+                Upload any image. AI upscale 2x~4x. Multiple models available. Professional quality without filters.
               </p>
               
               {/* Feature Tags */}
@@ -159,16 +159,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 10x Paid option */}
-            <div className="px-8 pb-8">
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
-                <span className="text-2xl">🔥</span>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">Ultimate 10x Ultra Portrait</p>
-                  <p className="text-xs text-gray-600">Up to 10x ultimate upscale, maximum portrait detail • $3.99 per image (no credits)</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -226,15 +216,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 10x Paid option */}
-            <div className="px-8 pb-6">
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
-                <span className="text-2xl">🔥</span>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">Ultimate 10x Ultra Portrait • $3.99 per image</p>
-                  <p className="text-xs text-gray-600">Up to 10x ultimate upscale, maximum portrait detail, perfect for ID photos / portraits (no credits)</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -348,13 +329,13 @@ export default function Home() {
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
                   Free version supports up to 4K display, perfect for daily HD needs.
-                  Paid Crystal model supports portrait 10K ultimate output.
+                  Paid models deliver even sharper, print-ready quality.
                 </p>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             {/* 4×6 inches */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">📷</div>
@@ -379,13 +360,6 @@ export default function Home() {
               <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">≥ 150 DPI</span>
             </div>
             
-            {/* 10K Large */}
-            <div className="bg-gradient-to-b from-amber-50 to-orange-50 rounded-lg p-2 shadow border-2 border-amber-300 text-center">
-              <div className="text-xl mb-1">🔥</div>
-              <h3 className="text-xs font-bold text-gray-900">10K</h3>
-              <p className="text-xs text-gray-500">Crystal Portrait 10x • 10K Ultra HD</p>
-              <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">$3.99</span>
-            </div>
           </div>
           
           <div className="mt-8 text-center">
@@ -486,7 +460,7 @@ export default function Home() {
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-bold text-gray-900 mb-1">🎨 Upscale AI-Generated Images</h3>
-                <p className="text-gray-600 text-sm">Crystal model optimized for AI-generated portraits, natural upscale without plastic look, preserving authentic texture</p>
+                <p className="text-gray-600 text-sm">Upscale AI-generated images with natural quality, preserving authentic texture</p>
               </div>
             </div>
           </div>

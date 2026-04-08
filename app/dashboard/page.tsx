@@ -154,7 +154,6 @@ export default function Dashboard() {
   const getTransactionIcon = (type: string, model?: string | null) => {
     if (type === 'purchase' || type === 'subscription' || type === 'bonus') return Gift
     if (type === 'refund') return Coins
-    if (model?.includes('crystal')) return Sparkles
     return Zap
   }
 

@@ -2,8 +2,6 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Upload, Download, X, Loader2, Sparkles, ArrowRight } from 'lucide-react'
-import dynamic from 'next/dynamic'
-const CrystalCropper = dynamic(() => import('./CrystalCropper'), { ssr: false })
 
 interface ModelOption {
   id: string
@@ -44,7 +42,6 @@ export default function EnhancePage({
   currentCredits = 0,
   purchaseCredits = 0,
   subscriptionCredits = 0,
-  maxLongEdge,
   badge,
   badgeColor = 'bg-green-500',
   tips,
@@ -58,8 +55,6 @@ export default function EnhancePage({
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [imageWidth, setImageWidth] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
-  const [showCropper, setShowCropper] = useState(false)
-  const [pendingCropImage, setPendingCropImage] = useState<{ file: File; dataUrl: string; width: number; height: number } | null>(null)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
   const [selectedScale, setSelectedScale] = useState<number>(scales[0])
   const [selectedCreditSource, setSelectedCreditSource] = useState<'auto' | 'subscription' | 'purchase'>('auto')
@@ -90,13 +85,8 @@ export default function EnhancePage({
 
   const currentModel = selectedModel
 
-  // 动态计算当前是否需要 maxLongEdge
-  const effectiveMaxLongEdge = selectedModel.id === 'crystal' || selectedModel.id === 'crystal10x' ? (maxLongEdge || 1000) : undefined
-
   // 动态计算可用倍率
-  const effectiveScales = selectedModel.id === 'crystal10x' ? [10]
-    : selectedModel.id === 'crystal' ? scales.filter(s => s === 4)
-    : selectedModel.id === 'recraft' ? scales.filter(s => s === 2)
+  const effectiveScales = selectedModel.id === 'recraft' ? scales.filter(s => s === 2)
     : scales
 
   const cost = isFree ? 0 : (directPrice ? undefined : currentModel.credits)
@@ -159,18 +149,6 @@ export default function EnhancePage({
     img.onload = () => {
       setImageWidth(img.naturalWidth)
       setImageHeight(img.naturalHeight)
-
-      // Check max long edge - if Crystal exceeds 1000px, show cropper instead of error
-      if (effectiveMaxLongEdge) {
-        const longEdge = Math.max(img.naturalWidth, img.naturalHeight)
-        if (longEdge > effectiveMaxLongEdge) {
-          // Crystal: show cropper to let user trim to 1000px
-          setPendingCropImage({ file, dataUrl: reader.result as string, width: img.naturalWidth, height: img.naturalHeight })
-          setShowCropper(true)
-          return
-        }
-      }
-
       setSelectedFile(file)
       setPhase('preview')
     }
@@ -197,10 +175,8 @@ export default function EnhancePage({
     }, 500)
 
     try {
-      // 检查像素是否超过限制
       // Real-ESRGAN / Recraft / Google Upscaler 限制 ~4M 像素
-      // Crystal 限制长边 ≤ 1000px（约 1M 像素）
-      const MAX_PIXELS = effectiveMaxLongEdge ? effectiveMaxLongEdge * effectiveMaxLongEdge : 4_000_000
+      const MAX_PIXELS = 4_000_000
       let fileToUpload: File = selectedFile
       let uploadWidth = imageWidth
       let uploadHeight = imageHeight
@@ -271,12 +247,8 @@ export default function EnhancePage({
       setProcessingProgress(30)
 
       // 步骤 3：调 enhance API（只传 COS 下载 URL，请求体极小）
-      let apiModel = selectedModel.id
-      let apiScale = selectedScale
-      if (apiModel === 'crystal10x') {
-        apiModel = 'crystal'
-        apiScale = 10
-      }
+      const apiModel = selectedModel.id
+      const apiScale = selectedScale
 
       const res = await fetch('/api/enhance-sync', {
         method: 'POST',
@@ -389,34 +361,6 @@ export default function EnhancePage({
 
         {/* Main Card */}
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 space-y-6">
-          {/* Crystal Cropper */}
-          {showCropper && pendingCropImage && (
-            <CrystalCropper
-              imageSrc={pendingCropImage.dataUrl}
-              imageWidth={pendingCropImage.width}
-              imageHeight={pendingCropImage.height}
-              onCropped={(croppedUrl, croppedWidth, croppedHeight) => {
-                // Create a File from cropped data URL
-                fetch(croppedUrl)
-                  .then(res => res.blob())
-                  .then(blob => {
-                    const croppedFile = new File([blob], pendingCropImage!.file.name, { type: 'image/png' })
-                    setSelectedFile(croppedFile)
-                    setPreview(croppedUrl)
-                    setImageWidth(croppedWidth)
-                    setImageHeight(croppedHeight)
-                    setShowCropper(false)
-                    setPendingCropImage(null)
-                    setPhase('preview')
-                  })
-              }}
-              onCancel={() => {
-                setShowCropper(false)
-                setPendingCropImage(null)
-              }}
-            />
-          )}
-
           {/* Info Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
@@ -496,9 +440,7 @@ export default function EnhancePage({
                       onClick={() => {
                         setSelectedModel(m)
                         // Auto调整可选倍率
-                        const newScales = m.id === 'crystal10x' ? [10]
-                          : m.id === 'crystal' ? scales.filter(s => s === 4)
-                          : scales
+                        const newScales = m.id === 'recraft' ? scales.filter(s => s === 2) : scales
                         if (!newScales.includes(selectedScale)) {
                           setSelectedScale(newScales[0])
                         }
@@ -685,18 +627,6 @@ export default function EnhancePage({
                   Start Enhancement
                 </button>
               </div>
-              {/* Crystal crop button */}
-              {(selectedModel.id === 'crystal' || selectedModel.id === 'crystal10x') && imageWidth > 1000 && (
-                <button
-                  onClick={() => {
-                    setPendingCropImage({ file: selectedFile!, dataUrl: preview!, width: imageWidth, height: imageHeight })
-                    setShowCropper(true)
-                  }}
-                  className="w-full bg-purple-100 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-200 transition-colors text-center"
-                >
-                  Crop image (${Math.round(imageWidth * imageHeight / 10000)}MP, click to crop to ≤ 1000px)
-                </button>
-              )}
             </div>
           )}
 
@@ -801,7 +731,6 @@ export default function EnhancePage({
                   Enhance another
                 </button>
                 <a
-                  // TODO: 替换为真实下载链接
                   href={resultUrl || preview}
                   download={`enhanced_${selectedScale}x.png`}
                   className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg flex items-center justify-center gap-2"

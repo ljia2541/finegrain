@@ -9,22 +9,38 @@ export default function PortraitEnhancePage() {
   return (
     <EnhancePage
       title="Portrait Enhancement"
-      subtitle="Crystal model optimized for portraits, natural and realistic"
-      models={[{ id: 'crystal', name: 'Crystal 4x', credits: 15 }]}
-      scales={[4]}
+      subtitle="Google Upscaler optimized for portraits, natural and realistic"
+      models={[
+        {
+          id: 'google',
+          name: 'Google Upscaler',
+          credits: 3,
+          description: 'Natural fidelity, works on any image, great for portraits',
+          tag: 'Recommended',
+          tagColor: 'bg-blue-500',
+        },
+        {
+          id: 'recraft',
+          name: 'Recraft',
+          credits: 6,
+          description: 'Extremely sharp, text and logos especially crisp',
+          tag: 'Sharpest',
+          tagColor: 'bg-indigo-500',
+        },
+      ]}
+      scales={[2, 4]}
       isFree={false}
       currentCredits={credits}
       purchaseCredits={purchaseCredits}
       subscriptionCredits={subscriptionCredits}
       creditsExpirySoon={formattedExpiry}
       subExpirySoon={formattedSubExpiry}
-      maxLongEdge={1000}
       badge="Portrait Pro"
       badgeColor="bg-purple-500"
       tips={[
-        'Best for portrait photos only',
-        'Image long edge must be ≤ 1000px',
-        'Natural look, real portrait details',
+        'Best for portrait photos and general images',
+        'Google Upscaler preserves natural skin texture',
+        'Not sure which to pick? Google Upscaler is stable and reliable.',
       ]}
     />
   )

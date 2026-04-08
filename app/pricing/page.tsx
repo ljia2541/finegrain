@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Pricing - FineGrain AI Image Enhancement',
-  description: 'Flexible pricing plans. Pay-as-you-go credits or monthly subscription. 3 free daily enhancements. Crystal 10x at $3.99/image.',
+  description: 'Flexible pricing plans. Pay-as-you-go credits or monthly subscription. 3 free daily enhancements.',
 }
 
 export default function PricingPage() {

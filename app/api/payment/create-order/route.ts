@@ -6,9 +6,7 @@ export const runtime = 'nodejs'
 
 /**
  * POST /api/payment/create-order
- * 创建 PayPal 订单（一次性支付：积分包 / Crystal 10x）
- * 
- * 积分包需要已登录，Crystal 10x 可以未登录（但无法追踪）
+ * 创建 PayPal 订单（一次性支付：积分包）
  */
 export async function POST(request: NextRequest) {
   try {
@@ -37,7 +35,7 @@ export async function POST(request: NextRequest) {
       userId = session.user.id
     }
 
-    const result = await createOrder(planType as 'credits' | 'crystal10x', planId, userId)
+    const result = await createOrder('credits', planId, userId)
     return NextResponse.json({ success: true, ...result })
   } catch (error: any) {
     console.error('Create order error:', error)
@@ -58,7 +56,6 @@ export async function GET() {
       id,
       ...plan,
     })),
-    crystal10x: PAYPAL_PLANS.crystal10x,
     subscriptions: Object.entries(SUBSCRIPTION_CONFIG).map(([id, plan]) => ({
       id,
       ...plan,

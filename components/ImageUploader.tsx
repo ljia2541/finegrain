@@ -146,13 +146,6 @@ export default function ImageUploader() {
             </svg>
             <span>Auto-deleted after 24h • Encrypted • No image storage</span>
           </div>
-
-          {/* Crystal mode size hint */}
-          <div className="mt-2 text-center">
-            <p className="text-xs text-amber-600">
-              💡 Crystal portrait mode requires long edge ≤ 1000px
-            </p>
-          </div>
         </div>
       ) : (
         <div className="space-y-4">

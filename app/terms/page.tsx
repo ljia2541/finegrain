@@ -34,7 +34,6 @@ export default function TermsPage() {
               <li>Credits can be obtained by purchasing credit packs or monthly subscriptions.</li>
               <li>Credit packs expire: 100/200 credits in 90 days, 500/1000 credits in 180 days</li>
               <li>Monthly subscription credits reset each month and do not roll over</li>
-              <li>Crystal 10x is billed separately at $3.99/image, does not use credits</li>
               <li>Credits are non-refundable once purchased, except as required by law</li>
               <li>Credits are non-transferable, not redeemable for cash, and cannot be transferred to other users</li>
             </ul>

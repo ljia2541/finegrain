@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { enhanceImageAsync, validateCrystalInput, CRYSTAL_MAX_LONG_EDGE, CRYSTAL_10X_PRICE, CRYSTAL_4X_CREDITS, GOOGLE_UPSCALER_CREDITS } from '@/lib/replicate'
+import { enhanceImageAsync, GOOGLE_UPSCALER_CREDITS } from '@/lib/replicate'
 
 export const runtime = 'nodejs'
 
@@ -10,7 +10,7 @@ export const runtime = 'nodejs'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { imageUrl, model = 'crystal', scale = 4, imageWidth, imageHeight, faceEnhance = false } = body
+    const { imageUrl, model = 'realesrgan', scale = 4, faceEnhance = false } = body
 
     if (!imageUrl) {
       return NextResponse.json(
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 验证模型选择
-    const validModels = ['crystal', 'realesrgan', 'recraft', 'google']
+    const validModels = ['realesrgan', 'recraft', 'google']
     if (!validModels.includes(model)) {
       return NextResponse.json(
         { error: `Invalid model. Supported: ${validModels.join(', ')}` },
@@ -28,22 +28,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Crystal 系列输入尺寸校验
-    if (model === 'crystal') {
-      // 如果前端传了图片尺寸，直接校验
-      if (imageWidth && imageHeight) {
-        const validation = validateCrystalInput(imageWidth, imageHeight)
-        if (!validation.valid) {
-          return NextResponse.json(
-            { error: validation.message },
-            { status: 400 }
-          )
-        }
-      }
-    }
-
-    // 验证放大倍率 (2, 4, 6, 8, 10)
-    // Recraft 和 Google 不需要 scale 参数（或仅支持 2x/4x）
+    // 验证放大倍率
     if (model === 'recraft') {
       // Recraft 无 scale 参数，跳过
     } else if (model === 'google') {
@@ -55,27 +40,10 @@ export async function POST(request: NextRequest) {
         )
       }
     } else {
-      const validScales = [2, 4, 6, 8, 10]
+      const validScales = [2, 4, 6, 8]
       if (!validScales.includes(scale)) {
         return NextResponse.json(
           { error: `Invalid scale. Supported: ${validScales.join(', ')}` },
-          { status: 400 }
-        )
-      }
-    }
-
-    // Crystal 10x 必须校验输入尺寸（后端兜底）
-    if (model === 'crystal' && scale === 10) {
-      if (!imageWidth || !imageHeight) {
-        return NextResponse.json(
-          { error: 'Crystal 10x requires imageWidth and imageHeight for size validation' },
-          { status: 400 }
-        )
-      }
-      const validation = validateCrystalInput(imageWidth, imageHeight)
-      if (!validation.valid) {
-        return NextResponse.json(
-          { error: validation.message },
           { status: 400 }
         )
       }
@@ -85,7 +53,6 @@ export async function POST(request: NextRequest) {
     const result = await enhanceImageAsync({
       image: imageUrl,
       model,
-      // Recraft only supports 2x, frontend limits selection
       faceEnhance,
     })
 
@@ -98,14 +65,10 @@ export async function POST(request: NextRequest) {
 
     // 计算计费信息
     let billing = null
-    if (model === 'crystal') {
-      if (scale === 10) {
-        billing = { type: 'direct_pay', price: CRYSTAL_10X_PRICE, currency: 'USD' }
-      } else {
-        billing = { type: 'credits', credits: CRYSTAL_4X_CREDITS }
-      }
-    } else if (model === 'google') {
+    if (model === 'google') {
       billing = { type: 'credits', credits: GOOGLE_UPSCALER_CREDITS }
+    } else if (model === 'recraft') {
+      billing = { type: 'credits', credits: 6 }
     }
 
     return NextResponse.json({

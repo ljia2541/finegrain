@@ -190,32 +190,21 @@ export async function POST(request: NextRequest) {
       const today = new Date()
       today.setHours(0, 0, 0, 0)
 
+      const targetUserId = userId || 'anonymous'
+
       const { data: todayCount, error: countError } = await supabaseAdmin
         .from('enhancement_history')
         .select('id', { count: 'exact', head: true })
-        .eq(userId ? 'user_id' : 'user_id', userId || '')
+        .eq('user_id', targetUserId)
         .gte('created_at', today.toISOString())
         .eq('status', 'completed')
 
-      // 对未登录用户，按 user_id = 'anonymous' 无法区分，所以也计入匿名用户
-      // 简化方案：未登录也尝试登录获取 session，没有则用 IP 查
       let freeCount = todayCount?.length || 0
-
-      // 未登录时，通过 enhancement_history 查当天总免费量（近似）
-      if (!userId) {
-        const { count: anonCount } = await supabaseAdmin
-          .from('enhancement_history')
-          .select('*', { count: 'exact', head: true })
-          .gte('created_at', today.toISOString())
-          .eq('model', 'realesrgan')
-          .eq('status', 'completed')
-        freeCount = anonCount || 0
-      }
 
       if (freeCount >= 3) {
         return NextResponse.json({
           error: 'FREE_LIMIT_REACHED',
-          message: '今日免费次数已用完（3/3），请明天再试或购买积分包解锁更多功能',
+          message: 'Daily free limit reached (3/3). Please try again tomorrow or purchase a credits pack.',
           limit: 3,
           used: freeCount,
         }, { status: 429 })

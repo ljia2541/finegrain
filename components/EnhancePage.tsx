@@ -319,7 +319,7 @@ export default function EnhancePage({
 
       if (res.status === 429 && data.error === 'FREE_LIMIT_REACHED') {
         clearInterval(interval)
-        setError(data.message || '今日免费次数已用完')
+        setError(data.message || 'Daily free limit reached')
         setPhase('preview')
         return
       }

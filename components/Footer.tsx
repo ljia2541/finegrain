@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Finegrain</h3>
             <p className="text-gray-400">
-              基于 AI 的在线图像增强服务，专注于细节修复和超分辨率放大。
+              基于 AI 的在线图像放大服务，专注于超分辨率放大和画质增强。
             </p>
           </div>
           

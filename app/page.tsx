@@ -42,13 +42,13 @@ export default function Home() {
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 AI 图像增强
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  真实细节恢复
+                  AI 高清放大
                 </span>
               </h1>
-              
+
               {/* 副标题 */}
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                单张上传，AI 修复模糊、恢复细节、优化人像皮肤，专业画质无滤镜
+                单张上传，AI 超分辨率放大，支持 2x～10x，多模型可选，专业画质无滤镜
               </p>
               
               {/* 特性标签 */}
@@ -69,7 +69,7 @@ export default function Home() {
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
-                  <span className="text-white/70 text-sm">轻度去模糊/去噪</span>
+                  <span className="text-white/70 text-sm">超高清放大</span>
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function Home() {
                 人像照片增强
               </h3>
               <p className="text-gray-600">
-                低分辨率人像 → 高清修复（4x 放大 + 人像细节优化）
+                低分辨率人像 → 高清放大（4x 放大 + 人像细节优化）
               </p>
             </div>
 
@@ -187,17 +187,17 @@ export default function Home() {
                 <div className="flex items-center gap-2 text-sm text-blue-600 font-medium justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                   <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
-                    真实细节恢复
+                    真实画质放大
                   </span>
                 </div>
                 <h3 className="text-xl lg:text-2xl font-bold mt-4 text-gray-800">
                   不是简单的滤镜或锐化
                 </h3>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  AI 真正恢复图像中的丢失细节，让照片看起来更自然、更真实。
+                  AI 超分辨率放大，让照片更清晰、更锐利，保持自然真实。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  从缩略图到高清，AI 真正恢复细节，不是滤镜
+                  适合中高分辨率图片的放大增强，清晰图效果最佳
                 </p>
                 <p className="text-gray-500 mt-2 text-sm">
                   适合人像、产品图、设计稿，保留真实质感，不做过度美化
@@ -287,10 +287,10 @@ export default function Home() {
                   珍贵记忆，清晰重现
                 </p>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  修复模糊与压缩块，优化面部细节，让老照片更清晰。
+                  放大压缩块，优化面部细节，让老照片更清晰。
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  Real-ESRGAN 模型修复模糊和压缩块，GFPGAN 增强面部细节
+                  Real-ESRGAN 模型放大并增强画质，GFPGAN 优化面部细节
                 </p>
               </div>
             </div>
@@ -500,7 +500,7 @@ export default function Home() {
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               多数工具处理过度，容易出现塑料感皮肤和不真实的效果。
-              Finegrain Image Enhancer 使用 AI 真正恢复细节，保持自然真实。
+              Finegrain Image Enhancer 使用 AI 超分辨率技术放大图片，保持自然真实。
             </p>
           </div>
           <Features />

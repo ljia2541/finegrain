@@ -13,12 +13,12 @@ interface Example {
   category: 'portrait' | 'landscape' | 'product'
 }
 
-// 4 个 8K 超高清示例（使用真实的 AI 增强前后对比）
+// 4 个超高清示例（使用真实的 AI 增强前后对比）
 const examples: Example[] = [
   {
     id: '1',
     title: '人像照片增强',
-    description: '低分辨率人像 → 8K 超高清（8x 放大）',
+    description: '低分辨率人像 → 超高清（4x 放大）',
     originalImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg',
     enhancedImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg',
     category: 'portrait'
@@ -26,15 +26,15 @@ const examples: Example[] = [
   {
     id: '2',
     title: '风景照片超分',
-    description: '模糊风景 → 8x 超分辨率放大',
+    description: '风景照片 → 4x 超分辨率放大',
     originalImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000016.png',
     enhancedImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000017.png',
     category: 'landscape'
   },
   {
     id: '3',
-    title: '老照片修复',
-    description: '年代久远照片 → 8K 超高清修复',
+    title: '老照片增强',
+    description: '年代久远照片 → 超高清增强',
     originalImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/old_damaged.jpg',
     enhancedImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/restored.jpg',
     category: 'portrait'
@@ -42,7 +42,7 @@ const examples: Example[] = [
   {
     id: '4',
     title: '产品照片优化',
-    description: '电商产品图 → 8K 高清展示',
+    description: '电商产品图 → 超高清展示',
     originalImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/input.jpg',
     enhancedImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/output.jpg',
     category: 'product'
@@ -58,14 +58,14 @@ export default function ExampleShowcase() {
         {/* 标题 */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            8K 超高清效果展示
+            AI 超高清效果展示
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            每个示例都是真实的 8x 放大效果，展示 Finegrain 的强大能力
+            每个示例都是真实的 AI 放大效果，展示 Finegrain 的超分辨率能力
           </p>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-600">
             <CheckCircle2 className="w-5 h-5" />
-            <span>8x 超高清 • 实时处理 • 24小时删除</span>
+            <span>超高清放大 • 实时处理 • 24小时删除</span>
           </div>
         </div>
 
@@ -131,7 +131,7 @@ export default function ExampleShowcase() {
               originalImage={selectedExample.originalImage}
               enhancedImage={selectedExample.enhancedImage}
               originalAlt="原图"
-              enhancedAlt="增强后 (8K 超高清)"
+              enhancedAlt="增强后 (超高清)"
             />
           </div>
         )}
@@ -139,9 +139,9 @@ export default function ExampleShowcase() {
         {/* 提示 */}
         {!selectedExample && (
           <div className="text-center text-gray-500">
-            <p className="text-lg mb-2">点击上方示例查看 8K 超高清对比</p>
+            <p className="text-lg mb-2">点击上方示例查看超高清对比</p>
             <p className="text-sm">
-              拖动滑块查看差异 • 放大缩小查看细节 • 8K 超高清体验
+              拖动滑块查看差异 • 放大缩小查看细节
             </p>
           </div>
         )}

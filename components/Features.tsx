@@ -3,14 +3,14 @@ import { Zap, Shield, Image as ImageIcon, Sparkles, Clock, CheckCircle } from 'l
 const features = [
   {
     icon: Sparkles,
-    title: '真实细节恢复',
-    description: 'AI 真正恢复图像中的丢失细节，修复模糊和压缩块，不是简单锐化或滤镜。',
+    title: '超分辨率放大',
+    description: 'AI 超分辨率技术放大图片，保留真实纹理和细节，不是简单锐化或滤镜。',
     gradient: 'from-blue-500 to-cyan-500'
   },
   {
     icon: ImageIcon,
     title: '超高清放大',
-    description: '支持 2x～10x 超分辨率放大，免费版支持最高 4K 尺寸显示，Crystal 付费版支持人像 10K 极限输出。',
+    description: '支持 2x～10x 超分辨率放大，免费版最高 4K，Crystal 付费版支持人像 10K 极限输出。',
     gradient: 'from-purple-500 to-pink-500'
   },
   {

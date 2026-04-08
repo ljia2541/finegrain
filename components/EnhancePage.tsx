@@ -209,7 +209,7 @@ export default function EnhancePage({
         uploadHeight = newHeight
       }
 
-      // 步骤 1：获取 COS 预签名上传 URL（请求体极小，只有文件名）
+      // 步骤 1：获取 R2 预签名上传 URL（请求体极小，只有文件名）
       const presignRes = await fetch('/api/presign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -229,7 +229,7 @@ export default function EnhancePage({
 
       setProcessingProgress(15)
 
-      // 步骤 2：直接 PUT 上传到 COS（绕过 Vercel 4.5MB 限制）
+      // 步骤 2：直接 PUT 上传到 R2（绕过 Vercel 4.5MB 限制）
       const uploadRes = await fetch(presignData.uploadUrl, {
         method: 'PUT',
         body: fileToUpload,
@@ -238,7 +238,7 @@ export default function EnhancePage({
 
       if (!uploadRes.ok) {
         clearInterval(interval)
-        console.error('COS upload failed:', uploadRes.status, await uploadRes.text().catch(() => ''))
+        console.error('R2 upload failed:', uploadRes.status, await uploadRes.text().catch(() => ''))
         setError(`Image upload failed (${uploadRes.status}). Please try again.`)
         setPhase('preview')
         return
@@ -246,7 +246,7 @@ export default function EnhancePage({
 
       setProcessingProgress(30)
 
-      // 步骤 3：调 enhance API（只传 COS 下载 URL，请求体极小）
+      // 步骤 3：调 enhance API（只传 R2 下载 URL，请求体极小）
       const apiModel = selectedModel.id
       const apiScale = selectedScale
 

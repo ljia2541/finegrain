@@ -15,7 +15,7 @@ const MODEL_MAX_PIXELS: Record<string, number> = {
 }
 
 /**
- * 预处理图片：如果超过模型 GPU 内存限制，先缩图再上传到 COS
+ * 预处理图片：如果超过模型 GPU 内存限制，先缩图再上传到 R2
  * 返回适合模型处理的图片 URL
  */
 async function preprocessImageForModel(imageUrl: string, model: string, baseUrl: string): Promise<string> {
@@ -45,7 +45,7 @@ async function preprocessImageForModel(imageUrl: string, model: string, baseUrl:
     .png({ compressionLevel: 0 })
     .toBuffer()
   
-  // 上传到 COS（通过 presign API）
+  // 上传到 R2（通过 presign API）
   const taskId = `pre_${Date.now()}`
   const presignRes = await fetch(baseUrl + '/api/presign', {
     method: 'POST',
@@ -54,7 +54,7 @@ async function preprocessImageForModel(imageUrl: string, model: string, baseUrl:
   })
   const presignData = await presignRes.json()
   if (!presignData.success) {
-    console.error('[preprocess] COS upload failed, using original URL')
+    console.error('[preprocess] R2 upload failed, using original URL')
     return imageUrl
   }
   
@@ -275,7 +275,7 @@ export async function POST(request: NextRequest) {
             }),
           })
           const presignData = await presignRes.json()
-          if (!presignData.success) throw new Error('COS upload failed: ' + JSON.stringify(presignData))
+          if (!presignData.success) throw new Error('R2 upload failed: ' + JSON.stringify(presignData))
           await fetch(presignData.uploadUrl, {
             method: 'PUT',
             body: watermarked,
@@ -297,13 +297,13 @@ export async function POST(request: NextRequest) {
             }),
           })
           const presignData = await presignRes.json()
-          if (!presignData.success) throw new Error('COS upload failed: ' + JSON.stringify(presignData))
+          if (!presignData.success) throw new Error('R2 upload failed: ' + JSON.stringify(presignData))
           await fetch(presignData.uploadUrl, {
             method: 'PUT',
             body: pngBuffer,
             headers: { 'Content-Type': 'image/png' },
           })
-          console.log(`[png] uploaded to COS: ${presignData.downloadUrl}`)
+          console.log(`[png] uploaded to R2: ${presignData.downloadUrl}`)
           finalImageUrl = presignData.downloadUrl
         }
       } catch (err) {

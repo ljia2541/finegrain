@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { deleteFromCos } from '@/lib/cos'
+import { deleteObject } from '@/lib/r2'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -33,24 +33,24 @@ export async function POST(request: Request) {
     }
 
     let deletedCount = 0
-    let cosDeleteCount = 0
+    let r2DeleteCount = 0
     const errors: string[] = []
 
     for (const record of oldRecords || []) {
-      // Delete from COS
+      // Delete from R2
       try {
         if (record.input_url) {
           const inputKey = record.input_url.split('/').pop()
-          if (inputKey) await deleteFromCos(`uploads/${inputKey}`)
-          cosDeleteCount++
+          if (inputKey) await deleteObject(`uploads/${inputKey}`)
+          r2DeleteCount++
         }
         if (record.output_url) {
           const outputKey = record.output_url.split('/').pop()
-          if (outputKey) await deleteFromCos(`outputs/${outputKey}`)
-          cosDeleteCount++
+          if (outputKey) await deleteObject(`outputs/${outputKey}`)
+          r2DeleteCount++
         }
       } catch (e: any) {
-        errors.push(`COS delete error for record ${record.id}: ${e.message}`)
+        errors.push(`R2 delete error for record ${record.id}: ${e.message}`)
       }
 
       // Delete from database
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       deletedRecords: deletedCount,
-      deletedCosFiles: cosDeleteCount,
+      deletedR2Files: r2DeleteCount,
       cutoffTime,
       errors: errors.length > 0 ? errors : undefined
     })

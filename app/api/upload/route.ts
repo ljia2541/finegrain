@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { uploadToCos, getSignedUrl } from '@/lib/cos'
+import { uploadBuffer, generatePresignedDownloadUrl } from '@/lib/r2'
 
 export const runtime = 'nodejs'
 
 /**
  * POST /api/upload
- * 上传图片到 COS，返回签名 URL
+ * 上传图片到 R2，返回签名 URL
  */
 export async function POST(request: NextRequest) {
   try {
@@ -45,18 +45,19 @@ export async function POST(request: NextRequest) {
     const random = Math.random().toString(36).substring(2, 8)
     const ext = file.name.split('.').pop() || 'jpg'
     const filename = `${timestamp}-${random}.${ext}`
+    const key = `uploads/${filename}`
 
-    // 上传到 COS
-    const { key } = await uploadToCos(buffer, filename, file.type)
+    // 上传到 R2
+    await uploadBuffer(buffer, key, file.type)
 
     // 返回签名 URL（2小时有效，足够 Replicate 处理 + 用户下载）
-    const signedUrl = getSignedUrl(key, 7200)
+    const signedUrl = await generatePresignedDownloadUrl(key, 7200)
 
     return NextResponse.json({
       success: true,
       imageId: `${timestamp}-${random}`,
       imageUrl: signedUrl,
-      cosKey: key,
+      r2Key: key,
       filename,
       size: file.size,
       type: file.type,

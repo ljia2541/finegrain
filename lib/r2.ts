@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { getSignedUrl as getPresignedUrl } from '@aws-sdk/s3-request-presigner'
 
 /**
  * Cloudflare R2 客户端
@@ -12,57 +13,72 @@ const r2Client = new S3Client({
   },
 })
 
-const BUCKET_NAME = process.env.R2_BUCKET_NAME || 'finegrain-uploads'
+const BUCKET_NAME = process.env.R2_BUCKET_NAME || 'finegrain'
 
 /**
- * 上传图片到 R2
+ * R2 公开访问 URL 前缀
+ * 自定义域名生效后用自定义域名，否则用 R2 子域名
  */
-export async function uploadImage(
-  file: File | Buffer,
-  filename: string,
+function getPublicUrlPrefix(): string {
+  return process.env.R2_PUBLIC_URL || `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${BUCKET_NAME}`
+}
+
+/**
+ * 生成预签名上传 URL（前端直接 PUT 上传到 R2）
+ */
+export async function generatePresignedUploadUrl(
+  key: string,
+  contentType: string,
+  expiresIn: number = 900
+): Promise<string> {
+  const command = new PutObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: key,
+    ContentType: contentType,
+  })
+
+  const url = await getPresignedUrl(r2Client, command, { expiresIn })
+  return url
+}
+
+/**
+ * 生成预签名下载 URL（给 Replicate 读取）
+ */
+export async function generatePresignedDownloadUrl(
+  key: string,
+  expiresIn: number = 7200
+): Promise<string> {
+  const command = new GetObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: key,
+  })
+
+  const url = await getPresignedUrl(r2Client, command, { expiresIn })
+  return url
+}
+
+/**
+ * 上传 Buffer 到 R2（服务端上传）
+ */
+export async function uploadBuffer(
+  buffer: Buffer | Uint8Array,
+  key: string,
   contentType: string
-) {
-  try {
-    const key = `uploads/${Date.now()}-${filename}`
+): Promise<void> {
+  const command = new PutObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: key,
+    Body: buffer,
+    ContentType: contentType,
+  })
 
-    let body: Buffer | Uint8Array
-    if (file instanceof File) {
-      const arrayBuffer = await file.arrayBuffer()
-      body = new Uint8Array(arrayBuffer)
-    } else {
-      body = file
-    }
-
-    const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-      Body: body,
-      ContentType: contentType,
-    })
-
-    await r2Client.send(command)
-
-    // 返回公开访问 URL
-    const publicUrl = `https://r2.flux-network.dev/${BUCKET_NAME}/${key}`
-
-    return {
-      success: true,
-      key,
-      url: publicUrl,
-    }
-  } catch (error) {
-    console.error('R2 upload error:', error)
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }
-  }
+  await r2Client.send(command)
 }
 
 /**
  * 从 R2 获取图片
  */
-export async function getImage(key: string) {
+export async function getObject(key: string) {
   try {
     const command = new GetObjectCommand({
       Bucket: BUCKET_NAME,
@@ -93,38 +109,13 @@ export async function getImage(key: string) {
 }
 
 /**
- * 从 R2 删除图片
+ * 从 R2 删除文件
  */
-export async function deleteImage(key: string) {
-  try {
-    const command = new DeleteObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-    })
+export async function deleteObject(key: string): Promise<void> {
+  const command = new DeleteObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: key,
+  })
 
-    await r2Client.send(command)
-
-    return {
-      success: true,
-    }
-  } catch (error) {
-    console.error('R2 delete error:', error)
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }
-  }
-}
-
-/**
- * 生成图片的临时签名 URL（用于私有访问）
- */
-export async function getSignedUrl(key: string, expiresIn: number = 3600) {
-  // R2 支持公开访问，这里简化处理
-  const publicUrl = `https://r2.flux-network.dev/${BUCKET_NAME}/${key}`
-  
-  return {
-    success: true,
-    url: publicUrl,
-  }
+  await r2Client.send(command)
 }

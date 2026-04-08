@@ -79,6 +79,10 @@ export default function ComparisonSlider({
           alt={originalAlt}
           className="absolute inset-0 w-full h-full object-cover"
           style={{ userSelect: 'none' }}
+          onError={(e) => {
+            console.error('Original image load error:', originalImage)
+            e.currentTarget.style.display = 'none'
+          }}
         />
         
         {/* 增强图（顶层，通过裁剪显示） */}
@@ -95,6 +99,10 @@ export default function ComparisonSlider({
               transform: 'translateX(-100%)',
               userSelect: 'none',
               width: `${100 / (100 - sliderPosition) * 100}%`
+            }}
+            onError={(e) => {
+              console.error('Enhanced image load error, falling back to original:', enhancedImage)
+              e.currentTarget.style.display = 'none'
             }}
           />
         </div>

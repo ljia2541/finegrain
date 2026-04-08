@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       const text = await res.text()
       console.error('Create subscription error:', text)
-      return NextResponse.json({ error: 'Failed to create subscription' }, { status: 500 })
+      return NextResponse.json({ error: `Failed to create subscription: ${res.status} ${text}` }, { status: 500 })
     }
 
     const subscription = await res.json()

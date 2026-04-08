@@ -19,32 +19,32 @@ const examples: Example[] = [
     id: '1',
     title: '人像照片增强',
     description: '低分辨率人像 → 超高清（4x 放大）',
-    originalImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-input-4x.jpg',
-    enhancedImage: 'https://replicate.delivery/pbxt/J2SkiAIIKffySDjkRrVBkLvaCJCEvvNLiQOcUQBSBSEhRfV/00-output-4x.jpg',
+    originalImage: '/examples/portrait_original.jpg',
+    enhancedImage: '/examples/portrait_enhanced.jpg',
     category: 'portrait'
   },
   {
     id: '2',
     title: '风景照片超分',
     description: '风景照片 → 4x 超分辨率放大',
-    originalImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000016.png',
-    enhancedImage: 'https://replicate.delivery/pbxt/HuP8HwWLX3bvhJBzUixhW7fxJYIlJC3bEYb9FydJTMhFQtF/000000017.png',
+    originalImage: '/examples/landscape_original.jpg',
+    enhancedImage: '/examples/landscape_enhanced.jpg',
     category: 'landscape'
   },
   {
     id: '3',
     title: '老照片增强',
     description: '年代久远照片 → 超高清增强',
-    originalImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/old_damaged.jpg',
-    enhancedImage: 'https://replicate.delivery/pbxt/nRrj3IEhmyyYa4mOFNv5krJUcWpC81LbRO7cp1dTXpxyVo/restored.jpg',
+    originalImage: '/examples/oldphoto_original.jpg',
+    enhancedImage: '/examples/oldphoto_enhanced.jpg',
     category: 'portrait'
   },
   {
     id: '4',
     title: '产品照片优化',
     description: '电商产品图 → 超高清展示',
-    originalImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/input.jpg',
-    enhancedImage: 'https://replicate.delivery/pbxt/AQAL1wQRIqvZ6KLqqKcUxFbd5i1Cpy1oTgG5Q4ihXvvU4z/output.jpg',
+    originalImage: '/examples/product_original.jpg',
+    enhancedImage: '/examples/product_enhanced.jpg',
     category: 'product'
   }
 ]
@@ -82,17 +82,11 @@ export default function ExampleShowcase() {
               }`}
             >
               <div className="aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
-                {example.originalImage.startsWith('http') ? (
-                  <img
-                    src={example.originalImage}
-                    alt={example.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                    <ImageIcon className="w-12 h-12 text-gray-400" />
-                  </div>
-                )}
+                <img
+                  src={example.originalImage}
+                  alt={example.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1">
                 {example.title}

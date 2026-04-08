@@ -161,7 +161,7 @@ export default function Dashboard() {
   const formatTime = (iso: string) => {
     try {
       const d = new Date(iso)
-      return d.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+      return d.toLocaleString('en-US', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
     } catch {
       return iso
     }
@@ -263,7 +263,7 @@ export default function Dashboard() {
                       <span>Subscription: {(stats?.subscriptionCredits ?? 0)}</span>
                       {subscription && (
                         <span className="text-blue-200 text-xs">
-                          （{new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 到期）
+                          （{new Date(subscription.periodEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} expires)
                         </span>
                       )}
                     </div>
@@ -272,7 +272,7 @@ export default function Dashboard() {
                       <span>Purchase: {(stats?.purchaseCredits ?? 0)}</span>
                       {stats?.creditsExpireAt && (
                         <span className="text-blue-200 text-xs">
-                          （{new Date(stats.creditsExpireAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 过期）
+                          （{new Date(stats.creditsExpireAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} expires)
                         </span>
                       )}
                     </div>

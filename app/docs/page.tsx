@@ -54,12 +54,12 @@ export default function ApiDocsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageUrl</td><td className="px-3 py-2">string</td><td className="px-3 py-2">是</td><td className="px-3 py-2">COS 签名 URL</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">model</td><td className="px-3 py-2">string</td><td className="px-3 py-2">是</td><td className="px-3 py-2">crystal | realesrgan | recraft | google</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">scale</td><td className="px-3 py-2">number</td><td className="px-3 py-2">否</td><td className="px-3 py-2">放大倍率 2/4/6/8/10</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">faceEnhance</td><td className="px-3 py-2">boolean</td><td className="px-3 py-2">否</td><td className="px-3 py-2">仅 Real-ESRGAN，开启人脸增强</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageWidth</td><td className="px-3 py-2">number</td><td className="px-3 py-2">否</td><td className="px-3 py-2">原图宽度（Crystal 需要校验）</td></tr>
-                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageHeight</td><td className="px-3 py-2">number</td><td className="px-3 py-2">否</td><td className="px-3 py-2">原图高度（Crystal 需要校验）</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageUrl</td><td className="px-3 py-2">string</td><td className="px-3 py-2">Yes</td><td className="px-3 py-2">COS signed URL</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">model</td><td className="px-3 py-2">string</td><td className="px-3 py-2">Yes</td><td className="px-3 py-2">crystal | realesrgan | recraft | google</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">scale</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Scale factor 2/4/6/8/10</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">faceEnhance</td><td className="px-3 py-2">boolean</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Real-ESRGAN only, enables face enhancement</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageWidth</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Original image width (required for Crystal)</td></tr>
+                  <tr><td className="px-3 py-2 font-mono text-blue-600">imageHeight</td><td className="px-3 py-2">number</td><td className="px-3 py-2">No</td><td className="px-3 py-2">Original image height (required for Crystal)</td></tr>
                 </tbody>
               </table>
             </div>
@@ -75,11 +75,11 @@ export default function ApiDocsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  <tr><td className="px-3 py-2">Real-ESRGAN</td><td className="px-3 py-2">1</td><td className="px-3 py-2">免费档</td></tr>
-                  <tr><td className="px-3 py-2">Google Upscaler</td><td className="px-3 py-2">3</td><td className="px-3 py-2">付费基础</td></tr>
-                  <tr><td className="px-3 py-2">Recraft</td><td className="px-3 py-2">6</td><td className="px-3 py-2">印刷专业</td></tr>
-                  <tr><td className="px-3 py-2">Crystal 4x</td><td className="px-3 py-2">15</td><td className="px-3 py-2">人像主力</td></tr>
-                  <tr><td className="px-3 py-2">Crystal 10x</td><td className="px-3 py-2">$3.99/张</td><td className="px-3 py-2">不走积分</td></tr>
+                  <tr><td className="px-3 py-2">Real-ESRGAN</td><td className="px-3 py-2">1</td><td className="px-3 py-2">Free tier</td></tr>
+                  <tr><td className="px-3 py-2">Google Upscaler</td><td className="px-3 py-2">3</td><td className="px-3 py-2">Basic paid</td></tr>
+                  <tr><td className="px-3 py-2">Recraft</td><td className="px-3 py-2">6</td><td className="px-3 py-2">Print pro</td></tr>
+                  <tr><td className="px-3 py-2">Crystal 4x</td><td className="px-3 py-2">15</td><td className="px-3 py-2">Portrait pro</td></tr>
+                  <tr><td className="px-3 py-2">Crystal 10x</td><td className="px-3 py-2">$3.99/image</td><td className="px-3 py-2">Not credit-based</td></tr>
                 </tbody>
               </table>
             </div>
@@ -148,11 +148,11 @@ export default function ApiDocsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  <tr><td className="px-3 py-2 font-mono">400</td><td className="px-3 py-2">请求参数错误</td></tr>
-                  <tr><td className="px-3 py-2 font-mono">401</td><td className="px-3 py-2">未登录或 Token 无效</td></tr>
+                  <tr><td className="px-3 py-2 font-mono">400</td><td className="px-3 py-2">Bad request</td></tr>
+                  <tr><td className="px-3 py-2 font-mono">401</td><td className="px-3 py-2">Not authenticated</td></tr>
                   <tr><td className="px-3 py-2 font-mono">402</td><td className="px-3 py-2">Insufficient credits</td></tr>
-                  <tr><td className="px-3 py-2 font-mono">429</td><td className="px-3 py-2">请求过于频繁</td></tr>
-                  <tr><td className="px-3 py-2 font-mono">500</td><td className="px-3 py-2">服务器错误</td></tr>
+                  <tr><td className="px-3 py-2 font-mono">429</td><td className="px-3 py-2">Too many requests</td></tr>
+                  <tr><td className="px-3 py-2 font-mono">500</td><td className="px-3 py-2">Server error</td></tr>
                 </tbody>
               </table>
             </div>

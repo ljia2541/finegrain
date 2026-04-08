@@ -152,7 +152,7 @@ export default function CrystalCropper({
         </div>
 
         <p className="text-xs text-gray-400 text-center mt-2 mb-4">
-          拖动裁剪框选择 Crystal 支持的 1000px 区域
+          Drag the crop box to select the 1000px area for Crystal
         </p>
 
         <div className="flex justify-end gap-3">
@@ -160,7 +160,7 @@ export default function CrystalCropper({
             onClick={onCancel}
             className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
           >
-            取消
+            Cancel
           </button>
           <button
             onClick={handleConfirm}

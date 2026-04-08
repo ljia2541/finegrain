@@ -64,7 +64,7 @@ const creditPackages = [
     credits: 200,
     price: '$9.99',
     perCredit: '$0.05',
-    savings: '省 15%',
+    savings: 'Save 15%',
     description: 'Best value for daily image enhancement',
     validity: '90 days',
     highlighted: true,
@@ -73,7 +73,7 @@ const creditPackages = [
     credits: 500,
     price: '$19.99',
     perCredit: '$0.04',
-    savings: '省 32%',
+    savings: 'Save 32%',
     description: 'Best for heavy use and creative projects',
     validity: '180 days',
   },
@@ -81,7 +81,7 @@ const creditPackages = [
     credits: 1000,
     price: '$29.99',
     perCredit: '$0.03',
-    savings: '省 49%',
+    savings: 'Save 49%',
     description: 'Best deal for frequent professional users',
     validity: '180 days',
   },
@@ -94,12 +94,12 @@ const subscriptionPlans = [
     yearlyPrice: '$5.99',
     credits: 200,
     perCredit: '$0.04',
-    period: '月',
+    period: 'month',
     features: [
       '200 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      '所有付费模型可用（Crystal 10x $3.99/张另付）',
+      'All paid models available (Crystal 10x $3.99/image extra)',
     ],
     cta: 'Subscribe Pro',
     highlighted: false,
@@ -111,12 +111,12 @@ const subscriptionPlans = [
     yearlyPrice: '$11.99',
     credits: 500,
     perCredit: '$0.03',
-    period: '月',
+    period: 'month',
     features: [
       '500 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      '所有付费模型可用（Crystal 10x $3.99/张另付）',
+      'All paid models available (Crystal 10x $3.99/image extra)',
     ],
     cta: 'Subscribe Max',
     highlighted: true,
@@ -128,12 +128,12 @@ const subscriptionPlans = [
     yearlyPrice: '$19.99',
     credits: 1000,
     perCredit: '$0.025',
-    period: '月',
+    period: 'month',
     features: [
       '1000 credits auto-added monthly',
       'Use until depleted, resets monthly',
       'No watermark + priority processing',
-      '所有付费模型可用（Crystal 10x $3.99/张另付）',
+      'All paid models available (Crystal 10x $3.99/image extra)',
     ],
     cta: 'Subscribe Ultra',
     highlighted: false,
@@ -172,7 +172,7 @@ export default function Pricing() {
         if (data.success && data.approveUrl) {
           window.location.href = data.approveUrl
         } else {
-          alert('订阅创建失败：' + (data.error || 'PayPal 订阅计划尚未配置，请先使用积分包'))
+          alert('Subscription creation failed: ' + (data.error || 'PayPal subscription plan not configured yet, please use credit packs first'))
         }
         return
       }
@@ -194,11 +194,11 @@ export default function Pricing() {
       if (data.success && data.approvalUrl) {
         window.location.href = data.approvalUrl
       } else {
-        alert('支付创建失败：' + (data.error || '未知错误'))
+        alert('Payment creation failed: ' + (data.error || 'Unknown error'))
       }
     } catch (error) {
       console.error('Payment error:', error)
-      alert('支付请求失败，请稍后重试')
+      alert('Payment request failed, please try again later')
     }
   }
 
@@ -216,7 +216,7 @@ export default function Pricing() {
             {plan.highlighted && (
               <div className="text-center mb-4">
                 <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                  最受欢迎
+                  Most Popular
                 </span>
               </div>
             )}
@@ -259,8 +259,8 @@ export default function Pricing() {
 
       {/* Monthly Subscriptions - FIRST */}
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-8 mb-12">
-        <h3 className="text-3xl font-bold text-center mb-2">🔄 月订阅 - 每月自动到账更划算</h3>
-        <p className="text-center text-gray-600 mb-8">固定用量选订阅，比积分包更便宜，随时取消</p>
+        <h3 className="text-3xl font-bold text-center mb-2">🔄 Monthly Subscription - Auto-renew, better value</h3>
+        <p className="text-center text-gray-600 mb-8">Fixed monthly credits at lower cost. Cancel anytime.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {subscriptionPlans.map((plan) => (
@@ -273,7 +273,7 @@ export default function Pricing() {
               {plan.highlighted && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span className="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    最受欢迎
+                    Most Popular
                   </span>
                 </div>
               )}
@@ -284,12 +284,12 @@ export default function Pricing() {
 
               <div className="text-center mb-2">
                 <div className="text-4xl font-bold text-gray-900">{plan.monthlyPrice}</div>
-                <div className="text-gray-500">/月</div>
+                <div className="text-gray-500">/month</div>
               </div>
 
               <div className="text-center mb-4">
-                <div className="text-sm text-gray-600">{plan.credits} 积分/月</div>
-                <div className="text-sm text-green-600 font-semibold">年付 {plan.yearlyPrice}/月，省 25%</div>
+                <div className="text-sm text-gray-600">{plan.credits} credits/month</div>
+                <div className="text-sm text-green-600 font-semibold">Yearly {plan.yearlyPrice}/mo, Save 25%</div>
               </div>
 
               <ul className="space-y-2 mb-6 text-sm">
@@ -318,8 +318,8 @@ export default function Pricing() {
 
       {/* Credit Packages - SECOND */}
       <div id="credit-packages" className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
-        <h3 className="text-3xl font-bold text-center mb-2">💰 积分包 - 按需购买，灵活使用</h3>
-        <p className="text-center text-gray-600 mb-8">积分不过期快，适合偶尔使用或囤货慢慢用</p>
+        <h3 className="text-3xl font-bold text-center mb-2">💰 Credit Packs - Pay as you go</h3>
+        <p className="text-center text-gray-600 mb-8">Credits for occasional use or stock up for later</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {creditPackages.map((pkg) => (
@@ -339,7 +339,7 @@ export default function Pricing() {
               
               <div className="text-center mb-4">
                 <div className="text-4xl font-bold text-blue-600 mb-1">{pkg.credits}</div>
-                <div className="text-gray-600">积分</div>
+                <div className="text-gray-600">Credits</div>
               </div>
               
               <div className="text-center mb-4">
@@ -348,24 +348,24 @@ export default function Pricing() {
 
               <div className="bg-blue-50 rounded-lg p-4 mb-4">
                 <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-1">每积分单价</div>
+                  <div className="text-sm text-gray-600 mb-1">Price per credit</div>
                   <div className="text-2xl font-bold text-blue-700">{pkg.perCredit}</div>
                 </div>
               </div>
 
               <div className="text-center text-sm text-blue-700 font-semibold mb-4">
-                ✅ 推荐 · {pkg.description}
+                ✅ Recommended · {pkg.description}
               </div>
 
               <div className="text-center text-sm text-orange-600 font-semibold mb-4">
-                有效期：{pkg.validity}
+                Valid for: {pkg.validity}
               </div>
 
               <button
               onClick={() => handlePurchase('credits', String(pkg.credits))}
                 className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-colors"
               >
-                购买
+                Buy Now
               </button>
             </div>
           ))}

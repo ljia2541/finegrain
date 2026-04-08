@@ -183,7 +183,7 @@ export default function Dashboard() {
                 />
               )}
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{user.name || '用户'}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{user.name || 'User'}</h1>
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>
             </div>
@@ -207,7 +207,7 @@ export default function Dashboard() {
                 className="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-red-500 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline text-sm">退出</span>
+                <span className="hidden sm:inline text-sm">Sign out</span>
               </button>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Tab 切换 */}
+        {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
           <button
             onClick={() => setActiveTab('overview')}
@@ -231,7 +231,7 @@ export default function Dashboard() {
                 : 'text-gray-600 hover:bg-gray-50'
             }`}
           >
-            总览
+            Overview
           </button>
           <button
             onClick={() => setActiveTab('transactions')}
@@ -241,13 +241,13 @@ export default function Dashboard() {
                 : 'text-gray-600 hover:bg-gray-50'
             }`}
           >
-            交易记录
+            Transactions
           </button>
         </div>
 
         {activeTab === 'overview' ? (
           <div className="space-y-6">
-            {/* Credits Balance - 大卡片 */}
+            {/* Credits Balance */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
@@ -256,11 +256,11 @@ export default function Dashboard() {
                     <span className="text-blue-200 text-sm">Available Credits</span>
                   </div>
                   <div className="text-5xl font-bold">{stats?.credits ?? 0}</div>
-                  {/* 积分池拆分 */}
+                  {/* Credits Pool Split */}
                   <div className="mt-2 space-y-1 text-sm text-blue-100">
                     <div className="flex items-center gap-1.5">
                       <Crown className="w-3.5 h-3.5 text-blue-200" />
-                      <span>Subscribe积分：{(stats?.subscriptionCredits ?? 0)}</span>
+                      <span>Subscription: {(stats?.subscriptionCredits ?? 0)}</span>
                       {subscription && (
                         <span className="text-blue-200 text-xs">
                           （{new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 到期）
@@ -269,7 +269,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Gift className="w-3.5 h-3.5 text-blue-200" />
-                      <span>Buy Credits：{(stats?.purchaseCredits ?? 0)}</span>
+                      <span>Purchase: {(stats?.purchaseCredits ?? 0)}</span>
                       {stats?.creditsExpireAt && (
                         <span className="text-blue-200 text-xs">
                           （{new Date(stats.creditsExpireAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 过期）
@@ -283,12 +283,12 @@ export default function Dashboard() {
                   className="flex items-center gap-2 bg-white text-blue-600 px-5 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
                 >
                   <CreditCard className="w-4 h-4" />
-                  充值
+                  Top up
                 </a>
               </div>
             </div>
 
-            {/* 统计卡片 */}
+            {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                 <div className="flex items-center gap-2 mb-2">
@@ -297,7 +297,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats?.totalProcessed ?? 0}</div>
-                <div className="text-xs text-gray-500">总处理量</div>
+                <div className="text-xs text-gray-500">Total Processed</div>
               </div>
 
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -307,7 +307,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats?.totalPurchased ?? 0}</div>
-                <div className="text-xs text-gray-500">累计充值积分</div>
+                <div className="text-xs text-gray-500">Total Purchased</div>
               </div>
 
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -317,7 +317,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{stats?.totalSpent ?? 0}</div>
-                <div className="text-xs text-gray-500">累计消费积分</div>
+                <div className="text-xs text-gray-500">Total Spent</div>
               </div>
 
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -331,12 +331,12 @@ export default function Dashboard() {
                 </div>
                 <div className="text-xs text-gray-500">
                   {subscription
-                    ? `${subscription.creditsPerMonth}积分/月 · 到期 ${new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}`
-                    : '未Subscribe'}
+                    ? `${subscription.creditsPerMonth} credits/mo · expires ${new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}`
+                    : 'No subscription'}
                 </div>
               </div>
 
-              {/* 处理History卡片 */}
+              {/* History Card */}
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
                    onClick={() => router.push('/dashboard/history')}>
                 <div className="flex items-center gap-2 mb-2">
@@ -345,16 +345,16 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">History</div>
-                <div className="text-xs text-gray-500">查看处理记录</div>
+                <div className="text-xs text-gray-500">View history</div>
               </div>
             </div>
 
-            {/* 快捷购买 */}
+            {/* Quick Buy */}
             <div id="quick-buy" className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h2 className="font-bold text-gray-900">快速充值</h2>
+                <h2 className="font-bold text-gray-900">Quick Top-up</h2>
                 <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                  查看全部 <ChevronRight className="w-4 h-4" />
+                  View all <ChevronRight className="w-4 h-4" />
                 </a>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
@@ -368,24 +368,24 @@ export default function Dashboard() {
                       </div>
                     )}
                     <div className="text-2xl font-bold text-blue-600">{pkg.credits}</div>
-                    <div className="text-xs text-gray-500 mb-1">积分</div>
+                    <div className="text-xs text-gray-500 mb-1">credits</div>
                     <div className="text-lg font-bold text-gray-900">{pkg.price}</div>
                     <button
                       onClick={() => handleQuickBuy(pkg.credits)}
                       className="mt-2 w-full py-1.5 bg-blue-600 text-white rounded-md text-xs font-semibold hover:bg-blue-700 transition-colors"
                     >
-                      购买
+                      Buy
                     </button>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* 月Subscribe */}
+            {/* Monthly Subscription */}
             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-sm border border-indigo-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-indigo-100 flex items-center justify-between">
-                <h2 className="font-bold text-gray-900">🔄 月Subscribe</h2>
-                <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">每月自动到账更划算</span>
+                <h2 className="font-bold text-gray-900">🔄 Monthly Subscription</h2>
+                <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">Best value auto-topup</span>
               </div>
               {subscription ? (
                 <div className="p-5">
@@ -394,13 +394,13 @@ export default function Dashboard() {
                       <div className="flex items-center gap-2">
                         <Crown className="w-5 h-5 text-purple-600" />
                         <span className="font-bold text-lg text-gray-900">{subscription.planName}</span>
-                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">已Subscribe</span>
+                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">Subscribed</span>
                       </div>
                       <p className="text-sm text-gray-500 mt-1">
-                        {subscription.creditsPerMonth} 积分/月 · 到期 {new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}
+                        {subscription.creditsPerMonth} credits/mo · expires {new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}
                       </p>
                     </div>
-                    <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700">管理Subscribe →</a>
+                    <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700">Manage Subscribe →</a>
                   </div>
                 </div>
               ) : (
@@ -409,11 +409,11 @@ export default function Dashboard() {
                     <div key={plan.planId} className={`p-4 text-center ${plan.highlight ? 'bg-white/60' : ''}`}>
                       {plan.highlight && (
                         <div className="mb-1">
-                          <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">推荐</span>
+                          <span className="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">Popular</span>
                         </div>
                       )}
                       <div className="text-lg font-bold text-gray-900">{plan.name}</div>
-                      <div className="text-xs text-gray-500 mb-1">{plan.credits} 积分/月</div>
+                      <div className="text-xs text-gray-500 mb-1">{plan.credits} credits/mo</div>
                       <div className="text-xl font-bold text-indigo-700">{plan.price}</div>
                       <button
                         onClick={() => handleSubscribe(plan.planId)}
@@ -431,21 +431,21 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* 最近记录 */}
+            {/* Recent Records */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h2 className="font-bold text-gray-900">最近记录</h2>
+                <h2 className="font-bold text-gray-900">Recent Records</h2>
                 <button
                   onClick={() => setActiveTab('transactions')}
                   className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
                 >
-                  查看全部 <ArrowRight className="w-4 h-4" />
+                  View all <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
               {transactions.length === 0 ? (
                 <div className="px-5 py-12 text-center">
                   <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">暂无交易记录</p>
+                  <p className="text-gray-500">No transactions yet</p>
                 </div>
               ) : (
                 <div className="divide-y divide-gray-50">
@@ -479,9 +479,9 @@ export default function Dashboard() {
                         </div>
                         <div className="text-right">
                           <div className={`text-sm font-bold ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
-                            {tx.amount > 0 ? '+' : ''}{tx.amount} 积分
+                            {tx.amount > 0 ? '+' : ''}{tx.amount} credits
                           </div>
-                          <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>
+                          <div className="text-xs text-gray-400">Balance {tx.balanceAfter}</div>
                         </div>
                       </div>
                     )
@@ -490,10 +490,10 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* 账户设置 */}
+            {/* Account Settings */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100">
-                <h2 className="font-bold text-gray-900">账户设置</h2>
+                <h2 className="font-bold text-gray-900">Account Settings</h2>
               </div>
               <div className="divide-y divide-gray-50">
                 <div className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors cursor-pointer">
@@ -501,8 +501,8 @@ export default function Dashboard() {
                     <User className="w-5 h-5 text-gray-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900">个人资料</div>
-                    <div className="text-xs text-gray-400">通过 Google 账号登录</div>
+                    <div className="text-sm font-medium text-gray-900">Profile</div>
+                    <div className="text-xs text-gray-400">Signed in via Google</div>
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400" />
                 </div>
@@ -511,8 +511,8 @@ export default function Dashboard() {
                     <Shield className="w-5 h-5 text-gray-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900">隐私与安全</div>
-                    <div className="text-xs text-gray-400">管理账户安全设置</div>
+                    <div className="text-sm font-medium text-gray-900">Privacy & Security</div>
+                    <div className="text-xs text-gray-400">Manage account security</div>
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400" />
                 </div>
@@ -520,23 +520,23 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          /* 交易记录 Tab */
+          /* Transactions Tab */
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="font-bold text-gray-900">全部交易记录</h2>
+              <h2 className="font-bold text-gray-900">All Transactions</h2>
               <button
                 onClick={fetchProfile}
                 className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
               >
-                <RefreshCw className="w-3 h-3" /> 刷新
+                <RefreshCw className="w-3 h-3" /> Refresh
               </button>
             </div>
             {transactions.length === 0 ? (
               <div className="px-5 py-12 text-center">
                 <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">暂无交易记录</p>
+                <p className="text-gray-500">No transactions yet</p>
                 <a href="/pricing" className="inline-block mt-3 text-sm text-blue-600 hover:text-blue-700">
-                  去Buy Credits →
+                  Go to Buy Credits →
                 </a>
               </div>
             ) : (
@@ -571,7 +571,7 @@ export default function Dashboard() {
                         <div className={`text-sm font-bold ${isSubscription ? 'text-purple-600' : isPurchase ? 'text-green-600' : 'text-gray-900'}`}>
                           {tx.amount > 0 ? '+' : ''}{tx.amount}
                         </div>
-                        <div className="text-xs text-gray-400">余额 {tx.balanceAfter}</div>
+                        <div className="text-xs text-gray-400">Balance {tx.balanceAfter}</div>
                       </div>
                     </div>
                   )
@@ -581,9 +581,9 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* 底部信息 */}
+        {/* Footer Info */}
         <div className="text-center text-xs text-gray-400 mt-8 mb-4">
-          FineGrain AI 图像增强平台 · 如有问题请联系客服
+          FineGrain AI Image Enhancement · Contact support for issues
         </div>
       </div>
     </div>

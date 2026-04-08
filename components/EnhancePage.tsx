@@ -693,7 +693,7 @@ export default function EnhancePage({
                   }}
                   className="w-full bg-purple-100 text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-200 transition-colors text-center"
                 >
-                  裁剪图片（{Math.round(imageWidth * imageHeight / 10000)}万像素，点击裁剪到 1000px 以内）
+                  Crop image (${Math.round(imageWidth * imageHeight / 10000)}MP, click to crop to ≤ 1000px)
                 </button>
               )}
             </div>

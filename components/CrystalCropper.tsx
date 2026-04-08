@@ -80,12 +80,12 @@ export default function CrystalCropper({
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex flex-col items-center justify-center p-4">
       <div className="bg-white rounded-xl p-6 max-w-2xl w-full">
-        <h3 className="text-lg font-bold text-gray-900 mb-2">调整裁剪区域</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">Adjust Crop Area</h3>
         <p className="text-sm text-gray-500 mb-4">
-          Crystal 仅支持 1000px 以内的图片，请拖动裁剪框选择区域
+          Crystal only supports images ≤ 1000px on the long edge. Drag to select the crop area.
         </p>
 
-        {/* 图片容器 */}
+        {/* Image Container */}
         <div
           ref={containerRef}
           className="relative overflow-hidden rounded-lg border border-gray-200 bg-gray-100 mx-auto select-none"
@@ -97,20 +97,20 @@ export default function CrystalCropper({
           <img
             ref={imgRef}
             src={imageSrc}
-            alt="待裁剪"
+            alt="To crop"
             style={{ width: displayWidth, height: displayHeight }}
             crossOrigin="anonymous"
             draggable={false}
           />
 
-          {/* 半透明遮罩 */}
+          {/* Translucent Mask */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* 左边 */}
+            {/* Left Side */}
             <div
               className="absolute top-0 bg-black/50"
               style={{ left: 0, top: 0, width: cropPos.x, height: displayHeight }}
             />
-            {/* 右边 */}
+            {/* Right Side */}
             <div
               className="absolute top-0 bg-black/50"
               style={{ left: cropPos.x + cropDisplaySize, top: 0, width: displayWidth - cropPos.x - cropDisplaySize, height: displayHeight }}
@@ -127,7 +127,7 @@ export default function CrystalCropper({
             />
           </div>
 
-          {/* 裁剪框 */}
+          {/* Crop Box */}
           <div
             className="absolute border-2 border-white cursor-move z-10"
             style={{
@@ -166,7 +166,7 @@ export default function CrystalCropper({
             onClick={handleConfirm}
             className="px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700"
           >
-            确认裁剪
+            Confirm Crop
           </button>
         </div>
       </div>

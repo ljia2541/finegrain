@@ -111,14 +111,14 @@ export default function Home() {
                 onMouseMove={handleMouseMove}
                 onTouchMove={handleTouchMove}
               >
-                {/* 底层：清晰增强图 */}
+                {/* Bottom: Enhanced image */}
                 <img
                   src="/examples/enhanced.jpg"
                   alt="Enhanced"
                   className="absolute inset-0 w-full h-full object-contain"
                 />
                 
-                {/* 上层：模糊原图 */}
+                {/* Top: Original (blurred) */}
                 <img
                   src="/examples/original.jpg"
                   alt="Original"
@@ -130,13 +130,13 @@ export default function Home() {
                   }}
                 />
                 
-                {/* 滑块线 */}
+                {/* Slider line */}
                 <div 
                   className="absolute top-0 bottom-0 w-0.5 bg-white/50 z-10 pointer-events-none"
                   style={{ left: `${sliderPosition}%` }}
                 />
                 
-                {/* 圆形手柄 */}
+                {/* Handle */}
                 <div 
                   className="absolute top-1/2 w-8 h-8 -mt-4 bg-white rounded-full shadow-lg z-20 flex items-center justify-center text-gray-600 font-bold pointer-events-none"
                   style={{ left: `calc(${sliderPosition}% - 16px)` }}
@@ -149,7 +149,7 @@ export default function Home() {
               </p>
             </div>
             
-            {/* 描述 */}
+            {/* Description */}
             <div className="px-8 pb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
                 Portrait Photo Enhancement
@@ -159,7 +159,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 10x 付费入口 */}
+            {/* 10x Paid option */}
             <div className="px-8 pb-8">
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
                 <span className="text-2xl">🔥</span>
@@ -176,13 +176,13 @@ export default function Home() {
 
       {/* Features Section */}
 
-      {/* 真实细节恢复示例 */}
+      {/* Real detail restoration examples */}
 
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
             <div className="p-8 flex flex-col lg:flex-row gap-8 items-center">
-              {/* 左侧文字 */}
+              {/* Left text */}
               <div className="flex-1 lg:text-left text-center">
                 <div className="flex items-center gap-2 text-sm text-blue-600 font-medium justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -204,7 +204,7 @@ export default function Home() {
                 </p>
               </div>
               
-              {/* 右侧图片（并排） */}
+              {/* Right image (side by side) */}
               <div className="flex-1 flex gap-2">
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
@@ -226,7 +226,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 10x 付费入口 */}
+            {/* 10x Paid option */}
             <div className="px-8 pb-6">
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
                 <span className="text-2xl">🔥</span>
@@ -240,12 +240,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Vintage Photo Enhancement示例 */}
+      {/* Vintage Photo Enhancement example */}
       <section className="py-6 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
             <div className="p-8 flex flex-col lg:flex-row gap-12 items-center">
-              {/* 左侧图片（并排） */}
+              {/* Left image (side by side) */}
               <div className="flex-1 flex gap-2">
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
                   <img 
@@ -275,7 +275,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* 右侧文字 */}
+              {/* Right text */}
               <div className="flex-1 lg:text-left text-center">
                 <div className="flex items-center gap-2 justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
@@ -298,7 +298,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 300 DPI 印刷质量展示 */}
+      {/* 300 DPI print quality showcase */}
       <section className="py-12 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -312,7 +312,7 @@ export default function Home() {
           
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden p-6 mb-8">
             <div className="flex flex-col lg:flex-row gap-6 items-center">
-              {/* 左侧图片对比 */}
+              {/* Left image comparison */}
               <div className="flex-1 flex gap-3">
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow">
                   <img 
@@ -330,7 +330,7 @@ export default function Home() {
                     className="w-full aspect-square object-cover"
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">300 DPI</span>
-                  {/* 局部放大镜效果 */}
+                  {/* Magnifier effect */}
                   <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden bg-blue-100">
                     <img 
                       src="/examples/print_enhanced.jpg" 
@@ -342,7 +342,7 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* 右侧文字 */}
+              {/* Right text */}
               <div className="flex-1 lg:text-left text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   Up to 4K HD Output
@@ -356,7 +356,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-4 gap-3">
-            {/* 4×6 英寸 */}
+            {/* 4×6 inches */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">📷</div>
               <h3 className="text-xs font-bold text-gray-900">4"×6"</h3>
@@ -372,7 +372,7 @@ export default function Home() {
               <span className="bg-purple-100 text-purple-700 text-xs px-1.5 py-0.5 rounded-full">300 DPI</span>
             </div>
             
-            {/* 海报 */}
+            {/* Poster */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">🖼️</div>
               <h3 className="text-xs font-bold text-gray-900">Poster</h3>
@@ -380,7 +380,7 @@ export default function Home() {
               <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">≥ 150 DPI</span>
             </div>
             
-            {/* 10K 大幅 */}
+            {/* 10K Large */}
             <div className="bg-gradient-to-b from-amber-50 to-orange-50 rounded-lg p-2 shadow border-2 border-amber-300 text-center">
               <div className="text-xl mb-1">🔥</div>
               <h3 className="text-xs font-bold text-gray-900">10K</h3>
@@ -410,7 +410,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* 电商 */}
+            {/* E-commerce */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
               <div className="flex">
                 <div className="w-1/2 relative">
@@ -437,7 +437,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* 印刷 */}
+            {/* Print */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
               <div className="flex">
                 <div className="w-1/2 relative">

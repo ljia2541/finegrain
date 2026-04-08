@@ -23,7 +23,7 @@ export default function GeneralEnhancePage() {
           id: 'google',
           name: 'Google Upscaler',
           credits: 3,
-          description: 'Natural fidelity, works on any image, stable and商用',
+          description: 'Natural fidelity, works on any image, stable and commercial.',
           tag: 'Recommended',
           tagColor: 'bg-blue-500',
         },

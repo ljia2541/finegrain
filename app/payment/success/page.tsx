@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'capturing' | 'success' | 'error'>('capturing')
-  const [message, setMessage] = useState('正在确认支付...')
+  const [message, setMessage] = useState('Confirming payment...')
   const [subMessage, setSubMessage] = useState('')
 
   useEffect(() => {
@@ -53,11 +53,11 @@ function PaymentSuccessContent() {
         }
       } else {
         setStatus('error')
-        setMessage('支付确认失败，请联系客服')
+        setMessage('Payment confirmation failed. Contact support')
       }
     } catch {
       setStatus('error')
-      setMessage('网络错误，请重试')
+      setMessage('Network error. Try again.')
     }
   }
 
@@ -67,19 +67,19 @@ function PaymentSuccessContent() {
         {status === 'capturing' && (
           <>
             <div className="text-5xl mb-4">⏳</div>
-            <h2 className="text-2xl font-bold mb-2">正在处理</h2>
+            <h2 className="text-2xl font-bold mb-2">Processing</h2>
             <p className="text-gray-600">{message}</p>
           </>
         )}
         {status === 'success' && (
           <>
             <div className="text-5xl mb-4">✅</div>
-            <h2 className="text-2xl font-bold mb-2 text-green-600">支付成功</h2>
+            <h2 className="text-2xl font-bold mb-2 text-green-600">Payment Successful</h2>
             <p className="text-gray-800 font-medium">{message}</p>
             {subMessage && <p className="text-gray-400 text-sm mt-1">{subMessage}</p>}
             <div className="flex gap-3 justify-center mt-6">
               <a href="/dashboard" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
-                查看我的积分
+                View My Credits
               </a>
               <a href="/" className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200">
                 Back to Home
@@ -90,10 +90,10 @@ function PaymentSuccessContent() {
         {status === 'error' && (
           <>
             <div className="text-5xl mb-4">❌</div>
-            <h2 className="text-2xl font-bold mb-2 text-red-600">支付失败</h2>
+            <h2 className="text-2xl font-bold mb-2 text-red-600">Payment Failed</h2>
             <p className="text-gray-600">{message}</p>
             <a href="/pricing" className="inline-block mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
-              重新购买
+              Try Again
             </a>
           </>
         )}

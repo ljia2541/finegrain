@@ -144,13 +144,13 @@ export default function ImageUploader() {
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <span>24 小时自动删除 • 加密处理 • 不存储用户图片</span>
+            <span>Auto-deleted after 24h • Encrypted • No image storage</span>
           </div>
 
-          {/* Crystal 模式尺寸提示 */}
+          {/* Crystal mode size hint */}
           <div className="mt-2 text-center">
             <p className="text-xs text-amber-600">
-              💡 Crystal 人像模式仅支持 1000px 以内长边图片
+              💡 Crystal portrait mode requires long edge ≤ 1000px
             </p>
           </div>
         </div>
@@ -166,16 +166,16 @@ export default function ImageUploader() {
               onClick={handleReupload}
               className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
             >
-              重新选择
+              Change image
             </button>
             <button
               onClick={handleEnhance}
               disabled={uploading}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? '处理中...' : (
+              {uploading ? 'Processing...' : (
                 <>
-                  开始增强
+                  Start Enhancement
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

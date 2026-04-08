@@ -93,7 +93,7 @@ export default function HistoryPage() {
         headers: { Authorization: `Bearer ${session?.accessToken}` },
       })
       
-      if (!res.ok) throw new Error('获取历史记录Failed')
+      if (!res.ok) throw new Error('Failed to fetch history')
       
       const data: HistoryResponse = await res.json()
       setHistory(data.history || [])
@@ -123,14 +123,14 @@ export default function HistoryPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Clock className="w-6 h-6 text-gray-600" />
-              <h1 className="text-xl font-semibold text-gray-900">处理历史</h1>
-              <span className="text-sm text-gray-500">共 {total} 条记录</span>
+              <h1 className="text-xl font-semibold text-gray-900">Processing History</h1>
+              <span className="text-sm text-gray-500">{total} records total</span>
             </div>
             <button
               onClick={() => router.push('/dashboard')}
               className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
             >
-              返回 <ChevronRight className="w-4 h-4" />
+              Back <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function HistoryPage() {
         {history.length === 0 && !loading && (
           <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
             <Image className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">暂无处理记录</p>
+            <p className="text-gray-500">No processing records yet</p>
             <button
               onClick={() => router.push('/enhance/free')}
               className="mt-4 text-blue-600 hover:text-blue-700 text-sm"

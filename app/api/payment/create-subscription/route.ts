@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthSession } from '@/lib/auth'
 import { SUBSCRIPTION_CONFIG } from '@/lib/paypal'
 
-const PAYPAL_BASE_URL = process.env.PAYPAL_MODE === 'live'
+const PAYPAL_BASE_URL = process.env.PAYPAL_MODE?.trim() === 'live'
   ? 'https://api-m.paypal.com'
   : 'https://api-m.sandbox.paypal.com'
 

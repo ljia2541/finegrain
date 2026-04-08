@@ -36,7 +36,7 @@ export default function ImageUploader() {
     e.preventDefault()
     if (e.target.files && e.target.files[0]) {
       if (e.target.files.length > 1) {
-        alert('当前仅支持单张图片上传')
+        alert('Only single image upload is supported')
         e.target.value = ''
         return
       }
@@ -48,13 +48,13 @@ export default function ImageUploader() {
     // 验证文件类型
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/avif']
     if (!validTypes.includes(file.type)) {
-      alert('不支持的文件类型。请上传 JPG、PNG、WebP、HEIC 或 AVIF 格式的图片。')
+      alert('Unsupported file type. Please upload JPG, PNG, WebP, HEIC or AVIF.')
       return
     }
 
     // 验证文件大小（10MB）
     if (file.size > 10 * 1024 * 1024) {
-      alert('文件太大。请上传小于 10MB 的图片。')
+      alert('File too large. Please upload an image under 10MB.')
       return
     }
 
@@ -107,11 +107,11 @@ export default function ImageUploader() {
           </div>
             
           <h3 className="text-xl font-bold text-gray-900 mb-2">
-            拖放到任意位置上传
+            Drop image here
           </h3>
             
           <p className="text-gray-600 mb-4 text-sm">
-            或者点击选择文件 • 单张上传 • 支持常见手机/相机照片
+            or click to select • Single image • Works with phone/camera photos
           </p>
             
           <div className="flex items-center justify-center gap-2 mb-6 text-xs text-gray-500">
@@ -136,10 +136,10 @@ export default function ImageUploader() {
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg cursor-pointer"
           >
             <Upload className="w-4 h-4" />
-            选择图片
+            Select Image
           </label>
           
-          {/* 隐私提示 */}
+          {/* Privacy Notice */}
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />

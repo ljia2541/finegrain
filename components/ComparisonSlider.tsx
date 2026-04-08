@@ -13,8 +13,8 @@ interface ComparisonSliderProps {
 export default function ComparisonSlider({
   originalImage,
   enhancedImage,
-  originalAlt = '原图',
-  enhancedAlt = '增强后'
+  originalAlt = 'Original',
+  enhancedAlt = 'Enhanced'
 }: ComparisonSliderProps) {
   const [sliderPosition, setSliderPosition] = useState(50)
   const [isZoomed, setIsZoomed] = useState(false)
@@ -61,7 +61,7 @@ export default function ComparisonSlider({
 
   return (
     <div className="w-full h-full flex flex-col">
-      {/* 对比容器 */}
+      {/* Comparison Container */}
       <div 
         ref={containerRef}
         className={`relative w-full flex-1 rounded-lg overflow-hidden select-none bg-gray-900 ${
@@ -73,7 +73,7 @@ export default function ComparisonSlider({
         onTouchEnd={handleSliderMove}
         onClick={handleResetZoom}
       >
-        {/* 原图（底层） */}
+        {/* Original (bottom layer) */}
         <img
           src={originalImage}
           alt={originalAlt}
@@ -81,7 +81,7 @@ export default function ComparisonSlider({
           style={{ userSelect: 'none' }}
         />
         
-        {/* 增强图（顶层，通过裁剪显示） */}
+        {/* Enhanced (top layer, revealed by slider) */}
         <div
           className="absolute inset-0 overflow-hidden border-l-2 border-blue-500"
           style={{ left: `${sliderPosition}%` }}
@@ -99,7 +99,7 @@ export default function ComparisonSlider({
           />
         </div>
 
-        {/* 滑块控制条 */}
+        {/* Slider Control */}
         <div 
           ref={sliderRef}
           className="absolute top-0 bottom-0 w-1 bg-blue-500 cursor-ew-resize shadow-lg"
@@ -113,7 +113,7 @@ export default function ComparisonSlider({
           </div>
         </div>
 
-        {/* 标签 */}
+        {/* Labels */}
         <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/70 text-white text-sm rounded-lg backdrop-blur-sm">
           {originalAlt}
         </div>

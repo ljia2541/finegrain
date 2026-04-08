@@ -15,15 +15,15 @@ function PaymentSuccessContent() {
 
     if (!token && !isSubscription) {
       setStatus('error')
-      setMessage('缺少支付信息')
+      setMessage('Missing payment information')
       return
     }
 
     if (isSubscription) {
       // 订阅：PayPal approve 后跳转，积分由 Webhook ACTIVATED 事件自动发放
       setStatus('success')
-      setMessage('🎉 订阅成功！积分将在几分钟内到账。')
-      setSubMessage('PayPal 正在处理订阅确认')
+      setMessage('🎉 Subscription successful! Credits will arrive in a few minutes.')
+      setSubMessage('PayPal is processing the subscription confirmation')
     } else if (token) {
       capturePayment(token)
     }
@@ -42,14 +42,14 @@ function PaymentSuccessContent() {
       if (data.success) {
         setStatus('success')
         if (data.creditsAdded) {
-          setMessage(`🎉 支付成功，${data.creditsAdded} 积分已到账！`)
-          setSubMessage(`订单号: ${data.orderId}`)
+          setMessage(`🎉 Payment successful, ${data.creditsAdded} credits added!`)
+          setSubMessage(`Order ID: ${data.orderId}`)
         } else if (data.description) {
           setMessage(`✅ ${data.description}`)
-          setSubMessage(`订单号: ${data.orderId}`)
+          setSubMessage(`Order ID: ${data.orderId}`)
         } else {
-          setMessage('支付成功！')
-          setSubMessage(`订单号: ${data.orderId}`)
+          setMessage('Payment successful!')
+          setSubMessage(`Order ID: ${data.orderId}`)
         }
       } else {
         setStatus('error')
@@ -82,7 +82,7 @@ function PaymentSuccessContent() {
                 查看我的积分
               </a>
               <a href="/" className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200">
-                返回首页
+                Back to Home
               </a>
             </div>
           </>

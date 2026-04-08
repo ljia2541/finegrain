@@ -8,12 +8,12 @@ export default function UltraEnhancePage() {
 
   return (
     <EnhancePage
-      title="10 倍超清人像增强"
-      subtitle="Crystal 10x 超分辨率，最高 10K 输出，人像细节拉满"
+      title="10x Ultra Portrait Enhancement"
+      subtitle="Crystal 10x super resolution, up to 10K output, maximum portrait detail"
       models={[{ id: 'crystal10x', name: 'Crystal 10x', credits: 0 }]}
       scales={[10]}
       isFree={false}
-      directPrice="$3.99/张"
+      directPrice="$3.99/image"
       currentCredits={credits}
       purchaseCredits={purchaseCredits}
       subscriptionCredits={subscriptionCredits}
@@ -23,10 +23,10 @@ export default function UltraEnhancePage() {
       badge="VIP"
       badgeColor="bg-yellow-500"
       tips={[
-        '仅适合人像照片',
-        '图片长边不可超过 1000px',
-        '最高 10K 输出',
-        '单独付费，不走积分',
+        'Best for portrait photos only',
+        'Image long edge must be ≤ 1000px',
+        'Up to 10K output',
+        'Separate payment, does not use credits',
       ]}
     />
   )

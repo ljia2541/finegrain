@@ -1,39 +1,39 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'API 文档 | Finegrain',
-  description: 'Finegrain AI 图像增强平台 API 接口文档',
+  title: 'API Docs | Finegrain',
+  description: 'Finegrain AI image enhancement platform API documentation.',
 }
 
 export default function ApiDocsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">API 文档</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">API Documentation</h1>
         <p className="text-gray-500 mb-8">Finegrain REST API v1.0</p>
 
         <div className="space-y-8">
-          {/* 认证 */}
+          {/* Authentication */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-3">🔐 认证</h2>
-            <p className="text-sm text-gray-600 mb-3">所有 API 需要 Bearer Token 认证（通过 Google OAuth 获取）。</p>
+            <h2 className="text-lg font-bold text-gray-900 mb-3">🔐 Authentication</h2>
+            <p className="text-sm text-gray-600 mb-3">所有 API 需要 Bearer Token Authentication（通过 Google OAuth 获取）。</p>
             <div className="bg-gray-900 rounded-lg p-4 text-sm font-mono text-green-400">
               Authorization: Bearer &lt;your_jwt_token&gt;
             </div>
           </section>
 
-          {/* 上传 */}
+          {/* Upload */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-3">📤 上传图片</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-3">📤 Upload Image</h2>
             <div className="flex items-center gap-2 mb-3">
               <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold">POST</span>
               <code className="text-sm text-gray-700">/api/upload</code>
             </div>
-            <p className="text-sm text-gray-600 mb-2">上传图片到腾讯云 COS，返回图片 URL。</p>
+            <p className="text-sm text-gray-600 mb-2">Upload Image到腾讯云 COS，返回图片 URL。</p>
             <p className="text-xs text-gray-500">支持格式：JPG, PNG, WebP, HEIC, AVIF | 最大 10MB</p>
           </section>
 
-          {/* 增强 */}
+          {/* Enhancement */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3">✨ 图片增强</h2>
             <div className="flex items-center gap-2 mb-3">
@@ -85,7 +85,7 @@ export default function ApiDocsPage() {
             </div>
           </section>
 
-          {/* 查询任务 */}
+          {/* Query Task */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3">📊 查询任务状态</h2>
             <div className="flex items-center gap-2 mb-3">
@@ -95,7 +95,7 @@ export default function ApiDocsPage() {
             <p className="text-sm text-gray-600">查询增强任务的处理状态和结果图片 URL。</p>
           </section>
 
-          {/* 用户 */}
+          {/* User */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3">👤 用户信息</h2>
             <div className="flex items-center gap-2 mb-3">
@@ -105,7 +105,7 @@ export default function ApiDocsPage() {
             <p className="text-sm text-gray-600">获取当前用户的积分余额、统计信息和最近交易记录。</p>
           </section>
 
-          {/* 支付 */}
+          {/* Payment */}
           <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3">💳 支付</h2>
             <div className="space-y-3">
@@ -160,7 +160,7 @@ export default function ApiDocsPage() {
         </div>
 
         <div className="text-center text-xs text-gray-400 mt-12">
-          API 文档 v1.0 · 如有疑问请联系 support@finegrainimageenhancer.com
+          API Documentation v1.0 · 如有疑问请联系 support@finegrainimageenhancer.com
         </div>
       </div>
     </div>

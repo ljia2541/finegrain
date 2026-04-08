@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '免费 AI 图片增强 - Real-ESRGAN 在线增强 | Finegrain',
-  description: '免费在线 AI 图片放大，使用 Real-ESRGAN 模型，支持人脸增强、老照片画质提升，每日 3 张免费，快速提升画质。',
+  title: 'Free AI Image Enhancement - Real-ESRGAN Online | Finegrain',
+  description: 'Free online AI image upscaler using Real-ESRGAN model. Face enhancement, quality boost. 3 free uses daily, fast enhancement.',
 }
 
 export default function FreeLayout({ children }: { children: React.ReactNode }) {

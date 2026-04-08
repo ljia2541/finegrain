@@ -51,7 +51,7 @@ interface SubscriptionInfo {
   periodEnd: string
 }
 
-// 积分包快捷购买
+// Credits Pack快捷购买
 const quickBuyPackages = [
   { credits: 100, price: '$5.99', popular: false },
   { credits: 200, price: '$9.99', popular: true },
@@ -59,11 +59,11 @@ const quickBuyPackages = [
   { credits: 1000, price: '$29.99', popular: false },
 ]
 
-// 月订阅方案
+// 月Subscribe方案
 const subscriptionPlans = [
-  { planId: 'pro', name: 'Pro', credits: 200, price: '$7.99/月', highlight: false },
-  { planId: 'max', name: 'Max', credits: 500, price: '$14.99/月', highlight: true },
-  { planId: 'ultra', name: 'Ultra', credits: 1000, price: '$24.99/月', highlight: false },
+  { planId: 'pro', name: 'Pro', credits: 200, price: '$7.99/mo', highlight: false },
+  { planId: 'max', name: 'Max', credits: 500, price: '$14.99/mo', highlight: true },
+  { planId: 'ultra', name: 'Ultra', credits: 1000, price: '$24.99/mo', highlight: false },
 ]
 
 export default function Dashboard() {
@@ -87,7 +87,7 @@ export default function Dashboard() {
       setError(null)
     } catch (e) {
       console.error('Failed to fetch profile:', e)
-      setError('加载失败，请刷新重试')
+      setError('Failed to load. Please refresh and try again.')
     } finally {
       setLoading(false)
     }
@@ -114,10 +114,10 @@ export default function Dashboard() {
       if (data.success && data.approvalUrl) {
         window.location.href = data.approvalUrl
       } else {
-        alert('支付创建失败：' + (data.error || '未知错误'))
+        alert('Payment creation failed: ' + (data.error || 'Unknown error'))
       }
     } catch {
-      alert('支付请求失败，请稍后重试')
+      alert('Payment request failed. Please try again later.')
     }
   }, [])
 
@@ -132,17 +132,17 @@ export default function Dashboard() {
       if (data.success && data.approveUrl) {
         window.location.href = data.approveUrl
       } else {
-        alert('订阅创建失败：' + (data.error || 'PayPal 订阅计划尚未配置'))
+        alert('Subscription creation failed: ' + (data.error || 'PayPal subscription plan not configured yet'))
       }
     } catch {
-      alert('订阅请求失败，请稍后重试')
+      alert('Subscription request failed. Please try again later.')
     }
   }, [])
 
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-gray-400">加载中...</div>
+        <div className="animate-pulse text-gray-400">Loading...</div>
       </div>
     )
   }
@@ -177,7 +177,7 @@ export default function Dashboard() {
               {user.image && (
                 <img
                   src={user.image}
-                  alt="头像"
+                  alt="avatar"
                   className="w-16 h-16 rounded-full ring-2 ring-blue-100"
                   referrerPolicy="no-referrer"
                 />
@@ -191,7 +191,7 @@ export default function Dashboard() {
               <button
                 onClick={fetchProfile}
                 className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                title="刷新"
+                title="Refresh"
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -200,7 +200,7 @@ export default function Dashboard() {
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
               >
                 <Coins className="w-4 h-4" />
-                购买积分
+                Buy Credits
               </a>
               <button
                 onClick={() => signOut({ callbackUrl: '/' })}
@@ -247,20 +247,20 @@ export default function Dashboard() {
 
         {activeTab === 'overview' ? (
           <div className="space-y-6">
-            {/* 积分余额 - 大卡片 */}
+            {/* Credits Balance - 大卡片 */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <CreditCard className="w-5 h-5 text-blue-200" />
-                    <span className="text-blue-200 text-sm">可用积分</span>
+                    <span className="text-blue-200 text-sm">Available Credits</span>
                   </div>
                   <div className="text-5xl font-bold">{stats?.credits ?? 0}</div>
                   {/* 积分池拆分 */}
                   <div className="mt-2 space-y-1 text-sm text-blue-100">
                     <div className="flex items-center gap-1.5">
                       <Crown className="w-3.5 h-3.5 text-blue-200" />
-                      <span>订阅积分：{(stats?.subscriptionCredits ?? 0)}</span>
+                      <span>Subscribe积分：{(stats?.subscriptionCredits ?? 0)}</span>
                       {subscription && (
                         <span className="text-blue-200 text-xs">
                           （{new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 到期）
@@ -269,7 +269,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Gift className="w-3.5 h-3.5 text-blue-200" />
-                      <span>购买积分：{(stats?.purchaseCredits ?? 0)}</span>
+                      <span>Buy Credits：{(stats?.purchaseCredits ?? 0)}</span>
                       {stats?.creditsExpireAt && (
                         <span className="text-blue-200 text-xs">
                           （{new Date(stats.creditsExpireAt).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} 过期）
@@ -332,11 +332,11 @@ export default function Dashboard() {
                 <div className="text-xs text-gray-500">
                   {subscription
                     ? `${subscription.creditsPerMonth}积分/月 · 到期 ${new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}`
-                    : '未订阅'}
+                    : '未Subscribe'}
                 </div>
               </div>
 
-              {/* 处理历史卡片 */}
+              {/* 处理History卡片 */}
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
                    onClick={() => router.push('/dashboard/history')}>
                 <div className="flex items-center gap-2 mb-2">
@@ -344,7 +344,7 @@ export default function Dashboard() {
                     <Clock className="w-4 h-4 text-purple-600" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">历史</div>
+                <div className="text-2xl font-bold text-gray-900">History</div>
                 <div className="text-xs text-gray-500">查看处理记录</div>
               </div>
             </div>
@@ -381,10 +381,10 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* 月订阅 */}
+            {/* 月Subscribe */}
             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-sm border border-indigo-100 overflow-hidden">
               <div className="px-5 py-4 border-b border-indigo-100 flex items-center justify-between">
-                <h2 className="font-bold text-gray-900">🔄 月订阅</h2>
+                <h2 className="font-bold text-gray-900">🔄 月Subscribe</h2>
                 <span className="text-xs text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">每月自动到账更划算</span>
               </div>
               {subscription ? (
@@ -394,13 +394,13 @@ export default function Dashboard() {
                       <div className="flex items-center gap-2">
                         <Crown className="w-5 h-5 text-purple-600" />
                         <span className="font-bold text-lg text-gray-900">{subscription.planName}</span>
-                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">已订阅</span>
+                        <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">已Subscribe</span>
                       </div>
                       <p className="text-sm text-gray-500 mt-1">
                         {subscription.creditsPerMonth} 积分/月 · 到期 {new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })}
                       </p>
                     </div>
-                    <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700">管理订阅 →</a>
+                    <a href="/pricing" className="text-sm text-blue-600 hover:text-blue-700">管理Subscribe →</a>
                   </div>
                 </div>
               ) : (
@@ -423,7 +423,7 @@ export default function Dashboard() {
                             : 'bg-white text-indigo-700 hover:bg-indigo-50 border border-indigo-200'
                         }`}
                       >
-                        订阅
+                        Subscribe
                       </button>
                     </div>
                   ))}
@@ -453,9 +453,9 @@ export default function Dashboard() {
                     const isPurchase = tx.type === 'purchase' || tx.type === 'subscription' || tx.type === 'bonus'
                     const isSubscription = tx.type === 'subscription'
                     const Icon = getTransactionIcon(tx.type, tx.model)
-                    // 订阅价格映射
+                    // Subscribe价格映射
                     const subPriceMap: Record<string, string> = { pro: '$7.99', max: '$14.99', ultra: '$24.99' }
-                    // 积分包价格映射
+                    // Credits Pack价格映射
                     const purchasePriceMap: Record<number, string> = { 100: '$5.99', 200: '$9.99', 500: '$19.99', 1000: '$29.99' }
                     const txPrice = isSubscription && tx.planId ? subPriceMap[tx.planId] : (!isSubscription && tx.amount > 0 ? purchasePriceMap[tx.amount] : null)
                     return (
@@ -469,7 +469,7 @@ export default function Dashboard() {
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-gray-900 truncate">{tx.description || tx.type}</span>
                             {isSubscription && (
-                              <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">订阅</span>
+                              <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">Subscribe</span>
                             )}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -536,7 +536,7 @@ export default function Dashboard() {
                 <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500">暂无交易记录</p>
                 <a href="/pricing" className="inline-block mt-3 text-sm text-blue-600 hover:text-blue-700">
-                  去购买积分 →
+                  去Buy Credits →
                 </a>
               </div>
             ) : (
@@ -559,7 +559,7 @@ export default function Dashboard() {
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium text-gray-900">{tx.description || tx.type}</span>
                           {isSubscription && (
-                            <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">订阅</span>
+                            <span className="shrink-0 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">Subscribe</span>
                           )}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-400">

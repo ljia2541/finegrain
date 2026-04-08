@@ -10,7 +10,7 @@ interface ModelOption {
   name: string
   credits: number
   description?: string
-  tag?: string       // e.g. "推荐", "最清晰"
+  tag?: string       // e.g. "Recommended", "Sharpest"
   tagColor?: string  // e.g. "bg-green-500"
 }
 
@@ -70,7 +70,7 @@ export default function EnhancePage({
   const sliderRef = useRef<HTMLDivElement>(null)
   const [sliderPos, setSliderPos] = useState(50)
 
-  // 从首页跳转过来时，自动读取待处理图片
+  // 从首页跳转过来时，Auto读取待处理图片
   useEffect(() => {
     try {
       const pending = sessionStorage.getItem('pendingImage')
@@ -138,13 +138,13 @@ export default function EnhancePage({
     // Validate file type
     const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/avif']
     if (!validTypes.includes(file.type)) {
-      setError('不支持的文件类型，请上传 JPG、PNG、WebP、HEIC 或 AVIF 格式的图片。')
+      setError('Unsupported file type. Please upload JPG, PNG, WebP, HEIC or AVIF.')
       return
     }
 
     // Validate file size (10MB)
     if (file.size > 10 * 1024 * 1024) {
-      setError('文件大小超过 10MB 限制，请压缩后再上传。')
+      setError('File exceeds 10MB limit. Please compress and try again.')
       return
     }
 
@@ -175,7 +175,7 @@ export default function EnhancePage({
       setPhase('preview')
     }
     img.onerror = () => {
-      setError('无法读取图片，请尝试其他文件。')
+      setError('Cannot read image file. Please try a different one.')
     }
     img.src = URL.createObjectURL(file)
   }
@@ -220,7 +220,7 @@ export default function EnhancePage({
         const img = new Image()
         await new Promise<void>((resolve, reject) => {
           img.onload = () => resolve()
-          img.onerror = () => reject(new Error('图片加载失败'))
+          img.onerror = () => reject(new Error('Image failed to load'))
           img.src = preview
         })
         ctx.drawImage(img, 0, 0, newWidth, newHeight)
@@ -246,7 +246,7 @@ export default function EnhancePage({
       const presignData = await presignRes.json()
       if (!presignRes.ok || !presignData.success) {
         clearInterval(interval)
-        setError(presignData.error || '获取上传凭证失败，请重试。')
+        setError(presignData.error || 'Failed to get upload credentials. Please try again.')
         setPhase('preview')
         return
       }
@@ -263,7 +263,7 @@ export default function EnhancePage({
       if (!uploadRes.ok) {
         clearInterval(interval)
         console.error('COS upload failed:', uploadRes.status, await uploadRes.text().catch(() => ''))
-        setError(`图片上传失败（${uploadRes.status}），请重试。`)
+        setError(`Image upload failed (${uploadRes.status}). Please try again.`)
         setPhase('preview')
         return
       }
@@ -296,7 +296,7 @@ export default function EnhancePage({
 
       if (res.status === 401 && data.error === 'LOGIN_REQUIRED') {
         clearInterval(interval)
-        setError('请先登录后再使用付费模型')
+        setError('Please sign in to use paid models')
         setPhase('preview')
         // 触发登录
         const { signIn } = await import('next-auth/react')
@@ -306,11 +306,11 @@ export default function EnhancePage({
 
       if (res.status === 402 && data.error === 'INSUFFICIENT_CREDITS') {
         clearInterval(interval)
-        let hint = `积分不足，需要 ${data.required} 积分，当前余额 ${data.balance} 积分。`
+        let hint = `Insufficient credits. Need ${data.required}, you have ${data.balance}.`
         if (data.purchaseBalance > 0 && selectedCreditSource === 'subscription') {
-          hint = `订阅积分不足（${data.subscriptionBalance}/${data.required}），但购买积分有 ${data.purchaseBalance}。请切换扣费顺序为"购买优先"。`
+          hint = `Subscription credits insufficient (${data.subscriptionBalance}/${data.required}). Purchase balance: ${data.purchaseBalance}. Switch deduction order to "Purchase first".`
         } else if (data.subscriptionBalance > 0 && selectedCreditSource === 'purchase') {
-          hint = `购买积分不足（${data.purchaseBalance}/${data.required}），但订阅积分有 ${data.subscriptionBalance}。请切换扣费顺序为"订阅优先"。`
+          hint = `Purchase credits insufficient (${data.purchaseBalance}/${data.required}). Subscription balance: ${data.subscriptionBalance}. Switch deduction order to "Subscription first".`
         }
         setError(hint)
         setPhase('preview')
@@ -326,7 +326,7 @@ export default function EnhancePage({
 
       if (!res.ok || !data.success) {
         clearInterval(interval)
-        setError(data.error || '增强处理失败，请重试。')
+        setError(data.error || 'Enhancement failed. Please try again.')
         setPhase('preview')
         return
       }
@@ -338,9 +338,9 @@ export default function EnhancePage({
     } catch (err) {
       clearInterval(interval)
       if (err instanceof DOMException && err.name === 'TimeoutError') {
-        setError('处理超时，请重试或换一张更小的图片。')
+        setError('Processing timed out. Please try again or use a smaller image.')
       } else {
-        setError('网络错误，请检查网络连接后重试。')
+        setError('Network error. Please check your connection and try again.')
       }
       setPhase('preview')
     }
@@ -420,28 +420,28 @@ export default function EnhancePage({
           {/* Info Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-              <span className="text-gray-500">剩余积分：</span>
+              <span className="text-gray-500">Credits: </span>
               <span className="font-semibold text-gray-900">{currentCredits}</span>
               {creditsExpirySoon && (
                 <span className="text-xs text-orange-600 font-medium">({creditsExpirySoon})</span>
               )}
               {subscriptionCredits > 0 && (
                 <span className="text-xs text-purple-600 font-medium ml-1">
-                  📅 订阅{subscriptionCredits}
+                  📅 Subscription: {subscriptionCredits}
                   {subExpirySoon && `(${subExpirySoon})`}
                 </span>
               )}
               {purchaseCredits > 0 && (
                 <span className="text-xs text-blue-600 font-medium ml-1">
-                  🛒 购买{purchaseCredits}
+                  🛒 Purchase: {purchaseCredits}
                 </span>
               )}
             </div>
 
-            {/* 积分来源选择器（付费模型时显示） */}
+            {/* Credit source selector (shown for paid models) */}
             {!isFree && !directPrice && currentCredits > 0 && (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                <span className="text-gray-500 shrink-0">扣费顺序：</span>
+                <span className="text-gray-500 shrink-0">Deduction order: </span>
                 <div className="flex gap-1">
                   <button
                     onClick={() => setSelectedCreditSource('auto')}
@@ -451,7 +451,7 @@ export default function EnhancePage({
                         : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
                     }`}
                   >
-                    自动
+                    Auto
                   </button>
                   {subscriptionCredits > 0 && (
                     <button
@@ -462,7 +462,7 @@ export default function EnhancePage({
                           : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      订阅优先
+                      Subscription first
                     </button>
                   )}
                   {purchaseCredits > 0 && (
@@ -474,7 +474,7 @@ export default function EnhancePage({
                           : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      购买优先
+                      Purchase first
                     </button>
                   )}
                 </div>
@@ -483,19 +483,19 @@ export default function EnhancePage({
 
             {models.length === 1 ? (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                <span className="text-gray-500">使用模型：</span>
+                <span className="text-gray-500">Model: </span>
                 <span className="font-semibold text-gray-900">{models[0].name}</span>
               </div>
             ) : (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                <span className="text-gray-500 shrink-0">使用模型：</span>
+                <span className="text-gray-500 shrink-0">Model: </span>
                 <div className="flex-1 flex flex-wrap gap-2">
                   {models.map(m => (
                     <button
                       key={m.id}
                       onClick={() => {
                         setSelectedModel(m)
-                        // 自动调整可选倍率
+                        // Auto调整可选倍率
                         const newScales = m.id === 'crystal10x' ? [10]
                           : m.id === 'crystal' ? scales.filter(s => s === 4)
                           : scales
@@ -523,21 +523,21 @@ export default function EnhancePage({
             )}
 
             <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-              <span className="text-gray-500">本次消耗：</span>
+              <span className="text-gray-500">This use: </span>
               {isFree ? (
-                <span className="font-semibold text-green-600">免费</span>
+                <span className="font-semibold text-green-600">Free</span>
               ) : directPrice ? (
                 <span className="font-semibold text-orange-600">{directPrice}</span>
               ) : (
-                <span className="font-semibold text-blue-600">{cost} 积分</span>
+                <span className="font-semibold text-blue-600">{cost} credits</span>
               )}
             </div>
 
             {remainingAfterProcess !== null && (
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
-                <span className="text-gray-500">处理后剩余：</span>
+                <span className="text-gray-500">After: </span>
                 <span className={`font-semibold ${remainingAfterProcess < 0 ? 'text-red-600' : 'text-gray-900'}`}>
-                  {remainingAfterProcess < 0 ? '积分不足' : `${remainingAfterProcess}`}
+                  {remainingAfterProcess < 0 ? 'Insufficient credits' : `${remainingAfterProcess}`}
                 </span>
               </div>
             )}
@@ -548,7 +548,7 @@ export default function EnhancePage({
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 space-y-1">
               <div className="flex items-center gap-1.5 text-amber-700 font-semibold text-sm mb-1">
                 <Sparkles className="w-4 h-4" />
-                <span>提示</span>
+                <span>Tips</span>
               </div>
               <ul className="text-sm text-amber-700 space-y-0.5">
                 {tips.map((tip, i) => (
@@ -591,11 +591,11 @@ export default function EnhancePage({
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  拖放图片到此处上传
+                  Drop image here
                 </h3>
 
                 <p className="text-gray-500 mb-4 text-sm">
-                  或点击选择文件 · 支持 JPG / PNG / WebP / HEIC / AVIF · 最大 10MB
+                  or click to select • JPG / PNG / WebP / HEIC / AVIF • Max 10MB
                 </p>
 
                 <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -636,7 +636,7 @@ export default function EnhancePage({
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <span className="text-sm font-medium text-gray-700 shrink-0">
                   <ArrowRight className="w-4 h-4 inline mr-1" />
-                  放大倍率：
+                  Upscale: 
                 </span>
 
                 {effectiveScales.length === 1 ? (
@@ -664,7 +664,7 @@ export default function EnhancePage({
 
               {/* Output info */}
               <div className="text-xs text-gray-400">
-                输出尺寸：{imageWidth * selectedScale} × {imageHeight * selectedScale}px
+                Output size: {imageWidth * selectedScale} × {imageHeight * selectedScale}px
               </div>
 
               {/* Actions */}
@@ -673,7 +673,7 @@ export default function EnhancePage({
                   onClick={handleReset}
                   className="flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
                 >
-                  重新选择
+                  Change image
                 </button>
                 <button
                   onClick={handleProcess}
@@ -681,7 +681,7 @@ export default function EnhancePage({
                   className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
-                  开始增强
+                  Start Enhancement
                 </button>
               </div>
               {/* Crystal crop button */}
@@ -713,9 +713,9 @@ export default function EnhancePage({
               </div>
 
               <div className="space-y-2">
-                <p className="text-lg font-semibold text-gray-900">正在增强图片…</p>
+                <p className="text-lg font-semibold text-gray-900">Enhancing image…</p>
                 <p className="text-sm text-gray-500">
-                  {selectedModel.name} · {selectedScale}x 放大
+                  {selectedModel.name} · {selectedScale}x upscale
                 </p>
               </div>
 
@@ -755,7 +755,7 @@ export default function EnhancePage({
                     style={{ width: `${(100 / sliderPos) * 100}%`, maxWidth: 'none' }}
                   />
                   <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
-                    原图
+                    Original
                   </div>
                 </div>
 
@@ -767,7 +767,7 @@ export default function EnhancePage({
                   draggable={false}
                 />
                 <div className="absolute top-3 right-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
-                  增强后 {selectedScale}x
+                  Enhanced {selectedScale}x
                 </div>
 
                 {/* Slider line */}
@@ -795,7 +795,7 @@ export default function EnhancePage({
                   onClick={handleReset}
                   className="flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
                 >
-                  继续增强
+                  Enhance another
                 </button>
                 <a
                   // TODO: 替换为真实下载链接
@@ -804,7 +804,7 @@ export default function EnhancePage({
                   className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  下载图片
+                  Download Image
                 </a>
               </div>
             </div>

@@ -8,39 +8,39 @@ export default function GeneralEnhancePage() {
 
   return (
     <EnhancePage
-      title="通用图片增强"
-      subtitle="多模型多倍率，满足各类图片增强需求"
+      title="General Image Enhancement"
+      subtitle="Multiple models and scales for all image types"
       models={[
         {
           id: 'realesrgan',
           name: 'Real-ESRGAN',
           credits: 1,
-          description: '基础增强，速度快，适合日常使用',
-          tag: '省钱',
+          description: 'Fast basic enhancement, great for everyday use',
+          tag: 'Budget',
           tagColor: 'bg-green-500',
         },
         {
           id: 'google',
           name: 'Google Upscaler',
           credits: 3,
-          description: '自然保真，不挑图，稳定可商用',
-          tag: '推荐',
+          description: 'Natural fidelity, works on any image, stable and商用',
+          tag: 'Recommended',
           tagColor: 'bg-blue-500',
         },
         {
           id: 'recraft',
           name: 'Recraft',
           credits: 6,
-          description: '极致清晰，文字/Logo 锐利，适合印刷',
-          tag: '最清晰',
+          description: 'Extremely sharp, text and logos especially crisp, great for printing',
+          tag: 'Sharpest',
           tagColor: 'bg-indigo-500',
         },
         {
           id: 'crystal',
           name: 'Crystal 4x',
           credits: 15,
-          description: '人像专精，无塑料感，仅支持 4x',
-          tag: '人像',
+          description: 'Portrait specialist, no plastic look, 4x only',
+          tag: 'Portrait',
           tagColor: 'bg-purple-500',
         },
       ]}
@@ -51,11 +51,11 @@ export default function GeneralEnhancePage() {
       subscriptionCredits={subscriptionCredits}
       creditsExpirySoon={formattedExpiry}
       subExpirySoon={formattedSubExpiry}
-      badge="通用"
+      badge="General"
       tips={[
-        'Crystal 4x 仅支持 4x 倍率，且原图长边 ≤ 1000px',
-        '不同模型效果各有侧重，可切换对比',
-        '不知道选哪个？推荐 Google Upscaler，稳定不出错',
+        'Crystal 4x supports 4x only, original must have long edge ≤ 1000px',
+        'Different models excel at different things — switch and compare',
+        'Not sure which to pick? Google Upscaler is stable and reliable.',
       ]}
     />
   )

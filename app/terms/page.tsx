@@ -1,37 +1,37 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '服务条款 | Finegrain',
-  description: 'Finegrain AI 图像增强平台服务条款',
+  title: 'Terms of Service | Finegrain',
+  description: 'Finegrain AI image enhancement platform terms of service.',
 }
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">服务条款</h1>
-        <p className="text-sm text-gray-500 mb-8">最后更新：2026年4月2日</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Terms of Service</h1>
+        <p className="text-sm text-gray-500 mb-8">Last updated: April 2, 2026</p>
 
         <div className="prose prose-gray max-w-none space-y-6 text-sm leading-relaxed">
           <section>
-            <h2 className="text-lg font-semibold text-gray-900">1. 服务说明</h2>
-            <p>Finegrain（以下简称"本平台"）提供基于人工智能的在线图像增强服务。通过使用本平台，您同意遵守以下服务条款。本平台保留随时修改服务条款的权利，修改后继续使用即表示同意。</p>
+            <h2 className="text-lg font-semibold text-gray-900">1. Service Description</h2>
+            <p>Finegrain（以下简称"本平台"）提供基于人工智能的在线图像增强服务。通过使用本平台，您同意遵守以下Terms of Service。本平台保留随时修改Terms of Service的权利，修改后继续使用即表示同意。</p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-gray-900">2. 用户账户</h2>
+            <h2 className="text-lg font-semibold text-gray-900">2. User Account</h2>
             <ul className="list-disc pl-5 space-y-1">
-              <li>您需要通过 Google 账号登录才能使用付费功能</li>
-              <li>您有责任保护账户安全，不得与他人共享账户</li>
-              <li>如发现未授权使用，请立即联系我们</li>
-              <li>我们有权暂停或终止违反条款的账户</li>
+              <li>You need to sign in with a Google account to use paid features.</li>
+              <li>You are responsible for keeping your account secure and must not share it with others.</li>
+              <li>If you discover unauthorized use, please contact us immediately.</li>
+              <li>We reserve the right to suspend or terminate accounts that violate these terms.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900">3. 积分与付费</h2>
             <ul className="list-disc pl-5 space-y-1">
-              <li>积分可通过购买积分包或月订阅获得</li>
+              <li>Credits can be obtained by purchasing credit packs or monthly subscriptions.</li>
               <li>积分包积分有有效期：100/200 积分 90 天，500/1000 积分 180 天</li>
               <li>月订阅积分每月重置，不可累积</li>
               <li>Crystal 10x 按 $3.99/张 单独计费，不消耗积分</li>
@@ -79,7 +79,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900">8. 适用法律</h2>
-            <p>本服务条款受美国法律管辖。如有争议，应提交至有管辖权的法院解决。</p>
+            <p>本Terms of Service受美国法律管辖。如有争议，应提交至有管辖权的法院解决。</p>
           </section>
 
           <section>

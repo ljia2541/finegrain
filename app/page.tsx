@@ -26,55 +26,55 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section - 左右布局 */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* 左侧：文字内容 */}
+            {/* Left: Text Content */}
             <div className="text-left">
-              {/* 标签 */}
+              {/* Badge */}
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span className="text-white/90 text-sm font-medium">专业画质，不是滤镜</span>
+                <span className="text-white/90 text-sm font-medium">Professional quality, not a filter</span>
               </div>
               
-              {/* 主标题 */}
+              {/* Headline */}
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                AI 图像增强
+                AI Image Enhancement
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  AI 高清放大
+                  AI Super Resolution Upscale
                 </span>
               </h1>
 
-              {/* 副标题 */}
+              {/* Subtitle */}
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                单张上传，AI 超分辨率放大，支持 2x～10x，多模型可选，专业画质无滤镜
+                Upload any image. AI upscale 2x~10x. Multiple models available. Professional quality without filters.
               </p>
               
-              {/* 特性标签 */}
+              {/* Feature Tags */}
               <div className="flex flex-wrap gap-3 mb-8">
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  <span className="text-white/70 text-sm">人像细节优化</span>
+                  <span className="text-white/70 text-sm">Portrait Detail Optimization</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  <span className="text-white/70 text-sm">24 小时删除</span>
+                  <span className="text-white/70 text-sm">Auto-deleted after 24h</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg">
                   <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
-                  <span className="text-white/70 text-sm">超高清放大</span>
+                  <span className="text-white/70 text-sm">Super Upscale</span>
                 </div>
               </div>
             </div>
             
-            {/* 右侧：上传组件 */}
+            {/* Right: Upload Component */}
             <div className="bg-white rounded-3xl shadow-2xl p-8">
               <ImageUploader />
             </div>
@@ -82,28 +82,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 示例展示 - 单案例 */}
+      {/* Example Showcase */}
       <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              AI 增强效果展示
+              AI Enhancement Results
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              真实的细节恢复，不是滤镜
+              Real detail restoration, not a filter
             </p>
           </div>
           
-          {/* 单个案例展示 */}
+          {/* Single Case Display */}
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
             <div className="p-8 pb-4">
               <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span>4x 超高清 • 人像细节优化 • 24小时删除</span>
+                <span>4x Super HD • Portrait Enhancement • 24h Auto-delete</span>
               </div>
             </div>
             
-            {/* 对比滑块 */}
+            {/* Comparison Slider */}
             <div className="px-8 pb-8">
               <div 
                 className="relative w-full aspect-video rounded-lg overflow-hidden cursor-ew-resize"
@@ -145,17 +145,17 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-center text-sm text-gray-500 mt-4">
-                拖动滑块查看差异
+                Drag slider to compare
               </p>
             </div>
             
             {/* 描述 */}
             <div className="px-8 pb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                人像照片增强
+                Portrait Photo Enhancement
               </h3>
               <p className="text-gray-600">
-                低分辨率人像 → 高清放大（4x 放大 + 人像细节优化）
+                Low-res portrait → High quality upscale (4x + Portrait Enhancement)
               </p>
             </div>
 
@@ -164,8 +164,8 @@ export default function Home() {
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
                 <span className="text-2xl">🔥</span>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">极致 10x 超清人像</p>
-                  <p className="text-xs text-gray-600">支持 10 倍极限放大，人像细节拉满 · 单次付费 $3.99（不走积分）</p>
+                  <p className="text-sm font-semibold text-gray-900">Ultimate 10x Ultra Portrait</p>
+                  <p className="text-xs text-gray-600">Up to 10x ultimate upscale, maximum portrait detail • $3.99 per image (no credits)</p>
                 </div>
               </div>
             </div>
@@ -187,20 +187,20 @@ export default function Home() {
                 <div className="flex items-center gap-2 text-sm text-blue-600 font-medium justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                   <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
-                    真实画质放大
+                    Authentic Quality Upscale
                   </span>
                 </div>
                 <h3 className="text-xl lg:text-2xl font-bold mt-4 text-gray-800">
-                  不是简单的滤镜或锐化
+                  Not simple filtering or sharpening
                 </h3>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  AI 超分辨率放大，让照片更清晰、更锐利，保持自然真实。
+                  AI super resolution upscaling, clearer and sharper while staying natural.
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  适合中高分辨率图片的放大增强，清晰图效果最佳
+                  Best for moderately clear images. Clear images work best.
                 </p>
                 <p className="text-gray-500 mt-2 text-sm">
-                  适合人像、产品图、设计稿，保留真实质感，不做过度美化
+                  Great for portraits, product photos, and designs. Preserves authentic texture without over-processing.
                 </p>
               </div>
               
@@ -209,19 +209,19 @@ export default function Home() {
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
                     src="/examples/portrait_real_original.jpg" 
-                    alt="原图" 
+                    alt="Original" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden">
                   <img 
                     src="/examples/portrait_real_enhanced.jpg" 
-                    alt="增强后" 
+                    alt="Enhanced" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
             </div>
@@ -231,8 +231,8 @@ export default function Home() {
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
                 <span className="text-2xl">🔥</span>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">极致 10x 超清人像 · 单次付费 $3.99</p>
-                  <p className="text-xs text-gray-600">10 倍极限放大，人像细节拉满，适合证件照 / 写真（不走积分）</p>
+                  <p className="text-sm font-semibold text-gray-900">Ultimate 10x Ultra Portrait • $3.99 per image</p>
+                  <p className="text-xs text-gray-600">Up to 10x ultimate upscale, maximum portrait detail, perfect for ID photos / portraits (no credits)</p>
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 老照片清晰化示例 */}
+      {/* Vintage Photo Enhancement示例 */}
       <section className="py-6 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
@@ -250,28 +250,28 @@ export default function Home() {
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg">
                   <img 
                     src="/examples/oldphoto_original.jpg" 
-                    alt="清晰化前" 
+                    alt="Before" 
                     className="w-full aspect-square object-cover"
                     style={{ 
                       filter: 'grayscale(100%) sepia(60%) blur(0.5px) contrast(90%) brightness(85%)'
                     }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">清晰化前</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/60 px-2 py-1 rounded">Before</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow-lg ring-2 ring-orange-200">
                   <img 
                     src="/examples/oldphoto_enhanced.jpg" 
-                    alt="清晰化后" 
+                    alt="After" 
                     className="w-full aspect-square object-cover"
                     style={{ 
                       filter: 'contrast(105%) saturate(110%)'
                     }}
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">清晰化后 ✨</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">After ✨</span>
                 </div>
-                {/* 不修复划痕/泛黄提示 */}
+                {/* Does not fix scratches/yellowing */}
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-500 bg-white/80 backdrop-blur-sm px-2 py-1 rounded">
-                  仅优化清晰度，不修复划痕/泛黄
+                  Only enhances clarity, does not remove scratches/yellowing
                 </div>
               </div>
 
@@ -280,17 +280,17 @@ export default function Home() {
                 <div className="flex items-center gap-2 justify-center lg:justify-start">
                   <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
                   <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">
-                    老照片清晰化
+                    Vintage Photo Enhancement
                   </span>
                 </div>
                 <p className="text-xl lg:text-2xl font-bold text-gray-800 mt-4">
-                  珍贵记忆，清晰重现
+                  Precious memories, clearly restored
                 </p>
                 <p className="text-gray-600 mt-4 leading-relaxed">
-                  放大压缩块，优化面部细节，让老照片更清晰。
+                  Upscale compressed blocks, enhance facial details, make old photos clearer.
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
-                  Real-ESRGAN 模型放大并增强画质，GFPGAN 优化面部细节
+                  Real-ESRGAN model upscales and enhances quality, GFPGAN optimizes facial details
                 </p>
               </div>
             </div>
@@ -303,10 +303,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              专业印刷，支持 300 DPI
+              Professional printing, supports 300 DPI
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              从手机照片到专业印刷，AI 超分辨率放大技术让每一处细节都清晰呈现
+              From phone photos to professional printing, AI super resolution makes every detail crisp
             </p>
           </div>
           
@@ -317,16 +317,16 @@ export default function Home() {
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow">
                   <img 
                     src="/examples/print_original.jpg" 
-                    alt="原图" 
+                    alt="Original" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.9)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">普通</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Standard</span>
                 </div>
                 <div className="flex-1 relative rounded-lg overflow-hidden shadow ring-2 ring-blue-200">
                   <img 
                     src="/examples/print_enhanced.jpg" 
-                    alt="增强后" 
+                    alt="Enhanced" 
                     className="w-full aspect-square object-cover"
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">300 DPI</span>
@@ -334,7 +334,7 @@ export default function Home() {
                   <div className="absolute -top-2 -right-2 w-16 h-16 rounded-full border-2 border-white shadow-lg overflow-hidden bg-blue-100">
                     <img 
                       src="/examples/print_enhanced.jpg" 
-                      alt="细节" 
+                      alt="Detail" 
                       className="w-full h-full object-cover"
                       style={{ transform: 'scale(3)', objectPosition: '30% 40%' }}
                     />
@@ -345,11 +345,11 @@ export default function Home() {
               {/* 右侧文字 */}
               <div className="flex-1 lg:text-left text-center">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  最高 4K 高清输出
+                  Up to 4K HD Output
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  免费版支持最高 4K 尺寸显示，满足日常高清需求。
-                  付费 Crystal 模型支持人像 10K 极限输出。
+                  Free version supports up to 4K display, perfect for daily HD needs.
+                  Paid Crystal model supports portrait 10K ultimate output.
                 </p>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function Home() {
             {/* 海报 */}
             <div className="bg-white rounded-lg p-2 shadow border border-gray-100 text-center">
               <div className="text-xl mb-1">🖼️</div>
-              <h3 className="text-xs font-bold text-gray-900">海报</h3>
+              <h3 className="text-xs font-bold text-gray-900">Poster</h3>
               <p className="text-xs text-gray-500">4K</p>
               <span className="bg-orange-100 text-orange-700 text-xs px-1.5 py-0.5 rounded-full">≥ 150 DPI</span>
             </div>
@@ -384,14 +384,14 @@ export default function Home() {
             <div className="bg-gradient-to-b from-amber-50 to-orange-50 rounded-lg p-2 shadow border-2 border-amber-300 text-center">
               <div className="text-xl mb-1">🔥</div>
               <h3 className="text-xs font-bold text-gray-900">10K</h3>
-              <p className="text-xs text-gray-500">Crystal 人像 10x · 10K 超清</p>
+              <p className="text-xs text-gray-500">Crystal Portrait 10x • 10K Ultra HD</p>
               <span className="bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">$3.99</span>
             </div>
           </div>
           
           <div className="mt-8 text-center">
             <p className="text-gray-500 text-sm">
-              💡 <strong>提示：</strong>大多数屏幕显示 72-150 DPI 即可清晰，专业印刷建议 300 DPI
+              💡 <strong>Tip:</strong> Most screens display clearly at 72-150 DPI. Professional printing requires 300 DPI
             </p>
           </div>
         </div>
@@ -402,10 +402,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              适用于各种场景
+              Perfect for Any Scene
             </h2>
             <p className="text-xl text-gray-600">
-              从缩略图到海报，从产品图到 AI art
+              From thumbnails to posters, product photos to AI art
             </p>
           </div>
           
@@ -416,24 +416,24 @@ export default function Home() {
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/product_original.jpg" 
-                    alt="原图" 
+                    alt="Original" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
                 </div>
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/product_enhanced.jpg" 
-                    alt="增强后" 
+                    alt="Enhanced" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🛒 适用于电商</h3>
-                <p className="text-gray-600 text-sm">为你的产品目录自动化图像增强</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🛒 For E-commerce</h3>
+                <p className="text-gray-600 text-sm">Automated image enhancement for your product catalog</p>
               </div>
             </div>
             
@@ -443,24 +443,24 @@ export default function Home() {
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/landscape_original.jpg" 
-                    alt="原图" 
+                    alt="Original" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
                 </div>
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/landscape_enhanced.jpg" 
-                    alt="增强后" 
+                    alt="Enhanced" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🖨️ 放大后可支持专业印刷</h3>
-                <p className="text-gray-600 text-sm">低分辨率图片放大后可支持清晰印刷</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🖨️ After upscaling, supports professional printing</h3>
+                <p className="text-gray-600 text-sm">Low-res images can be upscaled for crisp printing</p>
               </div>
             </div>
             
@@ -470,24 +470,24 @@ export default function Home() {
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/aiart_original.jpg" 
-                    alt="原图" 
+                    alt="Original" 
                     className="w-full aspect-square object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
-                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">原图</span>
+                  <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
                 </div>
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/aiart_enhanced.jpg" 
-                    alt="增强后" 
+                    alt="Enhanced" 
                     className="w-full aspect-square object-cover"
                   />
-                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">增强后</span>
+                  <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🎨 放大 AI 生成图片</h3>
-                <p className="text-gray-600 text-sm">Crystal 模型专为 AI 生成人像优化，自然放大无塑料感，保留真实质感</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">🎨 Upscale AI-Generated Images</h3>
+                <p className="text-gray-600 text-sm">Crystal model optimized for AI-generated portraits, natural upscale without plastic look, preserving authentic texture</p>
               </div>
             </div>
           </div>
@@ -496,11 +496,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              专业画质，不是滤镜
+              Professional quality, not a filter
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              多数工具处理过度，容易出现塑料感皮肤和不真实的效果。
-              Finegrain Image Enhancer 使用 AI 超分辨率技术放大图片，保持自然真实。
+              Most tools over-process, often resulting in plastic-looking skin and unrealistic effects.
+              Finegrain uses AI super resolution technology to upscale while staying natural and realistic.
             </p>
           </div>
           <Features />
@@ -513,8 +513,8 @@ export default function Home() {
       <section id="pricing" className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">选择您的方案</h2>
-            <p className="text-xl text-gray-600">免费试用，按需付费</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
+            <p className="text-xl text-gray-600">Free trial, pay as you go</p>
           </div>
           <Pricing />
         </div>

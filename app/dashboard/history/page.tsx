@@ -46,9 +46,9 @@ function formatDate(dateStr: string) {
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(hours / 24)
   
-  if (hours < 1) return '刚刚'
-  if (hours < 24) return `${hours}小时前`
-  if (days < 7) return `${days}天前`
+  if (hours < 1) return 'Just now'
+  if (hours < 24) return `${hours}h ago`
+  if (days < 7) return `${days}d ago`
   return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
 }
 
@@ -93,7 +93,7 @@ export default function HistoryPage() {
         headers: { Authorization: `Bearer ${session?.accessToken}` },
       })
       
-      if (!res.ok) throw new Error('获取历史记录失败')
+      if (!res.ok) throw new Error('获取历史记录Failed')
       
       const data: HistoryResponse = await res.json()
       setHistory(data.history || [])
@@ -153,7 +153,7 @@ export default function HistoryPage() {
               onClick={() => router.push('/enhance/free')}
               className="mt-4 text-blue-600 hover:text-blue-700 text-sm"
             >
-              去处理一张图片 →
+              Go process an image →
             </button>
           </div>
         )}
@@ -168,7 +168,7 @@ export default function HistoryPage() {
                     <div className="w-16 h-16 rounded bg-gray-100 overflow-hidden">
                       <img
                         src={item.input_url}
-                        alt="原图"
+                        alt="Original"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none'
@@ -178,7 +178,7 @@ export default function HistoryPage() {
                     <div className="w-16 h-16 rounded bg-gray-100 overflow-hidden relative">
                       <img
                         src={item.output_url}
-                        alt="增强后"
+                        alt="Enhanced"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none'
@@ -200,24 +200,24 @@ export default function HistoryPage() {
                       </span>
                       {item.status === 'completed' && (
                         <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                          已完成
+                          Completed
                         </span>
                       )}
                       {item.status === 'failed' && (
                         <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
-                          失败
+                          Failed
                         </span>
                       )}
                       {item.status === 'processing' && (
                         <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
-                          处理中
+                          Processing
                         </span>
                       )}
                     </div>
                     <div className="flex items-center gap-3 text-sm text-gray-500">
                       <span>{formatFullDate(item.created_at)}</span>
                       <span>|</span>
-                      <span>{item.credits_used} 积分</span>
+                      <span>{item.credits_used} Credits</span>
                     </div>
                   </div>
 
@@ -230,7 +230,7 @@ export default function HistoryPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="下载"
+                        title="Download"
                       >
                         <Download className="w-5 h-5" />
                       </a>
@@ -241,7 +241,7 @@ export default function HistoryPage() {
                 {/* Status indicator */}
                 {item.status === 'completed' && (
                   <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
-                    <span>图片将在 24 小时后自动删除</span>
+                    <span>Images are auto-deleted after 24h</span>
                     <span>{formatDate(item.created_at)}</span>
                   </div>
                 )}
@@ -259,7 +259,7 @@ export default function HistoryPage() {
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <span className="text-sm text-gray-600">
-                  第 {page + 1} / {totalPages} 页
+                  Page {page + 1} / {totalPages}
                 </span>
                 <button
                   onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
@@ -276,7 +276,7 @@ export default function HistoryPage() {
         {/* Info note */}
         <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
           <p className="text-sm text-blue-700">
-            <strong>提示：</strong>处理后的图片将在 24 小时后自动从服务器删除，请及时下载保存。
+            <strong>Tip:</strong> Enhanced images are auto-deleted from servers after 24h. Please download and save them in time.
           </p>
         </div>
       </div>

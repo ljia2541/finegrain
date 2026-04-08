@@ -3,7 +3,7 @@
  * 直接调用 PayPal REST API（沙箱环境）
  */
 
-const PAYPAL_BASE_URL = process.env.PAYPAL_MODE === 'live'
+const PAYPAL_BASE_URL = process.env.PAYPAL_MODE?.trim() === 'live'
   ? 'https://api-m.paypal.com'
   : 'https://api-m.sandbox.paypal.com'
 

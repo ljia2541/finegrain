@@ -269,10 +269,6 @@ export default function Home() {
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-orange-600/80 px-2 py-1 rounded">After ✨</span>
                 </div>
-                {/* Does not fix scratches/yellowing */}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-500 bg-white/80 backdrop-blur-sm px-2 py-1 rounded">
-                  Only enhances clarity, does not remove scratches/yellowing
-                </div>
               </div>
 
               {/* Right text */}
@@ -291,6 +287,9 @@ export default function Home() {
                 </p>
                 <p className="text-gray-500 mt-4 text-sm">
                   Real-ESRGAN model upscales and enhances quality, GFPGAN optimizes facial details
+                </p>
+                <p className="text-gray-400 mt-2 text-xs">
+                  Note: Only enhances clarity, does not remove scratches/yellowing
                 </p>
               </div>
             </div>

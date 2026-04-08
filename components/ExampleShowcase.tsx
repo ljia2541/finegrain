@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { CheckCircle2 } from 'lucide-react'
 import ComparisonSlider from './ComparisonSlider'
-import { CheckCircle2, Image as ImageIcon } from 'lucide-react'
 
 interface Example {
   id: string
@@ -10,136 +10,117 @@ interface Example {
   description: string
   originalImage: string
   enhancedImage: string
-  category: 'portrait' | 'landscape' | 'product'
+  category: string
 }
 
-// 4 个超高清示例（使用真实的 AI 增强前后对比）
+// 4 AI upscale examples (real before/after comparisons)
 const examples: Example[] = [
   {
     id: '1',
-    title: '人像照片增强',
-    description: '低分辨率人像 → 超高清（4x 放大）',
+    title: 'Portrait Photo',
+    description: 'Low-res portrait → Super upscale (4x)',
     originalImage: '/examples/portrait_original.jpg',
     enhancedImage: '/examples/portrait_enhanced.jpg',
     category: 'portrait'
   },
   {
     id: '2',
-    title: '风景照片超分',
-    description: '风景照片 → 4x 超分辨率放大',
+    title: 'Landscape Photo',
+    description: 'Landscape photo → 4x super resolution',
     originalImage: '/examples/landscape_original.jpg',
     enhancedImage: '/examples/landscape_enhanced.jpg',
     category: 'landscape'
   },
   {
     id: '3',
-    title: '老照片增强',
-    description: '年代久远照片 → 超高清增强',
-    originalImage: '/examples/oldphoto_original.jpg',
-    enhancedImage: '/examples/oldphoto_enhanced.jpg',
-    category: 'portrait'
-  },
-  {
-    id: '4',
-    title: '产品照片优化',
-    description: '电商产品图 → 超高清展示',
+    title: 'Product Photo',
+    description: 'Product photo → Super crisp display',
     originalImage: '/examples/product_original.jpg',
     enhancedImage: '/examples/product_enhanced.jpg',
     category: 'product'
+  },
+  {
+    id: '4',
+    title: 'Vintage Photo',
+    description: 'Vintage photo → Quality enhancement',
+    originalImage: '/examples/oldphoto_original.jpg',
+    enhancedImage: '/examples/oldphoto_enhanced.jpg',
+    category: 'portrait'
   }
 ]
 
 export default function ExampleShowcase() {
-  const [selectedExample, setSelectedExample] = useState<Example | null>(null)
+  const [activeExample, setActiveExample] = useState<Example>(examples[0])
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-6xl mx-auto">
-        {/* 标题 */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            AI 超高清效果展示
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            每个示例都是真实的 AI 放大效果，展示 Finegrain 的超分辨率能力
-          </p>
-          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-600">
-            <CheckCircle2 className="w-5 h-5" />
-            <span>超高清放大 • 实时处理 • 24小时删除</span>
-          </div>
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          AI Upscale Results
+        </h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Real AI enhancement comparisons. Drag the slider to see the difference.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-600">
+          <CheckCircle2 className="w-5 h-5" />
+          <span>Super upscale • Real-time processing • Deleted after 24h</span>
         </div>
-
-        {/* 示例选择 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {examples.map((example) => (
-            <button
-              key={example.id}
-              onClick={() => setSelectedExample(example)}
-              className={`p-4 rounded-xl border-2 transition-all text-left ${
-                selectedExample?.id === example.id
-                  ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
-                  : 'border-gray-200 bg-white hover:border-blue-300 hover:shadow-md hover:scale-102'
-              }`}
-            >
-              <div className="aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
-                <img
-                  src={example.originalImage}
-                  alt={example.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-1">
-                {example.title}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {example.description}
-              </p>
-            </button>
-          ))}
-        </div>
-
-        {/* 对比视图 */}
-        {selectedExample && (
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">
-                  {selectedExample.title}
-                </h3>
-                <p className="text-gray-600 mt-1">
-                  {selectedExample.description}
-                </p>
-                <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
-                  <span className="text-blue-600 font-medium">8x 超高清</span>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedExample(null)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                返回示例列表
-              </button>
-            </div>
-            
-            <ComparisonSlider
-              originalImage={selectedExample.originalImage}
-              enhancedImage={selectedExample.enhancedImage}
-              originalAlt="原图"
-              enhancedAlt="增强后 (超高清)"
-            />
-          </div>
-        )}
-
-        {/* 提示 */}
-        {!selectedExample && (
-          <div className="text-center text-gray-500">
-            <p className="text-lg mb-2">点击上方示例查看超高清对比</p>
-            <p className="text-sm">
-              拖动滑块查看差异 • 放大缩小查看细节
-            </p>
-          </div>
-        )}
       </div>
-    </section>
+
+      {/* Thumbnail selector */}
+      <div className="flex gap-3 mb-6 overflow-x-auto pb-2 justify-center flex-wrap">
+        {examples.map((example) => (
+          <button
+            key={example.id}
+            onClick={() => setActiveExample(example)}
+            className={`flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
+              activeExample.id === example.id
+                ? 'border-blue-500 ring-2 ring-blue-100'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <img
+              src={example.originalImage}
+              alt={example.title}
+              className="w-24 h-24 object-cover"
+            />
+            <div className="bg-white px-2 py-1 text-xs text-gray-600">{example.title}</div>
+          </button>
+        ))}
+      </div>
+
+      {/* Comparison Slider */}
+      <ComparisonSlider
+        originalImage={activeExample.originalImage}
+        enhancedImage={activeExample.enhancedImage}
+        originalAlt="Original"
+        enhancedAlt="Enhanced"
+      />
+
+      <p className="text-center text-sm text-gray-400 mt-4">
+        Drag the slider to compare • Scroll to zoom • Model: Recraft 4x
+      </p>
+
+      {/* Grid of all examples */}
+      <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+        {examples.map((example) => (
+          <button
+            key={example.id}
+            onClick={() => setActiveExample(example)}
+            className="text-left"
+          >
+            <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-2">
+              <img
+                src={example.originalImage}
+                alt={example.title}
+                className="w-full h-full object-cover hover:opacity-80 transition-opacity"
+              />
+            </div>
+            <div className="font-medium text-sm text-gray-900">{example.title}</div>
+            <div className="text-xs text-gray-500">{example.description}</div>
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }

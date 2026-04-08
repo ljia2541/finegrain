@@ -2,45 +2,43 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-gray-900 text-gray-400 py-12">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between gap-8">
+          {/* Brand */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Finegrain</h3>
-            <p className="text-gray-400">
-              基于 AI 的在线图像放大服务，专注于超分辨率放大和画质增强。
+            <div className="text-white font-bold text-lg mb-3">Finegrain</div>
+            <p className="text-sm max-w-xs">
+              AI-powered online image upscaling service, focused on super resolution and quality enhancement.
             </p>
           </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">产品</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link href="#upload" className="hover:text-white transition-colors">图片增强</Link></li>
-              <li><Link href="#pricing" className="hover:text-white transition-colors">定价</Link></li>
-              <li><Link href="/docs" className="hover:text-white transition-colors">文档</Link></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">公司</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link href="/about" className="hover:text-white transition-colors">关于我们</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">联系我们</Link></li>
-              <li><a href="https://github.com/ljia2541/finegrain" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">法律</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link href="/privacy" className="hover:text-white transition-colors">隐私政策</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition-colors">服务条款</Link></li>
-            </ul>
+
+          {/* Links */}
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <h4 className="text-white text-sm font-medium mb-3">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/enhance/free" className="hover:text-white transition-colors">Image Upscaler</Link></li>
+                <li><Link href="/#pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/#examples" className="hover:text-white transition-colors">Examples</Link></li>
+                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white text-sm font-medium mb-3">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
-        
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2026 Finegrain. All rights reserved.</p>
+
+        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
+          <p>© 2026 Finegrain. All rights reserved.</p>
+          <p className="text-xs text-gray-600 mt-2 md:mt-0">
+            Powered by AI super resolution technology
+          </p>
         </div>
       </div>
     </footer>

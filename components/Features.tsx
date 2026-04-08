@@ -1,67 +1,54 @@
-import { Zap, Shield, Image as ImageIcon, Sparkles, Clock, CheckCircle } from 'lucide-react'
-
-const features = [
-  {
-    icon: Sparkles,
-    title: '超分辨率放大',
-    description: 'AI 超分辨率技术放大图片，保留真实纹理和细节，不是简单锐化或滤镜。',
-    gradient: 'from-blue-500 to-cyan-500'
-  },
-  {
-    icon: ImageIcon,
-    title: '超高清放大',
-    description: '支持 2x～10x 超分辨率放大，免费版最高 4K，Crystal 付费版支持人像 10K 极限输出。',
-    gradient: 'from-purple-500 to-pink-500'
-  },
-  {
-    icon: CheckCircle,
-    title: '人像细节优化',
-    description: '优化面部细节和皮肤纹理，自然真实无塑料感。人像专精 Crystal 效果更佳。',
-    gradient: 'from-pink-500 to-rose-500'
-  },
-  {
-    icon: Zap,
-    title: '快速处理',
-    description: '基于云端 AI 模型，5-10 秒完成增强，无需等待，无需本地安装任何软件。',
-    gradient: 'from-orange-500 to-red-500'
-  },
-  {
-    icon: Shield,
-    title: '隐私优先',
-    description: '所有图片 24 小时内自动删除，全程 HTTPS 加密，我们不存储用户数据。',
-    gradient: 'from-green-500 to-emerald-500'
-  },
-  {
-    icon: Clock,
-    title: '人像专精',
-    description: 'Crystal 模型专为真实人像优化，重建皮肤纹理与发丝，保留原生人脸身份。搭配 10x 超清放大，适合证件照、写真等专业场景。',
-    gradient: 'from-indigo-500 to-purple-500'
-  },
-]
-
 export default function Features() {
+  const features = [
+    {
+      icon: '⚡',
+      title: 'Fast Processing',
+      description: 'Upload and process in seconds. Most images enhanced in under 60 seconds.',
+    },
+    {
+      icon: '🔒',
+      title: 'Secure & Private',
+      description: 'Images are automatically deleted 24 hours after upload. Your data is never shared.',
+    },
+    {
+      icon: '🎯',
+      title: 'Multiple Models',
+      description: 'Choose from 4 professional models optimized for different use cases.',
+    },
+    {
+      icon: '📱',
+      title: 'Works Anywhere',
+      description: 'Perfect for portraits, landscapes, products, AI art, and more.',
+    },
+    {
+      icon: '🌐',
+      title: 'No Software Needed',
+      description: 'Runs entirely in your browser. No downloads or installations required.',
+    },
+    {
+      icon: '💯',
+      title: '100% Free to Start',
+      description: '3 free enhancements daily. No credit card required.',
+    },
+  ]
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {features.map((feature, index) => (
-        <div
-          key={feature.title}
-          className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200"
-        >
-          <div className="flex items-start gap-4">
-            <div className={`bg-gradient-to-br ${feature.gradient} p-3 rounded-xl flex-shrink-0 shadow-lg`}>
-              <feature.icon className="h-6 w-6 text-white" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-600 transition-all">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Finegrain?</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Finegrain uses advanced AI super resolution technology to upscale images while preserving natural quality.
+        </p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {features.map((feature, index) => (
+          <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="text-3xl mb-4">{feature.icon}</div>
+            <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+            <p className="text-sm text-gray-500">{feature.description}</p>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }

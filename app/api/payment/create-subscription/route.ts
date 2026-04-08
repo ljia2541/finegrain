@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        plan_id: process.env[`PAYPAL_PLAN_${planId.toUpperCase()}`] || '',
+        plan_id: (process.env[`PAYPAL_PLAN_${planId.toUpperCase()}`] || '').trim(),
         custom_id: JSON.stringify({ planId, userId }),
         application_context: {
           brand_name: 'FineGrain',

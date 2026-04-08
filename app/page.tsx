@@ -215,8 +215,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
-            </div>
           </div>
         </div>
       </section>
@@ -465,6 +463,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Professional quality section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -478,8 +479,6 @@ export default function Home() {
           </div>
           <Features />
         </div>
-      </section>
-
       </section>
 
       {/* Pricing Section */}

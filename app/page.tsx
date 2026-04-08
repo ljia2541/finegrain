@@ -409,15 +409,15 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* E-commerce */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div className="flex">
+              <div className="flex h-48">
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/product_original.jpg" 
                     alt="Original" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
                   <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
@@ -426,25 +426,25 @@ export default function Home() {
                   <img 
                     src="/examples/product_enhanced.jpg" 
                     alt="Enhanced" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🛒 For E-commerce</h3>
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">🛒 For E-commerce</h3>
                 <p className="text-gray-600 text-sm">Automated image enhancement for your product catalog</p>
               </div>
             </div>
             
             {/* Print */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div className="flex">
+              <div className="flex h-48">
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/landscape_original.jpg" 
                     alt="Original" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
                   <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
@@ -453,25 +453,25 @@ export default function Home() {
                   <img 
                     src="/examples/landscape_enhanced.jpg" 
                     alt="Enhanced" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🖨️ After upscaling, supports professional printing</h3>
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">🖨️ After upscaling, supports professional printing</h3>
                 <p className="text-gray-600 text-sm">Low-res images can be upscaled for crisp printing</p>
               </div>
             </div>
             
             {/* AI Art */}
             <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div className="flex">
+              <div className="flex h-48">
                 <div className="w-1/2 relative">
                   <img 
                     src="/examples/aiart_original.jpg" 
                     alt="Original" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                     style={{ filter: 'blur(2px) brightness(0.95)' }}
                   />
                   <span className="absolute bottom-2 left-2 text-xs text-white bg-black/50 px-2 py-1 rounded">Original</span>
@@ -480,13 +480,13 @@ export default function Home() {
                   <img 
                     src="/examples/aiart_enhanced.jpg" 
                     alt="Enhanced" 
-                    className="w-full aspect-square object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <span className="absolute bottom-2 right-2 text-xs text-white bg-blue-600/80 px-2 py-1 rounded">Enhanced</span>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">🎨 Upscale AI-Generated Images</h3>
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-1">🎨 Upscale AI-Generated Images</h3>
                 <p className="text-gray-600 text-sm">Crystal model optimized for AI-generated portraits, natural upscale without plastic look, preserving authentic texture</p>
               </div>
             </div>

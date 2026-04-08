@@ -14,7 +14,7 @@ export default function GeneralEnhancePage() {
         {
           id: 'realesrgan',
           name: 'Real-ESRGAN',
-          credits: 1,
+          credits: 2,
           description: 'Fast basic enhancement, great for everyday use',
           tag: 'Budget',
           tagColor: 'bg-green-500',
@@ -22,7 +22,7 @@ export default function GeneralEnhancePage() {
         {
           id: 'google',
           name: 'Google Upscaler',
-          credits: 3,
+          credits: 4,
           description: 'Natural fidelity, works on any image, stable and commercial.',
           tag: 'Recommended',
           tagColor: 'bg-blue-500',

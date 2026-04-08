@@ -17,7 +17,7 @@ export type ScaleOption = 2 | 4 | 6 | 8
 /**
  * Google Upscaler 积分消耗
  */
-export const GOOGLE_UPSCALER_CREDITS = 3
+export const GOOGLE_UPSCALER_CREDITS = 4
 
 /**
  * 图片增强接口
@@ -38,7 +38,7 @@ export const MODEL_CONFIG = {
     displayName: 'Real-ESRGAN',
     supportsScale: true as const,
     maxLongEdge: 1440, // Replicate 建议最大 1440p 输入
-    credits: { 2: 1, 4: 1, 6: 1, 8: 1 },
+    credits: { 2: 2, 4: 2, 6: 2, 8: 2 },
   },
   recraft: {
     id: 'recraft-ai/recraft-crisp-upscale',

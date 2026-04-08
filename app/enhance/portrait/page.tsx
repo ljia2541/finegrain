@@ -14,7 +14,7 @@ export default function PortraitEnhancePage() {
         {
           id: 'google',
           name: 'Google Upscaler',
-          credits: 3,
+          credits: 4,
           description: 'Natural fidelity, works on any image, great for portraits',
           tag: 'Recommended',
           tagColor: 'bg-blue-500',

@@ -626,6 +626,7 @@ export default function EnhancePage({
                   src={preview}
                   alt="Preview"
                   className="w-full max-h-96 object-contain"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute bottom-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
                   {imageWidth} × {imageHeight}px
@@ -753,6 +754,7 @@ export default function EnhancePage({
                     alt="Original"
                     className="h-full w-auto min-w-full object-cover"
                     style={{ width: `${(100 / sliderPos) * 100}%`, maxWidth: 'none' }}
+                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
                     Original
@@ -765,6 +767,7 @@ export default function EnhancePage({
                   alt="Result"
                   className="w-full block"
                   draggable={false}
+                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 right-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
                   Enhanced {selectedScale}x

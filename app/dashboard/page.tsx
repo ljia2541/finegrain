@@ -289,7 +289,7 @@ export default function Dashboard() {
             </div>
 
             {/* 统计卡片 */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
@@ -334,6 +334,18 @@ export default function Dashboard() {
                     ? `${subscription.creditsPerMonth}积分/月 · 到期 ${new Date(subscription.periodEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}`
                     : '未订阅'}
                 </div>
+              </div>
+
+              {/* 处理历史卡片 */}
+              <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+                   onClick={() => router.push('/dashboard/history')}>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-purple-600" />
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-gray-900">历史</div>
+                <div className="text-xs text-gray-500">查看处理记录</div>
               </div>
             </div>
 

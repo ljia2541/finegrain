@@ -15,11 +15,15 @@ export default function FreeEnhancePage() {
   const { credits, purchaseCredits, subscriptionCredits, formattedExpiry, formattedSubExpiry } = useCredits()
   const [freeUsage, setFreeUsage] = useState<FreeUsage | null>(null)
 
-  useEffect(() => {
+  const refreshFreeUsage = () => {
     fetch('/api/free-usage')
       .then(res => res.json())
       .then(data => setFreeUsage(data))
       .catch(() => {})
+  }
+
+  useEffect(() => {
+    refreshFreeUsage()
   }, [])
 
   const tips = [
@@ -44,6 +48,7 @@ export default function FreeEnhancePage() {
       badge="Free"
       badgeColor="bg-green-500"
       tips={tips}
+      onSuccess={refreshFreeUsage}
     />
   )
 }

@@ -237,6 +237,41 @@ export async function POST(request: NextRequest) {
         billing = { type: 'credits', credits: requiredCredits }
       }
 
+      // 免费增强：添加水印；付费增强：转 PNG 确保无损
+      let finalImageUrl = result.imageUrl
+      try {
+        const imgRes = await fetch(result.imageUrl)
+        const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
+        
+        if (isFreeEnhance) {
+          // 免费增强：添加水印，通过后端 API 上传
+          const { addWatermark } = await import('@/lib/watermark')
+          const watermarked = await addWatermark(imgBuffer)
+          const formData = new FormData()
+          formData.append('file', new Blob([watermarked], { type: 'image/png' }), `watermarked_${taskId}.png`)
+          const uploadRes = await fetch(baseUrl + '/api/upload', { method: 'POST', body: formData })
+          const uploadData = await uploadRes.json()
+          if (!uploadData.success) throw new Error('Watermark upload failed: ' + uploadData.error)
+          finalImageUrl = uploadData.imageUrl
+        } else {
+          // 付费增强：转换为 PNG 通过后端 API 上传
+          const sharpModule = await import('sharp')
+          const sharp = sharpModule.default
+          const pngBuffer = await sharp(imgBuffer).png({ compressionLevel: 0 }).toBuffer()
+          console.log(`[png] converted, size=${pngBuffer.length}`)
+          const formData = new FormData()
+          formData.append('file', new Blob([pngBuffer], { type: 'image/png' }), `enhanced_${taskId}.png`)
+          const uploadRes = await fetch(baseUrl + '/api/upload', { method: 'POST', body: formData })
+          const uploadData = await uploadRes.json()
+          if (!uploadData.success) throw new Error('PNG upload failed: ' + uploadData.error)
+          console.log(`[png] uploaded to R2: ${uploadData.imageUrl}`)
+          finalImageUrl = uploadData.imageUrl
+        }
+      } catch (err) {
+        console.error('Failed to process output image:', err)
+        // 处理失败不阻塞，用原图返回
+      }
+
       // 记录增强历史（免费增强也需要记录以计数）
       if (isFreeEnhance && taskId) {
         try {
@@ -248,67 +283,12 @@ export async function POST(request: NextRequest) {
             scale,
             credits_used: 0,
             input_url: imageUrl,
-            output_url: result.imageUrl,
+            output_url: finalImageUrl,
             status: 'completed',
           })
         } catch (histErr) {
           console.error('Failed to record free enhance history:', histErr)
         }
-      }
-
-      // 免费增强：添加水印；付费增强：转 PNG 确保无损
-      let finalImageUrl = result.imageUrl
-      try {
-        const imgRes = await fetch(result.imageUrl)
-        const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
-        
-        if (isFreeEnhance) {
-          // 免费增强：添加水印
-          const { addWatermark } = await import('@/lib/watermark')
-          const watermarked = await addWatermark(imgBuffer)
-          const presignRes = await fetch(baseUrl + '/api/presign', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              filename: `watermarked_${taskId}_${Date.now()}.png`,
-              contentType: 'image/png',
-            }),
-          })
-          const presignData = await presignRes.json()
-          if (!presignData.success) throw new Error('R2 upload failed: ' + JSON.stringify(presignData))
-          await fetch(presignData.uploadUrl, {
-            method: 'PUT',
-            body: watermarked,
-            headers: { 'Content-Type': 'image/png' },
-          })
-          finalImageUrl = presignData.downloadUrl
-        } else {
-          // 付费增强：转换为 PNG 确保无损输出
-          const sharpModule = await import('sharp')
-          const sharp = sharpModule.default
-          const pngBuffer = await sharp(imgBuffer).png({ compressionLevel: 0 }).toBuffer()
-          console.log(`[png] converted, size=${pngBuffer.length}`)
-          const presignRes = await fetch(baseUrl + '/api/presign', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              filename: `enhanced_${taskId}_${Date.now()}.png`,
-              contentType: 'image/png',
-            }),
-          })
-          const presignData = await presignRes.json()
-          if (!presignData.success) throw new Error('R2 upload failed: ' + JSON.stringify(presignData))
-          await fetch(presignData.uploadUrl, {
-            method: 'PUT',
-            body: pngBuffer,
-            headers: { 'Content-Type': 'image/png' },
-          })
-          console.log(`[png] uploaded to R2: ${presignData.downloadUrl}`)
-          finalImageUrl = presignData.downloadUrl
-        }
-      } catch (err) {
-        console.error('Failed to process output image:', err)
-        // 处理失败不阻塞，用原图返回
       }
 
       return NextResponse.json({

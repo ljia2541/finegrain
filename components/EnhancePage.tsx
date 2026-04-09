@@ -28,6 +28,7 @@ interface EnhancePageProps {
   tips?: string[]
   creditsExpirySoon?: string | null
   subExpirySoon?: string | null
+  onSuccess?: () => void
 }
 
 type Phase = 'upload' | 'preview' | 'processing' | 'result'
@@ -47,6 +48,7 @@ export default function EnhancePage({
   tips,
   creditsExpirySoon,
   subExpirySoon,
+  onSuccess,
 }: EnhancePageProps) {
   const [phase, setPhase] = useState<Phase>('upload')
   const [dragActive, setDragActive] = useState(false)
@@ -290,6 +292,7 @@ export default function EnhancePage({
       setProcessingProgress(100)
       setResultUrl(data.imageUrl)
       setPhase('result')
+      onSuccess?.()
     } catch (err) {
       clearInterval(interval)
       if (err instanceof DOMException && err.name === 'TimeoutError') {

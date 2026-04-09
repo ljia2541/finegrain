@@ -1,9 +1,10 @@
 import sharp from 'sharp'
+import { ROBOTO_BOLD_BASE64 } from './watermark-font'
 
 /**
  * 给图片添加 FineGrain 水印
- * 底部居中，更醒目
- * 
+ * 底部居中，使用内嵌 base64 字体确保跨平台一致性（Vercel 无 Arial/Helvetica）
+ *
  * @param inputBuffer 原始图片 Buffer
  * @returns 带水印的图片 Buffer
  */
@@ -21,8 +22,18 @@ export async function addWatermark(inputBuffer: Buffer): Promise<Buffer> {
   const barHeight = fontSize * 2 + padding * 1.2
   const barY = height - barHeight
 
+  // 内嵌 Roboto Bold 子集字体，不依赖系统字体
   const svgWatermark = `
-    <svg width="${width}" height="${height}">
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>
+          @font-face {
+            font-family: 'WatermarkFont';
+            src: url(data:font/truetype;base64,${ROBOTO_BOLD_BASE64}) format('truetype');
+            font-weight: bold;
+          }
+        </style>
+      </defs>
       <!-- 底部半透明背景条 -->
       <rect x="0" y="${barY}" width="${width}" height="${barHeight}" fill="rgba(0,0,0,0.45)" />
 
@@ -31,7 +42,7 @@ export async function addWatermark(inputBuffer: Buffer): Promise<Buffer> {
         x="${width / 2}"
         y="${barY + padding + fontSize * 0.85}"
         text-anchor="middle"
-        font-family="Arial, Helvetica, sans-serif"
+        font-family="WatermarkFont"
         font-size="${fontSize}"
         font-weight="bold"
         fill="rgba(255,255,255,0.95)"
@@ -43,7 +54,7 @@ export async function addWatermark(inputBuffer: Buffer): Promise<Buffer> {
         x="${width / 2}"
         y="${barY + padding + fontSize * 0.85 + smallFontSize * 1.5}"
         text-anchor="middle"
-        font-family="Arial, Helvetica, sans-serif"
+        font-family="WatermarkFont"
         font-size="${smallFontSize}"
         fill="rgba(255,255,255,0.7)"
       >Free Preview · finegrainimageenhancer.com</text>

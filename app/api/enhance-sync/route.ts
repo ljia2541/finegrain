@@ -111,11 +111,12 @@ export async function POST(request: NextRequest) {
     }
 
     // ===== 积分逻辑 =====
-    const requiredCredits = getRequiredCredits(model, scale)
+    // 判断是否为免费模式：realesrgan 模型 + scale <= 4
+    const isFreeEnhance = model === 'realesrgan' && scale <= 4
+    const requiredCredits = isFreeEnhance ? 0 : getRequiredCredits(model, scale)
     let userId: string | null = null
     let creditsDeducted = false
     let taskId: string | null = null
-    let isFreeEnhance = false
 
     if (requiredCredits !== null && requiredCredits > 0) {
       // 付费模型：需要登录 + 扣积分
@@ -166,9 +167,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to process credits' }, { status: 500 })
       }
     }
-    // Free model (realesrgan): no credit deduction
-    if (requiredCredits === 0) {
-      isFreeEnhance = true
+    // Free model (realesrgan): no credit deduction, check daily limit
+    if (isFreeEnhance) {
       const session = await getAuthSession()
       userId = session?.user?.id || null
       taskId = crypto.randomUUID()

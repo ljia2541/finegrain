@@ -42,7 +42,8 @@ export async function generatePresignedUploadUrl(
 }
 
 /**
- * 生成预签名下载 URL（给 Replicate 读取）
+ * 生成预签名下载 URL（给 Replicate 读取 + 内部处理）
+ * 禁用 checksum 要求，避免 GET 请求 403
  */
 export async function generatePresignedDownloadUrl(
   key: string,
@@ -51,9 +52,15 @@ export async function generatePresignedDownloadUrl(
   const command = new GetObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
+    // @ts-ignore - disable checksum to avoid 403 on unsigned GET requests
+    ChecksumMode: undefined,
   })
 
-  const url = await getPresignedUrl(r2Client, command, { expiresIn })
+  const url = await getPresignedUrl(r2Client, command, {
+    expiresIn,
+    // @ts-ignore
+    unhoistableHeaders: new Set(['x-amz-checksum-mode']),
+  })
   return url
 }
 

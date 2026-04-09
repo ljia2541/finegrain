@@ -177,8 +177,8 @@ export default function EnhancePage({
     }, 500)
 
     try {
-      // Real-ESRGAN / Recraft / Google Upscaler 限制 ~4M 像素
-      const MAX_PIXELS = 4_000_000
+      // Real-ESRGAN GPU 内存约 2M 像素，压缩到 1.8M 留余量
+      const MAX_PIXELS = 1_800_000
       let fileToUpload: File = selectedFile
       let uploadWidth = imageWidth
       let uploadHeight = imageHeight

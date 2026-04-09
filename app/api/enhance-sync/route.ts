@@ -9,9 +9,9 @@ export const maxDuration = 300
 
 // 模型 GPU 内存限制（最大像素数，4通道）
 const MODEL_MAX_PIXELS: Record<string, number> = {
-  realesrgan: 4_194_304, // ~2048×2048，约 400 万像素
-  google: 4_194_304,     // 同上
-  recraft: 4_194_304,   // 同上
+  realesrgan: 1_800_000, // Real-ESRGAN GPU 约 2M 像素
+  google: 4_194_304,      // Google Upscaler 约 4M 像素
+  recraft: 4_194_304,    // Recraft 约 4M 像素
 }
 
 /**

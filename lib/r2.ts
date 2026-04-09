@@ -52,14 +52,10 @@ export async function generatePresignedDownloadUrl(
   const command = new GetObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
-    // @ts-ignore - disable checksum to avoid 403 on unsigned GET requests
-    ChecksumMode: undefined,
   })
 
   const url = await getPresignedUrl(r2Client, command, {
     expiresIn,
-    // @ts-ignore
-    unhoistableHeaders: new Set(['x-amz-checksum-mode']),
   })
   return url
 }

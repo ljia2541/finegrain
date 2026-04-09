@@ -244,33 +244,30 @@ export async function POST(request: NextRequest) {
         const imgRes = await fetch(result.imageUrl)
         const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
         
+        // 直接用 R2 SDK 上传（绕过 Vercel 4.5MB 请求体限制）
+        const { uploadBuffer } = await import('@/lib/r2')
+        const { generatePresignedDownloadUrl } = await import('@/lib/r2')
+        
         if (isFreeEnhance) {
-          // 免费增强：添加水印，通过后端 API 上传
+          // 免费增强：添加水印（输出 JPEG）
           const { addWatermark } = await import('@/lib/watermark')
           const watermarked = await addWatermark(imgBuffer)
-          const formData = new FormData()
-          formData.append('file', new Blob([watermarked], { type: 'image/png' }), `watermarked_${taskId}.png`)
-          const uploadRes = await fetch(baseUrl + '/api/upload', { method: 'POST', body: formData })
-          const uploadData = await uploadRes.json()
-          if (!uploadData.success) throw new Error('Watermark upload failed: ' + uploadData.error)
-          finalImageUrl = uploadData.imageUrl
+          const key = `output/watermarked_${taskId}.jpg`
+          await uploadBuffer(watermarked, key, 'image/jpeg')
+          finalImageUrl = await generatePresignedDownloadUrl(key, 86400) // 24小时有效
         } else {
-          // 付费增强：转换为 PNG 通过后端 API 上传
+          // 付费增强：转换为 PNG
           const sharpModule = await import('sharp')
           const sharp = sharpModule.default
           const pngBuffer = await sharp(imgBuffer).png({ compressionLevel: 0 }).toBuffer()
           console.log(`[png] converted, size=${pngBuffer.length}`)
-          const formData = new FormData()
-          formData.append('file', new Blob([pngBuffer], { type: 'image/png' }), `enhanced_${taskId}.png`)
-          const uploadRes = await fetch(baseUrl + '/api/upload', { method: 'POST', body: formData })
-          const uploadData = await uploadRes.json()
-          if (!uploadData.success) throw new Error('PNG upload failed: ' + uploadData.error)
-          console.log(`[png] uploaded to R2: ${uploadData.imageUrl}`)
-          finalImageUrl = uploadData.imageUrl
+          const key = `output/enhanced_${taskId}.png`
+          await uploadBuffer(pngBuffer, key, 'image/png')
+          finalImageUrl = await generatePresignedDownloadUrl(key, 86400)
+          console.log(`[png] uploaded to R2: ${finalImageUrl.substring(0, 80)}...`)
         }
       } catch (err: any) {
         console.error('Failed to process output image:', err)
-        // 暂时把错误信息附加到响应，方便调试
         watermarkError = err instanceof Error ? err.message : String(err)
         // 处理失败不阻塞，用原图返回
       }

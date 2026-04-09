@@ -29,7 +29,7 @@ export async function addWatermark(inputBuffer: Buffer): Promise<Buffer> {
       top: height - watermarkBarHeight,
       left: 0,
     }])
-    .png()
+    .jpeg({ quality: 92 })
     .toBuffer()
 }
 

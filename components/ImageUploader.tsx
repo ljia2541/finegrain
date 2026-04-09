@@ -58,12 +58,16 @@ export default function ImageUploader() {
       return
     }
 
-    setSelectedFile(file)
-    
-    // 创建预览
+    // 直接跳转到增强页面
     const reader = new FileReader()
     reader.onloadend = () => {
-      setPreview(reader.result as string)
+      sessionStorage.setItem('pendingImage', JSON.stringify({
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        dataUrl: reader.result,
+      }))
+      router.push('/enhance/free')
     }
     reader.readAsDataURL(file)
   }

@@ -209,44 +209,27 @@ export default function EnhancePage({
         uploadHeight = newHeight
       }
 
-      // 步骤 1：获取 R2 预签名上传 URL（请求体极小，只有文件名）
-      const presignRes = await fetch('/api/presign', {
+      // 步骤 1：上传到 R2（通过后端 API 代理，避免 CORS 问题）
+      const formData = new FormData()
+      formData.append('file', fileToUpload, fileToUpload.name)
+
+      const uploadRes = await fetch('/api/upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filename: fileToUpload.name,
-          contentType: fileToUpload.type,
-        }),
+        body: formData,
       })
 
-      const presignData = await presignRes.json()
-      if (!presignRes.ok || !presignData.success) {
+      const uploadData = await uploadRes.json()
+
+      if (!uploadRes.ok || !uploadData.success) {
         clearInterval(interval)
-        setError(presignData.error || 'Failed to get upload credentials. Please try again.')
-        setPhase('preview')
-        return
-      }
-
-      setProcessingProgress(15)
-
-      // 步骤 2：直接 PUT 上传到 R2（绕过 Vercel 4.5MB 限制）
-      const uploadRes = await fetch(presignData.uploadUrl, {
-        method: 'PUT',
-        body: fileToUpload,
-        headers: { 'Content-Type': fileToUpload.type },
-      })
-
-      if (!uploadRes.ok) {
-        clearInterval(interval)
-        console.error('R2 upload failed:', uploadRes.status, await uploadRes.text().catch(() => ''))
-        setError(`Image upload failed (${uploadRes.status}). Please try again.`)
+        setError(uploadData.error || 'Image upload failed. Please try again.')
         setPhase('preview')
         return
       }
 
       setProcessingProgress(30)
 
-      // 步骤 3：调 enhance API（只传 R2 下载 URL，请求体极小）
+      // 步骤 2：调 enhance API（传 R2 签名 URL）
       const apiModel = selectedModel.id
       const apiScale = selectedScale
 
@@ -254,7 +237,7 @@ export default function EnhancePage({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          imageUrl: presignData.downloadUrl,
+          imageUrl: uploadData.imageUrl,
           model: apiModel,
           scale: apiScale,
           imageWidth: uploadWidth,

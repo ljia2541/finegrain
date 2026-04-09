@@ -59,6 +59,7 @@ export default function EnhancePage({
   const [imageHeight, setImageHeight] = useState(0)
   const [selectedModel, setSelectedModel] = useState<ModelOption>(models[0])
   const [selectedScale, setSelectedScale] = useState<number>(scales[0])
+  const [freeUsageRemaining, setFreeUsageRemaining] = useState<number | null>(null)
   const [selectedCreditSource, setSelectedCreditSource] = useState<'auto' | 'subscription' | 'purchase'>('auto')
   const [error, setError] = useState<string | null>(null)
   const [processingProgress, setProcessingProgress] = useState(0)
@@ -293,6 +294,18 @@ export default function EnhancePage({
       setResultUrl(data.imageUrl)
       setPhase('result')
       onSuccess?.()
+
+      // 免费增强成功后刷新免费次数
+      if (isFree) {
+        fetch('/api/free-usage')
+          .then(res => res.json())
+          .then(data => {
+            if (data.remaining !== undefined) {
+              setFreeUsageRemaining(data.remaining)
+            }
+          })
+          .catch(() => {})
+      }
     } catch (err) {
       clearInterval(interval)
       if (err instanceof DOMException && err.name === 'TimeoutError') {

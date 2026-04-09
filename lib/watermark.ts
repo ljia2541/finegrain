@@ -2,7 +2,7 @@ import sharp from 'sharp'
 
 /**
  * 给图片添加 FineGrain 水印
- * 右下角半透明白色文字 + 网址
+ * 底部居中，更醒目
  * 
  * @param inputBuffer 原始图片 Buffer
  * @returns 带水印的图片 Buffer
@@ -13,35 +13,40 @@ export async function addWatermark(inputBuffer: Buffer): Promise<Buffer> {
   const height = metadata.height || 600
 
   // 根据图片尺寸动态调整水印大小
-  const fontSize = Math.max(16, Math.min(36, Math.round(width / 25)))
-  const padding = Math.round(fontSize * 1.5)
+  const fontSize = Math.max(20, Math.min(48, Math.round(width / 20)))
+  const smallFontSize = Math.round(fontSize * 0.6)
+  const padding = Math.round(fontSize * 1.2)
 
-  // SVG 水印
+  // 底部半透明黑色背景条
+  const barHeight = fontSize * 2 + padding * 1.2
+  const barY = height - barHeight
+
   const svgWatermark = `
     <svg width="${width}" height="${height}">
-      <defs>
-        <linearGradient id="wmGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color:rgba(255,255,255,0.6)" />
-          <stop offset="100%" style="stop-color:rgba(255,255,255,0.3)" />
-        </linearGradient>
-      </defs>
+      <!-- 底部半透明背景条 -->
+      <rect x="0" y="${barY}" width="${width}" height="${barHeight}" fill="rgba(0,0,0,0.45)" />
+
+      <!-- FineGrain 文字 -->
       <text
-        x="${width - padding}"
-        y="${height - padding * 0.6}"
-        text-anchor="end"
+        x="${width / 2}"
+        y="${barY + padding + fontSize * 0.85}"
+        text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="${fontSize}"
         font-weight="bold"
-        fill="url(#wmGrad)"
+        fill="rgba(255,255,255,0.95)"
+        letter-spacing="2"
       >FineGrain</text>
+
+      <!-- 副标题 -->
       <text
-        x="${width - padding}"
-        y="${height - padding * 0.6 + fontSize * 1.2}"
-        text-anchor="end"
+        x="${width / 2}"
+        y="${barY + padding + fontSize * 0.85 + smallFontSize * 1.5}"
+        text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
-        font-size="${Math.round(fontSize * 0.65)}"
-        fill="rgba(255,255,255,0.4)"
-      >finegrainimageenhancer.com</text>
+        font-size="${smallFontSize}"
+        fill="rgba(255,255,255,0.7)"
+      >Free Preview · finegrainimageenhancer.com</text>
     </svg>
   `
 

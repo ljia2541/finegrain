@@ -239,6 +239,7 @@ export async function POST(request: NextRequest) {
 
       // 免费增强：添加水印；付费增强：转 PNG 确保无损
       let finalImageUrl = result.imageUrl
+      let watermarkError: string | null = null
       try {
         const imgRes = await fetch(result.imageUrl)
         const imgBuffer = Buffer.from(await imgRes.arrayBuffer())
@@ -267,8 +268,10 @@ export async function POST(request: NextRequest) {
           console.log(`[png] uploaded to R2: ${uploadData.imageUrl}`)
           finalImageUrl = uploadData.imageUrl
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to process output image:', err)
+        // 暂时把错误信息附加到响应，方便调试
+        watermarkError = err instanceof Error ? err.message : String(err)
         // 处理失败不阻塞，用原图返回
       }
 
@@ -298,6 +301,7 @@ export async function POST(request: NextRequest) {
         scale: result.scale,
         billing,
         creditsUsed: requiredCredits,
+        ...(watermarkError ? { watermarkError } : {}),
       })
     } catch (err) {
       // Replicate 调用出错，退还积分

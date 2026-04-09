@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/enhance/general',
     '/enhance/portrait',
     '/enhance/print',
-    '/enhance/ultra',
     '/pricing',
     '/docs',
     '/terms',

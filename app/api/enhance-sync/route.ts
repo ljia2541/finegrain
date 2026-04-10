@@ -179,6 +179,7 @@ export async function POST(request: NextRequest) {
       today.setHours(0, 0, 0, 0)
 
       const targetUserId = userId || 'anonymous'
+      console.log(`[free enhance] userId=${userId}, targetUserId=${targetUserId}, taskId=${taskId}`)
 
       const { data: todayCount, error: countError } = await supabaseAdmin
         .from('enhancement_history')
@@ -188,6 +189,7 @@ export async function POST(request: NextRequest) {
         .eq('status', 'completed')
 
       let freeCount = todayCount?.length || 0
+      console.log(`[free enhance] todayCount=${freeCount}, countError=${countError}`)
 
       if (freeCount >= 3) {
         return NextResponse.json({
@@ -274,7 +276,8 @@ export async function POST(request: NextRequest) {
       if (isFreeEnhance && taskId) {
         try {
           const { supabaseAdmin } = await import('@/lib/supabase')
-          await supabaseAdmin.from('enhancement_history').insert({
+          console.log(`[free enhance] inserting history: user_id=${userId || 'anonymous'}, taskId=${taskId}, model=${model}`)
+          const { data: insertData, error: insertErr } = await supabaseAdmin.from('enhancement_history').insert({
             id: taskId,
             user_id: userId || 'anonymous',
             model,
@@ -284,6 +287,7 @@ export async function POST(request: NextRequest) {
             output_url: finalImageUrl,
             status: 'completed',
           })
+          console.log(`[free enhance] history insert result: data=${JSON.stringify(insertData)}, error=${JSON.stringify(insertErr)}`)
         } catch (histErr) {
           console.error('Failed to record free enhance history:', histErr)
         }

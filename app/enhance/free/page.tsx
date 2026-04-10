@@ -28,7 +28,7 @@ export default function FreeEnhancePage() {
 
   const tips = [
     'Basic quality enhancement',
-    `Daily limit: 3 (${freeUsage ? `${freeUsage.remaining} remaining today` : '3 remaining today'})`,
+    `Daily limit: ${freeUsage ? freeUsage.limit : 1} (${freeUsage ? `${freeUsage.remaining} remaining today` : '1 remaining today'})`,
     'Output with watermark',
     'Auto deleted after 24h',
   ]

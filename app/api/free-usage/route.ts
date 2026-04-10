@@ -17,7 +17,9 @@ export async function GET(request: NextRequest) {
     .eq('user_id', targetUserId)
     .gte('created_at', today.toISOString())
     .eq('status', 'completed')
-  const limit = 3
+
+  // 匿名用户每天1次，登录用户每天3次
+  const limit = userId ? 3 : 1
   const remaining = Math.max(0, limit - used)
 
   return NextResponse.json({

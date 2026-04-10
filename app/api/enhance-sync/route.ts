@@ -173,7 +173,8 @@ export async function POST(request: NextRequest) {
       userId = session?.user?.id || null
       taskId = crypto.randomUUID()
 
-      // 每日免费限制：3 次
+      // 匿名用户每天1次，登录用户每天3次
+      const freeLimit = userId ? 3 : 1
       const { supabaseAdmin } = await import('@/lib/supabase')
       const today = new Date()
       today.setHours(0, 0, 0, 0)
@@ -189,11 +190,11 @@ export async function POST(request: NextRequest) {
         .eq('status', 'completed')
       console.log(`[free enhance] todayCount=${freeCount}, countError=${countError}`)
 
-      if (freeCount >= 3) {
+      if (freeCount >= freeLimit) {
         return NextResponse.json({
           error: 'FREE_LIMIT_REACHED',
-          message: 'Daily free limit reached (3/3). Please try again tomorrow or purchase a credits pack.',
-          limit: 3,
+          message: `Daily free limit reached (${freeLimit}/${freeLimit}). Please try again tomorrow or purchase a credits pack.`,
+          limit: freeLimit,
           used: freeCount,
         }, { status: 429 })
       }

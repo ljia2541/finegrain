@@ -1,10 +1,8 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Image Enhancement - Google Upscaler General | Finegrain',
-  description: 'AI image enhancement using Google Upscaler. Natural fidelity, no over-processing. Perfect for landscapes, products, and everyday photos.',
+  title: 'AI Image Enhancer - Google Upscaler | FineGrain',
+  description: 'AI image enhancement using Google Upscaler. Natural fidelity, no over-processing. Perfect for everyday photos, e-commerce images, and AI art. 3 free daily uses for logged-in users.',
 }
 
-export default function GeneralLayout({ children }: { children: React.ReactNode }) {
-  return children
-}
+export { default } from './page'

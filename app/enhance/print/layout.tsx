@@ -1,10 +1,8 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Print Enhancement - Recraft Crisp Upscale | Finegrain',
-  description: 'Recraft AI print-ready image enhancement. Extremely sharp with no noise, razor-sharp text/logos/lines. Perfect for web posters, product photos, and 300DPI printing.',
+  title: 'Print-Ready AI Image Enhancer - Recraft Crisp Upscale | FineGrain',
+  description: 'Professional print-ready AI image enhancer. Recraft Crisp Upscale delivers razor-sharp text, logos, and UI designs at 300 DPI. Perfect for marketing materials,海报, and merchandise.',
 }
 
-export default function PrintLayout({ children }: { children: React.ReactNode }) {
-  return children
-}
+export { default } from './page'

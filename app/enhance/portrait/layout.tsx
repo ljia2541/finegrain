@@ -1,10 +1,8 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Portrait Enhancement - Google Upscaler Portrait Pro | Finegrain',
-  description: 'AI portrait enhancement using Google Upscaler and Recraft. Natural skin texture, no over-processing. 4K output, perfect for portraits and ID photo optimization.',
+  title: 'AI Portrait Photo Enhancer - Crystal 4x Upscaling | FineGrain',
+  description: 'AI portrait photo enhancer. Crystal 4x model upscaling with natural skin texture, no plastic look. Perfect for portraits, selfies, and character photos. 3 free daily uses.',
 }
 
-export default function PortraitLayout({ children }: { children: React.ReactNode }) {
-  return children
-}
+export { default } from './page'

@@ -181,14 +181,12 @@ export async function POST(request: NextRequest) {
       const targetUserId = userId || 'anonymous'
       console.log(`[free enhance] userId=${userId}, targetUserId=${targetUserId}, taskId=${taskId}`)
 
-      const { data: todayCount, error: countError } = await supabaseAdmin
+      const { count: freeCount, error: countError } = await supabaseAdmin
         .from('enhancement_history')
         .select('id', { count: 'exact', head: true })
         .eq('user_id', targetUserId)
         .gte('created_at', today.toISOString())
         .eq('status', 'completed')
-
-      let freeCount = todayCount?.length || 0
       console.log(`[free enhance] todayCount=${freeCount}, countError=${countError}`)
 
       if (freeCount >= 3) {

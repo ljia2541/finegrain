@@ -11,14 +11,12 @@ export async function GET(request: NextRequest) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const { data: todayCount } = await supabaseAdmin
+  const { count: used, error: countError } = await supabaseAdmin
     .from('enhancement_history')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', targetUserId)
     .gte('created_at', today.toISOString())
     .eq('status', 'completed')
-
-  const used = todayCount?.length || 0
   const limit = 3
   const remaining = Math.max(0, limit - used)
 

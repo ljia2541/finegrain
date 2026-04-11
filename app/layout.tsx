@@ -57,7 +57,7 @@ export default function RootLayout({
         '@type': 'WebApplication',
         '@id': 'https://www.finegrainimageenhancer.com/#webapp',
         name: 'FineGrain AI Image Enhancer',
-        description: 'AI-powered image enhancement platform. Upscale images with Real-ESRGAN, Google Upscaler, Recraft, and Crystal models.',
+        description: 'AI-powered image enhancement platform. Upscale images with Real-ESRGAN, Google Upscaler, and Recraft models. Free trial available.',
         url: 'https://www.finegrainimageenhancer.com',
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'Web',
@@ -78,7 +78,7 @@ export default function RootLayout({
         '@type': 'Product',
         '@id': 'https://www.finegrainimageenhancer.com/#product',
         name: 'FineGrain AI Upscaling Service',
-        description: 'AI image upscaling service with multiple models: Real-ESRGAN (free), Google Upscaler, Recraft (print quality), Crystal (portrait/10K).',
+        description: 'AI image upscaling service with multiple models: Real-ESRGAN (free), Google Upscaler (natural fidelity), Recraft (print quality).',
         brand: { '@type': 'Brand', name: 'FineGrain' },
         category: 'Image Enhancement Service',
         offers: {

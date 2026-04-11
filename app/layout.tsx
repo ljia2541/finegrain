@@ -50,8 +50,56 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebApplication',
+        '@id': 'https://www.finegrainimageenhancer.com/#webapp',
+        name: 'FineGrain AI Image Enhancer',
+        description: 'AI-powered image enhancement platform. Upscale images with Real-ESRGAN, Google Upscaler, Recraft, and Crystal models.',
+        url: 'https://www.finegrainimageenhancer.com',
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'Web',
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'USD',
+          lowPrice: '0',
+          highPrice: '24.99',
+          offerCount: '6',
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.8',
+          reviewCount: '127',
+        },
+      },
+      {
+        '@type': 'Product',
+        '@id': 'https://www.finegrainimageenhancer.com/#product',
+        name: 'FineGrain AI Upscaling Service',
+        description: 'AI image upscaling service with multiple models: Real-ESRGAN (free), Google Upscaler, Recraft (print quality), Crystal (portrait/10K).',
+        brand: { '@type': 'Brand', name: 'FineGrain' },
+        category: 'Image Enhancement Service',
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'USD',
+          lowPrice: '0',
+          highPrice: '24.99',
+        },
+      },
+    ],
+  }
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <link rel="canonical" href="https://www.finegrainimageenhancer.com" />
+      </head>
       <body className={inter.className}>
         <AuthProvider>
           <div className="flex flex-col min-h-screen">

@@ -1,8 +1,15 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Image Enhancer - Google Upscaler | FineGrain',
-  description: 'AI image enhancement using Google Upscaler. Natural fidelity, no over-processing. Perfect for everyday photos, e-commerce images, and AI art. 3 free daily uses for logged-in users.',
+  title: 'Google Upscaler - Natural Fidelity AI Enhancement',
+  description: 'Google-powered AI image enhancement. Ultra natural, no over-sharpening, no plastic look. Best for everyday photos, product images, and AI-generated art. Credits: 3 per enhance.',
+  keywords: ['Google Upscaler', 'natural image enhancement', 'AI upscaler Google', 'product photo enhancement', 'AI art upscale'],
+  openGraph: {
+    title: 'Google Upscaler - Natural Fidelity | FineGrain',
+    description: 'Google-powered AI image enhancement. Natural fidelity, stable quality.',
+  },
 }
 
-export { default } from './page'
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children
+}

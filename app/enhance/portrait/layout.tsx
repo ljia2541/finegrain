@@ -1,8 +1,15 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'AI Portrait Photo Enhancer - Crystal 4x Upscaling | FineGrain',
-  description: 'AI portrait photo enhancer. Crystal 4x model upscaling with natural skin texture, no plastic look. Perfect for portraits, selfies, and character photos. 3 free daily uses.',
+  title: 'Portrait AI Enhancer - Crystal 4x Face & Portrait Upscale',
+  description: 'AI portrait enhancement specializing in faces and people. Crystal 4x delivers natural skin tones, no plastic smoothing, up to 10K output. Perfect for portraits, selfies, and group photos. Credits: 15 per enhance.',
+  keywords: ['portrait AI enhancer', 'face enhancement AI', 'Crystal 4x portrait', 'upscale portrait photos', 'face upscaler AI', 'portrait photo enhancement'],
+  openGraph: {
+    title: 'Portrait AI Enhancer - Crystal 4x | FineGrain',
+    description: 'AI portrait enhancement with Crystal 4x. Natural faces, up to 10K output.',
+  },
 }
 
-export { default } from './page'
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children
+}

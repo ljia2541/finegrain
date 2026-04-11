@@ -99,6 +99,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="canonical" href="https://www.finegrainimageenhancer.com" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4K9VT0KW1"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-Z4K9VT0KW1');`
+        }} />
       </head>
       <body className={inter.className}>
         <AuthProvider>

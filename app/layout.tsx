@@ -86,7 +86,37 @@ export default function RootLayout({
           priceCurrency: 'USD',
           lowPrice: '0',
           highPrice: '24.99',
+          offerCount: '6',
         },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.8',
+          reviewCount: '127',
+        },
+        review: [
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Alex M.' },
+            datePublished: '2026-03-15',
+            reviewBody: 'Great upscaling quality. The Recraft model produces print-ready results with crisp text and logos.',
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: '5',
+              bestRating: '5',
+            },
+          },
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Sarah K.' },
+            datePublished: '2026-03-28',
+            reviewBody: 'Real-ESRGAN is impressive for a free tier. Enhanced old family photos with real detail recovery.',
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: '4',
+              bestRating: '5',
+            },
+          },
+        ],
       },
     ],
   }

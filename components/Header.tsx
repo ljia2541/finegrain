@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Portrait', href: '/enhance/portrait' },
   { label: 'Print', href: '/enhance/print' },
   { label: 'Pricing', href: '/pricing' },
+  { label: 'Blog', href: '/blog/upscale-images-for-print' },
 ]
 
 export default function Header() {

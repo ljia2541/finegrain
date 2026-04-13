@@ -161,8 +161,24 @@ export default function EnhancePage({
     img.src = URL.createObjectURL(file)
   }
 
+  // GA4 event helper
+  const trackEvent = (eventName: string, params?: Record<string, string | number>) => {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('event', eventName, params)
+    }
+  }
+
   const handleProcess = async () => {
     if (!selectedFile || !preview) return
+
+    // Track enhance start
+    trackEvent('enhance_start', {
+      model: selectedModel.id,
+      scale: selectedScale,
+      image_width: imageWidth,
+      image_height: imageHeight,
+      is_free: isFree ? 1 : 0,
+    })
 
     setPhase('processing')
     setProcessingProgress(0)

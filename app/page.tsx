@@ -488,7 +488,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
             <p className="text-xl text-gray-600">Free trial, pay as you go</p>
           </div>
-          <Pricing />
+          <Pricing headingLevel={3} />
         </div>
       </section>
 

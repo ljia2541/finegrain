@@ -126,7 +126,12 @@ const subscriptionPlans = [
   },
 ]
 
-export default function Pricing() {
+const Heading = ({ level, className, children }: { level: number; className?: string; children: React.ReactNode }) => {
+  const Tag = `h${level}` as keyof JSX.IntrinsicElements
+  return <Tag className={className}>{children}</Tag>
+}
+
+export default function Pricing({ headingLevel = 2 }: { headingLevel?: number }) {
   const { data: session } = useSession()
 
   const handlePurchase = async (planType: string, planId: string) => {
@@ -205,7 +210,7 @@ export default function Pricing() {
                 </span>
               </div>
             )}
-            <h3 className="text-2xl font-bold text-center mb-2">{plan.name}</h3>
+            <Heading level={headingLevel} className="text-2xl font-bold text-center mb-2">{plan.name}</Heading>
             <div className="text-center mb-6">
               <span className="text-4xl font-bold">{plan.price}</span>
               {plan.period && (
@@ -244,7 +249,7 @@ export default function Pricing() {
 
       {/* Monthly Subscriptions - FIRST */}
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-8 mb-12">
-        <h3 className="text-3xl font-bold text-center mb-2">🔄 Monthly Subscription - Auto-renew, better value</h3>
+        <Heading level={headingLevel} className="text-3xl font-bold text-center mb-2">🔄 Monthly Subscription - Auto-renew, better value</Heading>
         <p className="text-center text-gray-600 mb-8">Fixed monthly credits at lower cost. Cancel anytime.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -303,7 +308,7 @@ export default function Pricing() {
 
       {/* Credit Packages - SECOND */}
       <div id="credit-packages" className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8">
-        <h3 className="text-3xl font-bold text-center mb-2">💰 Credit Packs - Pay as you go</h3>
+        <Heading level={headingLevel} className="text-3xl font-bold text-center mb-2">💰 Credit Packs - Pay as you go</Heading>
         <p className="text-center text-gray-600 mb-8">Credits for occasional use or stock up for later</p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

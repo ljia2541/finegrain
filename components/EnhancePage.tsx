@@ -547,9 +547,9 @@ export default function EnhancePage({
                   <Upload className="w-8 h-8 text-white" />
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
                   Drop image here
-                </h3>
+                </h2>
 
                 <p className="text-gray-500 mb-4 text-sm">
                   or click to select • JPG / PNG / WebP / HEIC / AVIF • Max 10MB

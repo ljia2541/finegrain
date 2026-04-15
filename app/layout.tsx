@@ -9,11 +9,11 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'FineGrain - AI Image Enhancer | Online AI Upscaling',
+    default: 'Free AI Image Enhancer - Upscale Photos Online | FineGrain',
     template: '%s | FineGrain',
   },
-  description: 'AI-powered image enhancement platform. Upscale images with Real-ESRGAN, Google Upscaler, and Recraft models. Free trial available.',
-  keywords: ['AI image enhancer', 'image upscaler', 'super resolution', 'photo enhancement', 'Real-ESRGAN', 'AI upscaling', 'image quality', 'FineGrain'],
+  description: 'Free AI image enhancer and upscaler. Upscale photos to 4K with Real-ESRGAN, Google Upscaler, Recraft, and Crystal. No signup required. Try for free!',
+  keywords: ['AI image enhancer', 'free image upscaler', 'upscale photo online', 'AI photo enhancer', 'image quality enhancer', 'Real-ESRGAN', 'super resolution', 'photo enhancement AI', 'FineGrain'],
   authors: [{ name: 'FineGrain' }],
   creator: 'FineGrain',
   metadataBase: new URL('https://www.finegrainimageenhancer.com'),

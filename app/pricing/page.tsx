@@ -2,8 +2,9 @@ import Pricing from '@/components/Pricing'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pricing - FineGrain AI Image Enhancement',
-  description: 'Flexible pricing plans. Pay-as-you-go credits or monthly subscription. 3 free daily enhancements.',
+  title: 'Pricing - AI Image Enhancement Plans | FineGrain',
+  description: 'Flexible pricing for AI image enhancement. Pay-as-you-go credits from $5.99 or monthly subscriptions from $7.99. 3 free enhancements daily. No hidden fees, cancel anytime.',
+  keywords: ['AI image enhancer pricing', 'image upscaler plans', 'photo enhancement subscription', 'pay per image enhancement', 'credit based image upscaler'],
 }
 
 export default function PricingPage() {

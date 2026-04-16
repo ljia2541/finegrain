@@ -31,6 +31,12 @@ export default function Footer() {
                 <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
+            <div>
+              <h4 className="text-white text-sm font-medium mb-3">From the Same Team</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="https://gotaskmind.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GoTaskMind — AI Project Planner</a></li>
+              </ul>
+            </div>
           </div>
         </div>
 

@@ -151,3 +151,7 @@ MIT License
 **状态**：🚧 开发中
 
 **最后更新**：2026-03-21
+
+## 🔗 Related Projects
+
+- **[GoTaskMind](https://gotaskmind.com)** — AI Project Planner & Task Management Tool. Transform ideas into actionable task plans with AI.

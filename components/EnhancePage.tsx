@@ -243,6 +243,12 @@ export default function EnhancePage({
         clearInterval(interval)
         setError(uploadData.error || 'Image upload failed. Please try again.')
         setPhase('preview')
+        trackEvent('enhance_error', {
+          model: selectedModel.id,
+          scale: selectedScale,
+          phase: 'upload',
+          reason: uploadData.error || 'upload_failed',
+        })
         return
       }
 
@@ -272,6 +278,12 @@ export default function EnhancePage({
         clearInterval(interval)
         setError('Please sign in to use paid models')
         setPhase('preview')
+        trackEvent('enhance_error', {
+          model: selectedModel.id,
+          scale: selectedScale,
+          phase: 'auth',
+          reason: 'login_required',
+        })
         // 触发登录
         const { signIn } = await import('next-auth/react')
         signIn('google', { callbackUrl: window.location.pathname })
@@ -288,6 +300,12 @@ export default function EnhancePage({
         }
         setError(hint)
         setPhase('preview')
+        trackEvent('enhance_error', {
+          model: selectedModel.id,
+          scale: selectedScale,
+          phase: 'credits',
+          reason: 'insufficient_credits',
+        })
         return
       }
 
@@ -295,6 +313,12 @@ export default function EnhancePage({
         clearInterval(interval)
         setError(data.message || 'Daily free limit reached')
         setPhase('preview')
+        trackEvent('enhance_error', {
+          model: selectedModel.id,
+          scale: selectedScale,
+          phase: 'free_limit',
+          reason: 'free_limit_reached',
+        })
         return
       }
 
@@ -302,6 +326,12 @@ export default function EnhancePage({
         clearInterval(interval)
         setError(data.error || 'Enhancement failed. Please try again.')
         setPhase('preview')
+        trackEvent('enhance_error', {
+          model: selectedModel.id,
+          scale: selectedScale,
+          phase: 'api',
+          reason: data.error || 'api_error',
+        })
         return
       }
 
@@ -310,6 +340,15 @@ export default function EnhancePage({
       setResultUrl(data.imageUrl)
       setPhase('result')
       onSuccess?.()
+
+      // Track enhance complete
+      trackEvent('enhance_complete', {
+        model: selectedModel.id,
+        scale: selectedScale,
+        image_width: imageWidth,
+        image_height: imageHeight,
+        is_free: isFree ? 1 : 0,
+      })
 
       // 免费增强成功后刷新免费次数
       if (isFree) {
@@ -330,6 +369,13 @@ export default function EnhancePage({
         setError('Network error. Please check your connection and try again.')
       }
       setPhase('preview')
+
+      // Track enhance failure
+      trackEvent('enhance_error', {
+        model: selectedModel.id,
+        scale: selectedScale,
+        phase: 'processing',
+      })
     }
   }
 

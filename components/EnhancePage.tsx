@@ -135,9 +135,9 @@ export default function EnhancePage({
       return
     }
 
-    // Validate file size (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setError('File exceeds 10MB limit. Please compress and try again.')
+    // Validate file size (50MB hard limit — will auto-compress below)
+    if (file.size > 50 * 1024 * 1024) {
+      setError('File too large. Please use an image under 50MB.')
       return
     }
 
@@ -196,19 +196,28 @@ export default function EnhancePage({
     try {
       // Real-ESRGAN GPU 内存约 2M 像素，压缩到 1.8M 留余量
       const MAX_PIXELS = 1_800_000
+      const MAX_FILE_SIZE = 8 * 1024 * 1024 // 8MB, COS upload limit safe margin
       let fileToUpload: File = selectedFile
       let uploadWidth = imageWidth
       let uploadHeight = imageHeight
 
-      if (imageWidth * imageHeight > MAX_PIXELS) {
-        // 用 canvas 压缩到限制以内
-        const scale = Math.sqrt(MAX_PIXELS / (imageWidth * imageHeight))
-        const newWidth = Math.round(imageWidth * scale)
-        const newHeight = Math.round(imageHeight * scale)
+      const needsResize = imageWidth * imageHeight > MAX_PIXELS
+      const needsCompress = selectedFile.size > MAX_FILE_SIZE
+
+      if (needsResize || needsCompress) {
+        // 用 canvas 压缩
+        let targetWidth = imageWidth
+        let targetHeight = imageHeight
+
+        if (needsResize) {
+          const scale = Math.sqrt(MAX_PIXELS / (imageWidth * imageHeight))
+          targetWidth = Math.round(imageWidth * scale)
+          targetHeight = Math.round(imageHeight * scale)
+        }
 
         const canvas = document.createElement('canvas')
-        canvas.width = newWidth
-        canvas.height = newHeight
+        canvas.width = targetWidth
+        canvas.height = targetHeight
         const ctx = canvas.getContext('2d')
         if (!ctx) throw new Error('Canvas not supported')
 
@@ -218,14 +227,25 @@ export default function EnhancePage({
           img.onerror = () => reject(new Error('Image failed to load'))
           img.src = preview
         })
-        ctx.drawImage(img, 0, 0, newWidth, newHeight)
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
 
-        const blob = await new Promise<Blob>((resolve) => {
-          canvas.toBlob((b) => resolve(b!), 'image/jpeg', 0.92)
+        // 如果文件仍然太大，降低 JPEG 质量
+        let quality = 0.92
+        let blob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((b) => resolve(b!), 'image/jpeg', quality)
         })
+
+        // 逐步降低质量直到文件小于 MAX_FILE_SIZE
+        while (blob.size > MAX_FILE_SIZE && quality > 0.5) {
+          quality -= 0.1
+          blob = await new Promise<Blob>((resolve) => {
+            canvas.toBlob((b) => resolve(b!), 'image/jpeg', quality)
+          })
+        }
+
         fileToUpload = new File([blob], selectedFile.name, { type: 'image/jpeg' })
-        uploadWidth = newWidth
-        uploadHeight = newHeight
+        uploadWidth = targetWidth
+        uploadHeight = targetHeight
       }
 
       // 步骤 1：上传到 R2（通过后端 API 代理，避免 CORS 问题）
@@ -598,7 +618,7 @@ export default function EnhancePage({
                 </h2>
 
                 <p className="text-gray-500 mb-4 text-sm">
-                  or click to select • JPG / PNG / WebP / HEIC / AVIF • Max 10MB
+                  or click to select • JPG / PNG / WebP / HEIC / AVIF • Max 50MB (auto-compressed)
                 </p>
 
                 <div className="flex items-center gap-2 text-xs text-gray-400">

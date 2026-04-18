@@ -28,6 +28,7 @@ interface EnhancePageProps {
   tips?: string[]
   creditsExpirySoon?: string | null
   subExpirySoon?: string | null
+  freeLimitReached?: boolean
   onSuccess?: () => void
 }
 
@@ -48,6 +49,7 @@ export default function EnhancePage({
   tips,
   creditsExpirySoon,
   subExpirySoon,
+  freeLimitReached = false,
   onSuccess,
 }: EnhancePageProps) {
   const [phase, setPhase] = useState<Phase>('upload')
@@ -584,6 +586,26 @@ export default function EnhancePage({
             </div>
           )}
 
+          {/* Free Limit Banner */}
+          {isFree && freeLimitReached && phase !== 'processing' && phase !== 'result' && (
+            <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 space-y-3">
+              <div className="flex items-center gap-2 text-amber-800 font-semibold">
+                <span className="text-lg">🔒</span>
+                <span>Today's free enhancements are all used up</span>
+              </div>
+              <p className="text-sm text-amber-700">
+                Come back tomorrow for more free tries, or upgrade to unlock unlimited high-quality enhancement.
+              </p>
+              <a
+                href="/pricing"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md text-sm"
+              >
+                <Sparkles className="w-4 h-4" />
+                View Pricing Plans
+              </a>
+            </div>
+          )}
+
           {/* Error */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 flex items-center justify-between">
@@ -699,14 +721,24 @@ export default function EnhancePage({
                 >
                   Change image
                 </button>
-                <button
-                  onClick={handleProcess}
-                  disabled={!isFree && !directPrice && currentCredits < currentModel.credits}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Start Enhancement
-                </button>
+                {isFree && freeLimitReached ? (
+                  <a
+                    href="/pricing"
+                    className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Upgrade for More
+                  </a>
+                ) : (
+                  <button
+                    onClick={handleProcess}
+                    disabled={!isFree && !directPrice && currentCredits < currentModel.credits}
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Start Enhancement
+                  </button>
+                )}
               </div>
             </div>
           )}

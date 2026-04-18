@@ -26,6 +26,8 @@ export default function FreeEnhancePage() {
     refreshFreeUsage()
   }, [])
 
+  const isLimitReached = freeUsage ? freeUsage.remaining <= 0 : false
+
   const tips = [
     'Basic quality enhancement',
     `Daily limit: ${freeUsage ? freeUsage.limit : 1} (${freeUsage ? `${freeUsage.remaining} remaining today` : '1 remaining today'})`,
@@ -48,6 +50,7 @@ export default function FreeEnhancePage() {
       badge="Free"
       badgeColor="bg-green-500"
       tips={tips}
+      freeLimitReached={isLimitReached}
       onSuccess={refreshFreeUsage}
     />
   )

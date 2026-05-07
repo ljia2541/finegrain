@@ -893,7 +893,7 @@ export default function EnhancePage({
                     <div className="flex-1">
                       <div className="font-semibold text-blue-900">Want even better results?</div>
                       <p className="text-sm text-blue-700 mt-1">
-                        Upgrade to <strong>Crystal 4x</strong> for portrait-quality 10K enhancement, or <strong>Recraft</strong> for print-sharp clarity. No watermarks, no auto-deletion.
+                        Upgrade to <strong>Crystal 4x</strong> for portrait-quality enhancement with natural skin details, or <strong>Recraft</strong> for print-sharp clarity. No watermarks, no auto-deletion.
                       </p>
                       <a href="/pricing" className="inline-flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm mt-2">
                         <Sparkles className="w-4 h-4" />

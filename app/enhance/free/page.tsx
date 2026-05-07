@@ -51,6 +51,7 @@ export default function FreeEnhancePage() {
       badgeColor="bg-green-500"
       tips={tips}
       freeLimitReached={isLimitReached}
+      freeDailyLimit={freeUsage?.limit}
       onSuccess={refreshFreeUsage}
     />
   )

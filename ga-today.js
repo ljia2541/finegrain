@@ -2,16 +2,14 @@ const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const path = require('path');
 
 const KEY_FILE = path.join(__dirname, '.ga-service-account.json');
-const DR = { startDate: '2026-04-23', endDate: '2026-04-24' };
+const DR = { startDate: 'today', endDate: 'today' };
 
 async function runQuery(propertyId, siteName) {
   const client = new BetaAnalyticsDataClient({ keyFilename: KEY_FILE });
   try {
     const [response] = await client.runReport({
       property: `properties/${propertyId}`,
-      dateRanges: [
-        { startDate: '2026-04-23', endDate: '2026-04-24' },
-      ],
+      dateRanges: [DR],
       dimensions: [{ name: 'date' }],
       metrics: [
         { name: 'sessions' },
@@ -39,29 +37,6 @@ async function runQuery(propertyId, siteName) {
     }
   } catch (e) {
     console.log(`${siteName} 基础查询失败: ${e.message}`);
-  }
-}
-
-async function runEvents(propertyId, siteName) {
-  const client = new BetaAnalyticsDataClient({ keyFilename: KEY_FILE });
-  try {
-    const [response] = await client.runReport({
-      property: `properties/${propertyId}`,
-      dateRanges: [DR],
-      dimensions: [{ name: 'date' }, { name: 'eventName' }],
-      metrics: [{ name: 'eventCount' }],
-    });
-
-    console.log(`\n----- ${siteName} 事件明细 -----`);
-    if (response.rows && response.rows.length > 0) {
-      for (const row of response.rows) {
-        console.log(`  ${row.dimensionValues[0].value} | ${row.dimensionValues[1].value}: ${row.metricValues[0].value}`);
-      }
-    } else {
-      console.log('无事件数据');
-    }
-  } catch (e) {
-    console.log(`${siteName} 事件查询失败: ${e.message}`);
   }
 }
 
@@ -140,16 +115,59 @@ async function runCountry(propertyId, siteName) {
   }
 }
 
+async function runConversions(propertyId, siteName) {
+  const client = new BetaAnalyticsDataClient({ keyFilename: KEY_FILE });
+  try {
+    // Check key conversion events
+    const [response] = await client.runReport({
+      property: `properties/${propertyId}`,
+      dateRanges: [DR],
+      dimensions: [{ name: 'eventName' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: {
+        orGroup: {
+          expressions: [
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'enhance_click' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'enhance_complete' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'enhance_start' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'purchase' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'sign_up' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'login' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { value: 'page_view' } } },
+            { filter: { fieldName: 'eventName', stringFilter: { matchType: 'CONTAINS', stringFilter: { value: 'plan' } } } },
+            { filter: { fieldName: 'eventName', stringFilter: { matchType: 'CONTAINS', stringFilter: { value: 'pricing' } } } },
+            { filter: { fieldName: 'eventName', stringFilter: { matchType: 'CONTAINS', stringFilter: { value: 'subscribe' } } } },
+            { filter: { fieldName: 'eventName', stringFilter: { matchType: 'CONTAINS', stringFilter: { value: 'project' } } } },
+            { filter: { fieldName: 'eventName', stringFilter: { matchType: 'CONTAINS', stringFilter: { value: 'task' } } } },
+          ],
+        },
+      },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+    });
+
+    console.log(`\n----- ${siteName} 关键转化事件 -----`);
+    if (response.rows && response.rows.length > 0) {
+      for (const row of response.rows) {
+        console.log(`  ${row.dimensionValues[0].value}: ${row.metricValues[0].value}次 (用户:${row.metricValues[1].value})`);
+      }
+    } else {
+      console.log('无转化事件');
+    }
+  } catch (e) {
+    console.log(`${siteName} 转化查询失败: ${e.message}`);
+  }
+}
+
 (async () => {
   await runQuery('532514788', 'FineGrain');
   await runTopPages('532514788', 'FineGrain');
   await runSource('532514788', 'FineGrain');
   await runCountry('532514788', 'FineGrain');
-  await runEvents('532514788', 'FineGrain');
+  await runConversions('532514788', 'FineGrain');
 
   await runQuery('514327854', 'GoTaskMind');
   await runTopPages('514327854', 'GoTaskMind');
   await runSource('514327854', 'GoTaskMind');
   await runCountry('514327854', 'GoTaskMind');
-  await runEvents('514327854', 'GoTaskMind');
+  await runConversions('514327854', 'GoTaskMind');
 })();

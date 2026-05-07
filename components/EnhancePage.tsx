@@ -29,6 +29,7 @@ interface EnhancePageProps {
   creditsExpirySoon?: string | null
   subExpirySoon?: string | null
   freeLimitReached?: boolean
+  freeDailyLimit?: number
   onSuccess?: () => void
 }
 
@@ -50,6 +51,7 @@ export default function EnhancePage({
   creditsExpirySoon,
   subExpirySoon,
   freeLimitReached = false,
+  freeDailyLimit,
   onSuccess,
 }: EnhancePageProps) {
   const [phase, setPhase] = useState<Phase>('upload')
@@ -586,25 +588,55 @@ export default function EnhancePage({
             </div>
           )}
 
-          {/* Free Limit Banner */}
+          {/* Free Limit - 强引导遮罩 */}
           {isFree && freeLimitReached && phase !== 'processing' && phase !== 'result' && (
-            <div className="bg-amber-50 border border-amber-300 rounded-lg px-5 py-4 space-y-3">
-              <div className="flex items-center gap-2 text-amber-800 font-semibold">
-                <span className="text-lg">🔒</span>
-                <span>Today's free enhancements are all used up</span>
+            <div className="rounded-xl border-2 border-amber-400 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 overflow-hidden">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-3">
+                <div className="flex items-center gap-2 text-white font-bold text-lg">
+                  <span className="text-2xl">⚡</span>
+                  <span>Today's Free Enhancements Used Up</span>
+                </div>
               </div>
-              <p className="text-sm text-amber-700">
-                Come back tomorrow for more free tries, or upgrade to unlock unlimited high-quality enhancement.
-              </p>
-              <a
-                href="/pricing"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md text-sm"
-              >
-                <Sparkles className="w-4 h-4" />
-                View Pricing Plans
-              </a>
+              
+              <div className="p-5 space-y-4">
+                <p className="text-amber-900 font-medium">
+                  You've used all your free tries for today. Upgrade now to continue enhancing with premium AI models!
+                </p>
+                
+                {/* 积分包选项 */}
+                <div className="grid grid-cols-2 gap-3">
+                  <a href="/pricing" className="block bg-white rounded-lg p-3 border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all group">
+                    <div className="text-xs text-gray-500 font-medium">STARTER</div>
+                    <div className="text-lg font-bold text-gray-900 mt-1">100 <span className="text-sm font-normal text-gray-500">credits</span></div>
+                    <div className="text-blue-600 font-bold">$5.99</div>
+                    <div className="text-xs text-gray-400 mt-1">~33 enhancements</div>
+                  </a>
+                  <a href="/pricing" className="block bg-white rounded-lg p-3 border-2 border-blue-500 hover:shadow-lg transition-all relative group">
+                    <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">POPULAR</div>
+                    <div className="text-xs text-gray-500 font-medium">POPULAR</div>
+                    <div className="text-lg font-bold text-gray-900 mt-1">500 <span className="text-sm font-normal text-gray-500">credits</span></div>
+                    <div className="text-blue-600 font-bold">$19.99</div>
+                    <div className="text-xs text-gray-400 mt-1">~166 enhancements</div>
+                  </a>
+                </div>
+                
+                {/* CTA 按钮 */}
+                <a
+                  href="/pricing"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-bold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg w-full text-center"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  View All Plans & Subscribe
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+                
+                <p className="text-xs text-center text-amber-600">
+                  Or come back tomorrow for {freeDailyLimit || 3} more free tries
+                </p>
+              </div>
             </div>
-          )}
+          )}}
 
           {/* Error */}
           {error && (
@@ -852,6 +884,26 @@ export default function EnhancePage({
                   Download Image
                 </a>
               </div>
+              
+              {/* 免费增强完成后的付费引导 CTA */}
+              {isFree && (
+                <div className="mt-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl mt-0.5">✨</span>
+                    <div className="flex-1">
+                      <div className="font-semibold text-blue-900">Want even better results?</div>
+                      <p className="text-sm text-blue-700 mt-1">
+                        Upgrade to <strong>Crystal 4x</strong> for portrait-quality 10K enhancement, or <strong>Recraft</strong> for print-sharp clarity. No watermarks, no auto-deletion.
+                      </p>
+                      <a href="/pricing" className="inline-flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm mt-2">
+                        <Sparkles className="w-4 h-4" />
+                        Upgrade Now — from $5.99
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

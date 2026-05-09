@@ -40,15 +40,15 @@ export default function Home() {
               
               {/* Headline */}
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                AI Image Enhancement
+                Free AI Image Enhancer
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  AI Super Resolution Upscale
+                  Upscale Photos to 4K/10K Online
                 </span>
               </h1>
 
               {/* Subtitle */}
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                Upload any image. AI upscale 2x~4x. Multiple models available. Professional quality without filters.
+                Upload any image, enhance for free with AI. Multiple models: Real-ESRGAN, Google, Recraft, Crystal. No signup required.
               </p>
               
               {/* Feature Tags */}

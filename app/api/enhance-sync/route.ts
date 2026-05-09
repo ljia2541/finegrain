@@ -227,6 +227,20 @@ export async function POST(request: NextRequest) {
             console.error('Failed to refund credits:', refundErr)
           }
         }
+        // 付费增强失败：更新 history 为 failed
+        if (creditsDeducted && userId) {
+          try {
+            const { supabaseAdmin } = await import('@/lib/supabase')
+            await supabaseAdmin
+              .from('enhancement_history')
+              .update({ status: 'failed' })
+              .eq('user_id', userId)
+              .eq('model', model)
+              .eq('status', 'processing')
+              .order('created_at', { ascending: false })
+              .limit(1)
+          } catch {}
+        }
         return NextResponse.json({ error: result.error || 'Enhancement failed' }, { status: 500 })
       }
 
@@ -271,8 +285,9 @@ export async function POST(request: NextRequest) {
         // 处理失败不阻塞，用原图返回
       }
 
-      // 记录增强历史（免费增强也需要记录以计数）
+      // 记录增强历史
       if (isFreeEnhance && taskId) {
+        // 免费增强：直接插入 completed 记录
         try {
           const { supabaseAdmin } = await import('@/lib/supabase')
           console.log(`[free enhance] inserting history: user_id=${userId || 'anonymous'}, taskId=${taskId}, model=${model}`)
@@ -289,6 +304,29 @@ export async function POST(request: NextRequest) {
           console.log(`[free enhance] history insert result: data=${JSON.stringify(insertData)}, error=${JSON.stringify(insertErr)}`)
         } catch (histErr) {
           console.error('Failed to record free enhance history:', histErr)
+        }
+      } else if (creditsDeducted && userId) {
+        // 付费增强：更新 deductCredits 创建的 processing 记录为 completed
+        try {
+          const { supabaseAdmin } = await import('@/lib/supabase')
+          const { error: updateErr } = await supabaseAdmin
+            .from('enhancement_history')
+            .update({
+              status: 'completed',
+              output_url: finalImageUrl,
+            })
+            .eq('user_id', userId)
+            .eq('model', model)
+            .eq('status', 'processing')
+            .order('created_at', { ascending: false })
+            .limit(1)
+          if (updateErr) {
+            console.error('[paid enhance] failed to update history:', updateErr)
+          } else {
+            console.log(`[paid enhance] history updated to completed, userId=${userId}, model=${model}`)
+          }
+        } catch (histErr) {
+          console.error('Failed to update paid enhance history:', histErr)
         }
       }
 
@@ -313,6 +351,18 @@ export async function POST(request: NextRequest) {
         } catch (refundErr) {
           console.error('Failed to refund credits:', refundErr)
         }
+        // 付费增强异常：更新 history 为 failed
+        try {
+          const { supabaseAdmin } = await import('@/lib/supabase')
+          await supabaseAdmin
+            .from('enhancement_history')
+            .update({ status: 'failed' })
+            .eq('user_id', userId)
+            .eq('model', model)
+            .eq('status', 'processing')
+            .order('created_at', { ascending: false })
+            .limit(1)
+        } catch {}
       }
       throw err
     }

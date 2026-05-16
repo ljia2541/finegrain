@@ -35,20 +35,20 @@ export default function Home() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span className="text-white/90 text-sm font-medium">Professional quality, not a filter</span>
+                <span className="text-white/90 text-sm font-medium">Professional photo enhancement, not a filter</span>
               </div>
               
               {/* Headline */}
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Free AI Image Enhancer
+                Free Online Photo Enhancer
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  Upscale Photos to 4K/10K Online
+                  Professional AI Upscale to 4K/10K
                 </span>
               </h1>
 
               {/* Subtitle */}
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                Upload any image, enhance for free with AI. Multiple models: Real-ESRGAN, Google, Recraft, Crystal. No signup required.
+                Free online photo enhancer with professional AI quality. Upload any image, enhance for free. Multiple models: Real-ESRGAN, Google, Recraft, Crystal. No signup required.
               </p>
               
               {/* Feature Tags */}

@@ -9,11 +9,11 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Free AI Image Enhancer - Upscale Photos Online | FineGrain',
+    default: 'Free Online Photo Enhancer - Professional AI Image Upscaler | FineGrain',
     template: '%s | FineGrain',
   },
-  description: 'Free AI image enhancer and upscaler. Upscale photos to 4K/10K with Real-ESRGAN, Google Upscaler, Recraft, and Crystal AI. Enhance blurry photos, restore old images, improve print quality. No signup required.',
-  keywords: ['AI image enhancer', 'free image upscaler', 'upscale photo online', 'AI photo enhancer', 'image quality enhancer', 'Real-ESRGAN', 'super resolution', 'photo enhancement AI', 'FineGrain', 'enhance blurry photo', 'upscale image to 4K', 'AI image upscaler free', 'photo resolution enhancer', 'image upscale AI', 'improve image quality', 'enhance photo for print', 'old photo restoration AI', 'face enhancement AI', 'image enlargement AI', 'AI photo resolution'],
+  description: 'Free online photo enhancer with professional AI upscaling. Upscale photos to 4K/10K with Real-ESRGAN, Google Upscaler, Recraft, and Crystal AI. Enhance blurry photos, restore old images, improve print quality. No signup required.',
+  keywords: ['AI image enhancer', 'free image upscaler', 'upscale photo online', 'AI photo enhancer', 'image quality enhancer', 'Real-ESRGAN', 'super resolution', 'photo enhancement AI', 'FineGrain', 'enhance blurry photo', 'upscale image to 4K', 'AI image upscaler free', 'photo resolution enhancer', 'image upscale AI', 'improve image quality', 'enhance photo for print', 'old photo restoration AI', 'face enhancement AI', 'image enlargement AI', 'AI photo resolution', 'free online photo enhancer', 'free online photo enhancer professional', 'professional photo enhancer', 'photo enhancer online free', 'free photo enhancer no signup', 'online photo enhancer', 'free photo upscaler', 'AI photo upscaler free', 'best free photo enhancer', 'photo quality enhancer free', 'enhance photo quality online free', 'professional image enhancer online', 'free AI photo enhancer online', 'upscale photos to 4K free', 'photo enhancer no watermark', 'free photo enhancement tool'],
   authors: [{ name: 'FineGrain' }],
   creator: 'FineGrain',
   metadataBase: new URL('https://www.finegrainimageenhancer.com'),
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'FineGrain',
-    title: 'FineGrain - Free AI Image Enhancer | Upscale Photos to 4K/10K',
-    description: 'Free AI image enhancer & upscaler. Upscale photos to 4K and 10K with Real-ESRGAN, Google Upscaler, Recraft, and Crystal AI. Fix blurry photos, enhance faces, improve print quality. Try free!',
+    title: 'FineGrain - Free Online Photo Enhancer | Professional AI Upscaler to 4K/10K',
+    description: 'Free online photo enhancer with professional AI quality. Upscale photos to 4K and 10K with Real-ESRGAN, Google Upscaler, Recraft, and Crystal AI. Fix blurry photos, enhance faces, improve print quality. Try free!',
     images: [{
       url: '/og-image.png',
       width: 1200,
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FineGrain - Free AI Image Enhancer & Upscaler',
-    description: 'Free AI image enhancer. Upscale to 4K/10K. Fix blurry photos, enhance faces, print quality. Try free!',
+    title: 'FineGrain - Free Online Photo Enhancer & Professional AI Upscaler',
+    description: 'Free online photo enhancer with professional AI quality. Upscale to 4K/10K. Fix blurry photos, enhance faces, print quality. Try free!',
   },
   robots: {
     index: true,
@@ -87,10 +87,18 @@ export default function RootLayout({
         mainEntity: [
           {
             '@type': 'Question',
-            name: 'Is FineGrain free to use?',
+            name: 'How does AI photo enhancement differ from sharpening?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes! FineGrain offers 3 free AI image enhancements per day using Real-ESRGAN. No signup required. For higher quality models, credits or subscription are needed.',
+              text: 'AI super resolution reconstructs missing detail using neural networks, while traditional sharpening only increases edge contrast. The result looks like the photo was originally taken at higher resolution.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can I enhance photos online for free?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes! FineGrain offers 3 free AI photo enhancements per day using Real-ESRGAN. No signup required. Just upload and enhance. Professional models like Google Upscaler and Recraft are available with credits.',
             },
           },
           {

@@ -37,8 +37,8 @@ export default function FreeEnhancePage() {
 
   return (
     <EnhancePage
-      title="Free Image Enhancer"
-      subtitle="Try AI image enhancement instantly, no account needed"
+      title="Free Online Photo Enhancer"
+      subtitle="Professional AI photo enhancement, no account needed"
       models={[{ id: 'realesrgan', name: 'Real-ESRGAN', credits: 0 }]}
       scales={[2, 4]}
       isFree

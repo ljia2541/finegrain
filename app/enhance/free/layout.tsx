@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Free AI Image Enhancer Online - Upscale Photos No Sign Up | FineGrain',
-  description: 'Enhance and upscale images for free with AI. Real-ESRGAN 4x upscaling with face restoration. Fix blurry photos, sharpen details, upscale to 4K. No signup required. 3 free enhances per day.',
-  keywords: ['free AI image enhancer', 'free image upscaler online', 'upscale photo free no sign up', 'Real-ESRGAN online free', 'enhance photo quality free', 'blur photo fix AI', 'face enhancement AI free', '4K image upscaler free', 'sharpen blurry photo online', 'free photo resolution enhancer', 'AI photo enhancer no signup', 'upscale image free online'],
+  title: 'Free Online Photo Enhancer - Professional AI Upscale No Sign Up | FineGrain',
+  description: 'Free online photo enhancer with professional AI quality. Enhance and upscale photos with Real-ESRGAN 4x, face restoration, fix blurry photos, sharpen details, upscale to 4K. No signup required. 3 free enhances per day.',
+  keywords: ['free online photo enhancer', 'free photo enhancer online', 'free image upscaler online', 'upscale photo free no sign up', 'Real-ESRGAN online free', 'enhance photo quality free', 'blur photo fix AI', 'face enhancement AI free', '4K image upscaler free', 'sharpen blurry photo online', 'free photo resolution enhancer', 'AI photo enhancer no signup', 'upscale image free online', 'free professional photo enhancer', 'photo enhancer no signup'],
   openGraph: {
-    title: 'Free AI Image Enhancer Online - No Sign Up | FineGrain',
-    description: 'Enhance images for free with AI. 4x upscale, face restoration, no signup. Try now!',
+    title: 'Free Online Photo Enhancer - Professional AI Quality | FineGrain',
+    description: 'Free online photo enhancer. Professional AI quality, 4x upscale, face restoration, no signup. Try now!',
   },
 }
 

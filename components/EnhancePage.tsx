@@ -175,7 +175,13 @@ export default function EnhancePage({
   const handleProcess = async () => {
     if (!selectedFile || !preview) return
 
-    // Track enhance start
+    // 前端守卫：免费限额用完或积分不足时拦截，不发送请求也不计 GA 事件
+    if (isFree && freeLimitReached) return
+    if (!isFree && !directPrice && currentCredits < currentModel.credits) return
+
+    setPhase('processing')
+
+    // Track enhance start — 放在守卫之后，只有真正开始处理的才计数
     trackEvent('enhance_start', {
       model: selectedModel.id,
       scale: selectedScale,
@@ -183,8 +189,6 @@ export default function EnhancePage({
       image_height: imageHeight,
       is_free: isFree ? 1 : 0,
     })
-
-    setPhase('processing')
     setProcessingProgress(0)
 
     const interval = setInterval(() => {
